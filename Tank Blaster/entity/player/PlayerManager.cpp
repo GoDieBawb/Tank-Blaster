@@ -18,7 +18,7 @@ Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
 class PlayerManager {
 
 	private:
-		InteractionManager im;
+		InteractionManager* im;
 		void actOnKeys();
 
 	public:
@@ -34,7 +34,7 @@ PlayerManager::PlayerManager(InteractionManager &i) {
 
 	playerNode.name = "Player Node";
 	playerNode.attachChild(player.tank);
-	im = i;
+	im = &i;
 
 }
 
@@ -42,43 +42,42 @@ void PlayerManager::actOnKeys() {
 
 	Tank* tank = &player.tank;
 
-	if (im.up && im.left) {
+	if (im->up && im->left) {
 		tank->moveUpLeft();
 	}
 
-	else if (im.up && im.right) {
+	else if (im->up && im->right) {
 		tank->moveUpRight();
 	}
 
-
-	else if (im.up) {
+	else if (im->up) {
 		tank->moveUp();
 	}
 
-	else if (im.down && im.left) {
+	else if (im->down && im->left) {
 		tank->moveDownLeft();
 	}
 
-	else if (im.down && im.right) {
+	else if (im->down && im->right) {
 		tank->moveDownRight();
 	}
 
-	else if (im.down) {
+	else if (im->down) {
 		tank->moveDown();
 	}
 
-	else if (im.left) {
+	else if (im->left) {
 		tank->moveLeft();
 	}
 
-	else if (im.right) {
+	else if (im->right) {
 		tank->moveRight();
 	}
 /*
-	if (im.space) {
+	if (im->space) {
 		game.bullets[game.bulletCount] = tank->shoot();
 		game.bulletCount++;
-		im.space = false;
+		im->space = false;
 	}
 */
 }

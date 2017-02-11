@@ -4,7 +4,6 @@ class EntityManager {
 
 	private:
 		void movement();
-		InteractionManager im;
 
 	public:
 		PlayerManager pm;
@@ -14,7 +13,6 @@ class EntityManager {
 };
 
 EntityManager::EntityManager(InteractionManager &i) : pm(i) {
-	im = i;
 }
 
 void EntityManager::movement() {
