@@ -16,31 +16,40 @@
 
 Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
-GlUtils		gu; 			//
+GlUtils		gu; 			//Gl Utility Holds Gl Functions
 
 //Main Function
 int main() {
 	
+	//Initialize Gl Utility
 	gu.initXWindows();
 	gu.init_opengl();
 
-	Display *dpy = gu.dpy;
-
 	while (!checkEscape()) {
-		game.im.update(dpy);
-		game.em.update();
+
+		//Update Interaction Manager
+		game.im.update(gu.dpy);
+		//Update Entity Manager
+		game.entm.update();
+		//Render Game
 		gu.render(game);
+		//Check for escape condition
 		checkEscape();
+
 	}
 
+	//Cleanup GL Utility
 	gu.cleanupXWindows();
 
+	//Exit
 	return 0;
 
 }
 
 bool checkEscape() {
 
+	//If Interaction Manager has Excaped Pressed
+	//Return true
 	if (game.im.esc) {
 		return true;		
 	}

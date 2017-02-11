@@ -11,10 +11,12 @@ struct Player {
 
 };
 
+//Player constructor calls tank constructor with center screen vector
 Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
 
 }
 
+//Manages Player Actions and Behavior
 class PlayerManager {
 
 	private:
@@ -30,14 +32,19 @@ class PlayerManager {
 
 };
 
+//Constructor initializes data members
 PlayerManager::PlayerManager(InteractionManager &i) {
 
+	//Name Player Node
 	playerNode.name = "Player Node";
+	//Attach player tank to player node
 	playerNode.attachChild(player.tank);
+	//Set interaction manager
 	im = &i;
 
 }
 
+//Uses InteractionManager to listen for key presses
 void PlayerManager::actOnKeys() {
 
 	Tank* tank = &player.tank;
@@ -82,6 +89,7 @@ void PlayerManager::actOnKeys() {
 */
 }
 
+//Called on Update Loop
 void PlayerManager::update() {
 	actOnKeys();
 }

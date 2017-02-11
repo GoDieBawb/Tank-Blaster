@@ -8,7 +8,7 @@ extern "C" {
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-
+//Cos by Degree
 float cosByAngle(int angle) {
 
 	float rad = angle*0.0174533;
@@ -16,6 +16,7 @@ float cosByAngle(int angle) {
 
 }
 
+//Sin by Degree
 float sinByAngle(int angle) {
 
 	float rad = angle*0.0174533;
@@ -181,6 +182,8 @@ void GlUtils::drawBullets(Game *game) {
 
 }
 */
+
+//Recursively Renders a Node and All Children
 
 void GlUtils::renderNode(Node *node) {
 
