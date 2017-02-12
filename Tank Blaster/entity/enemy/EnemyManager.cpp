@@ -1,13 +1,25 @@
-//Enemy Manager will handle enemies and enemy behavior
+#include "../unit/ZigZagBehavior.cpp"
 
+struct Enemy {
+	Behavior* behavior;
+	Node*	  model;
+	Enemy(Node& n, Behavior& b);
+};
+
+Enemy::Enemy(Node& n, Behavior& b) {
+	model 	 = &n;
+	behavior = &b;
+}
+
+//Enemy Manager will handle enemies and enemy behavior
 class EnemyManager {
 
 	private:
-		int   enemyCount;
-		Tank* tanks[12];
-		void  move();
-		void  init();
-		
+		int    enemyCount;
+		Enemy* enemies[12];	
+		Tank*  tanks[12];
+		void   move();
+		void   init();
 
 	public:
 		void update();
@@ -26,6 +38,7 @@ EnemyManager::EnemyManager() {
 
 void EnemyManager::move() {
 
+	
 	//Create an enemy if not enough
 	if (enemyCount < 10) {
 
@@ -33,11 +46,15 @@ void EnemyManager::move() {
 		int x = 0 + (rand() % (int) (800 - 0 + 1));
 		int y = 0 + (rand() % (int) (500 - 0 + 1));
 
+		
 		//Local Variable put on heap
-		Tank* t = new Tank(Vec(x,y,0));
+		Tank* 			t = new Tank(Vec(x,0,0));
+		ZigZagBehavior* b = new ZigZagBehavior();
+		Enemy* 			e = new Enemy(*t,*b);
+
 
 		//Add to list and render node
-		tanks[enemyCount] = t;
+		enemies[enemyCount] = e;
 		enemyNode.attachChild(*t);
 		enemyCount++;
 
@@ -47,16 +64,18 @@ void EnemyManager::move() {
 	//Act on list of enemies
 	for (int i = 0; i < enemyCount; i++) {
 
-		tanks[i]->moveUp();
+		enemies[i]->behavior->behave(*enemies[i]->model);
 		
-		if (tanks[i]->location.y > 600) {
+		if (enemies[i]->model->location.y > 600) {
 
 			//Detach Child From Render Node
-			enemyNode.detachChild(*tanks[i]);
+			enemyNode.detachChild(*enemies[i]->model);
 			//Delete because tanks put on heap
-			delete tanks[i];
+			delete enemies[i]->model;
+			delete enemies[i]->behavior;
+			delete enemies[i];
 			//Remove Tank from List
-			tanks[i] = tanks[enemyCount-1];
+			enemies[i] = enemies[enemyCount-1];
 			enemyCount--;
 
 		}
