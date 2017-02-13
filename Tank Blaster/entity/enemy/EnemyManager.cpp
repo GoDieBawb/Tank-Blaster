@@ -1,4 +1,4 @@
-#include "../unit/ZigZagBehavior.cpp"
+#include "../unit/Tank/ZigZagBehavior.cpp"
 
 struct Enemy {
 	Behavior* behavior;
@@ -17,7 +17,6 @@ class EnemyManager {
 	private:
 		int    enemyCount;
 		Enemy* enemies[12];	
-		Tank*  tanks[12];
 		void   move();
 		void   init();
 

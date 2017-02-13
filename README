@@ -1,3 +1,81 @@
 **Please Read the Comments**
 
+Remember appropriate reference and pointer 
+behavior.
 
+Please look at Units, Enemies and Behaviors.
+
+Please look at the way the Node system works.
+
+The Game Logic should remain separated from
+the Rendering logic.
+
+Example: A unit does not have health. A player
+or an enemy has health.
+
+Example: A Spatial (A node or shape) are essentially
+models and lists of models. A node is searched
+for child nodes and shapes. Only shapes are rendered 
+based on their location and rotation. 
+
+Rendering:
+	Rendering occurs from the Root Node.
+
+	If a Spatial is NOT attached to the root
+	Node, it will NOT be rendered.
+
+	A Spatial's location is determined by the
+	SUM of its own location and it's parent's
+	location.
+
+	Example: A parent node at location: 10,10
+	has a child shape with the location 5,5
+	The shape will be rendered at the location
+	15,15
+
+	A Spatial's rotation is determined by its
+	SUM own rotation and it's parent's rotation. 
+
+	Example: A parent node with a rotation of 90
+	degrees with a child shape with a rotation of
+	-45. The child will be rendered with a rotation
+	of 45 degrees.
+
+	This means the the children move RELATIVE TO THE
+	CENTER OF THEIR PARENT.
+
+	DO NOT: 
+	
+		**MOVE OR ROTATE THE ROOT NODE**
+		
+		Moving enemy example:
+
+		DO:
+			enemy.model.location = location
+		DO NOT:
+			enemy.model.gun.location = location
+			enemy.model.hatch.location = location
+			enemy.model.body.location = location
+
+		The only time to move or rotate a nodes children is
+		if you are moving them RELATIVE to their parent.
+
+		Example: A rotating turrets gun will rotate while
+		its body will remain in the center.
+
+		DO NOT:
+			enemy.model.angle = angle
+
+			This will result in the entire enemy rotating.
+
+		DO:
+			enemy.model.gun.angle
+
+			This will only rotate the gun
+
+			**Keep in mind this also assumes the gun is at the center**
+
+
+
+
+		
