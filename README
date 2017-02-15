@@ -1,5 +1,34 @@
 **Please Read the Comments**
 
+**PROCESS FOR PUSHING PULLING AND COMMITING**
+
+**BEFORE MAKING CHANGES**
+
+git pull
+
+This will make sure your local is up to 
+date with the remote.
+
+*-------------------------------------------*
+
+1) git add [files you've changed]
+
+2) git commit -m "Your commit message"
+
+3) git pull
+*This will pull from remote and merge your changes**
+**If you get conflicts here do not force your changes**
+
+**TEST HERE**
+
+IF THERE IS A PROBLEM DO NOT PUSH
+
+4) git push
+
+Done
+
+*-------------------------------------------*
+
 Remember appropriate reference and pointer 
 behavior.
 
