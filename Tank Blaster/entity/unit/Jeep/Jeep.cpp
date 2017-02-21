@@ -1,24 +1,13 @@
-
-//This struct likely won't remain here
-struct Bullet {
-
-	Shape body;
-	char  dir;
-
-};
-
 //Class Definition. Tank extends node
-class Tank: public Node {
+class Jeep: public Node {
 
 	private:
 		char dir;
 
 	public:
-		Shape  body;
-		Shape  hatch;
-		Shape  gun;
-		Tank();
-		Tank(Vec loc);
+		Shape body,front,gun,window,w1,w2,w3,w4;
+		Jeep();
+		Jeep(Vec loc);
 		void   moveRight();
 		void   moveLeft();
 		void   moveUp();
@@ -27,112 +16,76 @@ class Tank: public Node {
 		void   moveUpRight();
 		void   moveDownLeft();
 		void   moveDownRight();
-		Bullet shoot();
+		//Bullet shoot();
 
 };
 
-//Tanks without starting points are not tanks
-Tank::Tank(){}
+public Jeep(Vec loc) {
 
-//Construct Tanks with a starting point
-Tank::Tank(Vec loc) {
+	Shape w1,w2,w3,w4;
+	Shape body;
+	Shape front;
+	Shape window;
+	Shape gun;
 
-	//Intialize Body
+	Vec black(0,0,0);
+	Vec green(90,140,90);
+	Vec gray(50,50,50);
+	Vec blue(135,205,250);
 
-	//Body Dimensions
-	body.width 	   = 16;
-	body.height    = 16;
+	body.height=12;
+	body.width=24;
+	body.color = green;
 
-	//Body is at center of TANK<<
-	body.location.x  = 0;
-	body.location.y  = 0;
+	front.height = 10;
+	front.width = 6;
+	front.color = green;
 
-	//Set color
-	body.color.x   = 90;
-	body.color.y   = 140;
-	body.color.z   = 90;
+	w1.height=6;
+	w1.width=6;
+	w1.color=black;
 
-	//Set Hatch Dimensions
-	hatch.width    = 2;
-	hatch.height   = 2;
+	w2.height = 6;
+	w2.width  = 6;
+	w2.color  =black;
 
-	//Hatch is at CENTER OF TANK
-	hatch.location.x = 0;
-	hatch.location.y = 0;
+	w3.height = 6;
+	w3.width  = 6;
+	w3.color  = black;
 
-	//Set Hatch Color
-	hatch.color.x  = 50;
-	hatch.color.y  = 50;
-	hatch.color.z  = 50;
-
-	//Set Gun Dimensions
-	gun.width 	     = 12;
-	gun.height       = 2;
-
-	//Gun is located at (0,12) from
-	//Center of Tank
-	gun.location.x   = 12;
-	gun.location.y   = 0;
-
-	//Set gun color
-	gun.color.x    = 50;
-	gun.color.y    = 50;
-	gun.color.z    = 50;
-
-	//Set Names of Tank
-	body.name  = "Body";
-	hatch.name = "Hatch";
-	gun.name   = "Gun";
-	name 	   = "Tank";
-
-	//ATTACH CHILDREN TO TANK
-	attachChild(body);
-	attachChild(hatch);
-	attachChild(gun);
-
-	//Tank starts facing upward
-	angle		   =   0;
-	dir			   = 'r';
-	location 	   = loc;
-
-}
-
-//This is not used at the moment
-Bullet Tank::shoot() {
-
-	std::cout << "Shoot\n";
-	Bullet b;
-	Vec    spot;
-	b.body.width  = 2;
-	b.body.height = 2;
-	b.dir		  = dir;
-
-	switch(dir) {
-		
-		case 'u':
-			spot.x =  0;	
-			spot.y = 12;
-			break;
-		case 'd':
-			spot.x =   0;	
-			spot.y = -12;
-			break;
-		case 'l':
-			spot.x = -12;	
-			spot.y =   0;
-			break;
-		case 'r':
-			spot.x =  12;	
-			spot.y =   0;
-			break;
-
-	}
-
-	spot.x 		 += location.x;
-	spot.y 		 += location.y;
-	b.body.location = spot;
+	w4.height = 6;
+	w4.width  = 6;
+	w4.color  = black;
 	
-	return b;
+	gun.color  = gray;
+	gun.height = 2;
+	gun.width  = 8;
+
+	window.color  = blue;
+	window.height = 10;
+	window.width  = 5;
+
+	body.location   = Vec(0,0,0);
+	front.location	= Vec(12,0,0);
+	w1.location		= Vec(10,6,0);
+	w2.location		= Vec(10,-6,0);
+	w3.location		= Vec(-10,6,0);
+	w4.location		= Vec(-10,-6,0);
+	gun.location	= Vec(-6,0,0);
+	window.location = Vec(10,0,0);
+
+	jeep.attachChild(w1);
+	jeep.attachChild(w2);
+	jeep.attachChild(w3);
+	jeep.attachChild(w4);
+
+	jeep.attachChild(body);
+	jeep.attachChild(front);
+	jeep.attachChild(window);
+	jeep.attachChild(gun);
+
+	jeep.angle 	  = 180;
+	jeep.location = Vec(400,400,0);
 
 }
 

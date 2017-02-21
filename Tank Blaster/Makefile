@@ -4,7 +4,7 @@
 all: TankBlaster
 
 TankBlaster: TankBlaster.cpp
-	g++ TankBlaster.cpp ./util/libggfonts.a -Wall -oTankBlaster -lX11 -lGL -lGLU -lm -g
+	g++ TankBlaster.cpp ./util/libggfonts.a -Wall -oTankBlaster -lX11 -lGL -lGLU -lm -g -std=c++11
 
 clean:
 	rm -f TankBlaster

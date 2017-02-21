@@ -1,5 +1,6 @@
 #include <GL/glx.h>
-
+#include <chrono> 
+#include <thread>
 
 extern "C" {
 	#include "fonts.h"
@@ -21,6 +22,31 @@ float sinByAngle(int angle) {
 
 	float rad = angle*0.0174533;
 	return sin(rad);
+
+}
+
+float pointToDeg(float x, float y) {
+
+	float rad = atan2(y, x);
+	return rad * (180 / M_PI);
+
+}
+
+void angleTest() {
+
+	float a = cosByAngle(90);
+	float b = sinByAngle(90);
+
+	std::cout << "Cos 90: " << a << " Sin 90: " << b << std:: endl;
+
+	float w = pointToDeg(0,50);
+	float x = pointToDeg(0,-25);
+	float y = pointToDeg(-1,0);
+	float z = pointToDeg(11,0);
+
+	std::cout << " 0: " << w << " 180: " << x << " -90: " << y << " 90: " << z << std::endl;
+
+	
 
 }
 
@@ -113,7 +139,6 @@ void GlUtils::init_opengl(void) {
 
 void GlUtils::drawBox(Shape box) {
 
-	//printf("Drawing Shape: \n");
 	//std::cout << box.location.x << " , " << box.location.y << std::endl;
 	//std::cout << box.width << " , " << box.height << std::endl;
 	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
@@ -202,35 +227,37 @@ void GlUtils::renderNode(Node *node) {
 		Shape s;
 		s = *ps;
 
-		//Dist from center of parent
-		float x	      = pow(0 - s.location.x, 2);
-		float y 	  = pow(0 - s.location.y, 2);
+		//std::cout << "Shape: " << s.name << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
 
-		float dist    = x-y;
+		//Magnitude from center of parent
+		float x	      = pow(s.location.x, 2);
+		float y 	  = pow(s.location.y, 2);
+
+		float mag    = x-y;
 		
-		//No Negative Square Roots
-		if (dist<0)
-			dist*=-1;
 
-		dist		  = sqrt(dist);
+		//No Negative Square Roots
+		if (mag<0) 
+			mag *=-1;
+
+		mag = sqrt(mag);
 
 		//Apply Angle of Parent Node to Shape;
 		s.angle      += node->angle;
-
-		//Work to be done here
-		
-		/* This assumed that the child shape is */
-		/* Offset By either X **OR** Y			*/
-		/* Needs Vector Normalization			*/
 
 		//Sets the location of the shape based on its
 		//local translation multiplied by the cosine
 		// and sine of the angle
 		//Needs normalized vectors for more flexibility
-		s.location.x  = dist * cosByAngle(s.angle);	
-		s.location.y  = dist * sinByAngle(s.angle);
 
+		//Reference Angle for offset objects
+		float angle = pointToDeg(s.location.x, s.location.y);
 
+		s.location.x  = mag * cosByAngle(s.angle+angle);	
+		s.location.y  = mag * sinByAngle(s.angle+angle);
+
+		//std::cout << "Shape: " << s.name << " x after: " << s.location.x << " y after: " << s.location.y << std::endl;
+		//std::this_thread::sleep_for (std::chrono::seconds(1));
 		//Sets the Location of the Node relative 
 		//To its parent 
 		s.location.x += node->location.x;	
@@ -266,8 +293,6 @@ void GlUtils::renderNode(Node *node) {
 void GlUtils::render(Game &game) {
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	//drawTank(*game->player);
 	//drawBullets(game);
 	renderNode(&game.rootNode);
 

@@ -18,9 +18,10 @@ Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
 GlUtils		gu; 			//Gl Utility Holds Gl Functions
 
+
 //Main Function
 int main() {
-	
+
 	//Initialize Gl Utility
 	gu.initXWindows();
 	gu.init_opengl();
