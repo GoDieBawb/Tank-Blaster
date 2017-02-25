@@ -1,6 +1,7 @@
 //Name: Bijan Mirkazemi
 //Description: creating an enemy tower object
-//Course
+//Course: cmps 3350 Software Engineering
+//Date: 2-24-17
 
 
 class Tower: public Node {
@@ -36,10 +37,15 @@ public Tower(Vec loc) {
     roof.location = Vec(0,0,0);
     gun.location = Vec(0,0,0);
 
-    tower.attachChild(body);
-    tower.attachChild(roof);
-    tower.attachChild(gun);
+    body.name = "Body";
+    roof.name = "Roof";
+    gun.name = "Gun";
+    name = "Tower";
 
-    tower.angle = 0;
-    tower.location = Vec(100,100,0);
+    attachChild(body);
+    attachChild(roof);
+    attachChild(gun);
+
+    angle = 0;
+    location = Vec(100,100,0);
 }
