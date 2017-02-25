@@ -226,6 +226,7 @@ void GlUtils::renderNode(Node *node) {
 		//Dereference as to not edit the actual location of the shape
 		Shape s;
 		s = *ps;
+		s.name = ps->name;
 
 		//std::cout << "Shape: " << s.name << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
 
@@ -247,17 +248,18 @@ void GlUtils::renderNode(Node *node) {
 
 		//Sets the location of the shape based on its
 		//local translation multiplied by the cosine
-		// and sine of the angle
-		//Needs normalized vectors for more flexibility
+		//and sine of the angle
 
 		//Reference Angle for offset objects
 		float angle = pointToDeg(s.location.x, s.location.y);
 
+		//Uses Magnitude times multiplied by sine and cosine of the angles will give the proper offset distance
 		s.location.x  = mag * cosByAngle(s.angle+angle);	
 		s.location.y  = mag * sinByAngle(s.angle+angle);
 
 		//std::cout << "Shape: " << s.name << " x after: " << s.location.x << " y after: " << s.location.y << std::endl;
 		//std::this_thread::sleep_for (std::chrono::seconds(1));
+
 		//Sets the Location of the Node relative 
 		//To its parent 
 		s.location.x += node->location.x;	

@@ -9,6 +9,7 @@
 #include "util/InteractionManager.cpp"
 #include "util/GameDef.h"
 #include "util/GlUtils.cpp"
+#include "entity/unit/Jeep/Jeep.cpp"
 
 #define MAX_PARTICLES 5000
 #define GRAVITY 	  0.01
@@ -25,6 +26,9 @@ int main() {
 	//Initialize Gl Utility
 	gu.initXWindows();
 	gu.init_opengl();
+
+	Jeep jeep( Vec(400,400,0) );
+	game.rootNode.attachChild(jeep);
 
 	while (!checkEscape()) {
 

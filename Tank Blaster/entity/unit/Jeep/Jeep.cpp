@@ -1,4 +1,4 @@
-//Class Definition. Tank extends node
+//Class Definition. Jeep extends node
 class Jeep: public Node {
 
 	private:
@@ -6,7 +6,6 @@ class Jeep: public Node {
 
 	public:
 		Shape body,front,gun,window,w1,w2,w3,w4;
-		Jeep();
 		Jeep(Vec loc);
 		void   moveRight();
 		void   moveLeft();
@@ -20,13 +19,7 @@ class Jeep: public Node {
 
 };
 
-public Jeep(Vec loc) {
-
-	Shape w1,w2,w3,w4;
-	Shape body;
-	Shape front;
-	Shape window;
-	Shape gun;
+Jeep::Jeep(Vec loc) {
 
 	Vec black(0,0,0);
 	Vec green(90,140,90);
@@ -74,18 +67,27 @@ public Jeep(Vec loc) {
 	gun.location	= Vec(-6,0,0);
 	window.location = Vec(10,0,0);
 
-	jeep.attachChild(w1);
-	jeep.attachChild(w2);
-	jeep.attachChild(w3);
-	jeep.attachChild(w4);
+	body.name   = "Body";
+	front.name  = "Front";
+	window.name = "Window";
+	w1.name = "w1";
+	w2.name = "w2";
+	w3.name = "w3";
+	w4.name = "w4";
+	name 	= "Jeep";
 
-	jeep.attachChild(body);
-	jeep.attachChild(front);
-	jeep.attachChild(window);
-	jeep.attachChild(gun);
+	attachChild(w1);
+	attachChild(w2);
+	attachChild(w3);
+	attachChild(w4);
 
-	jeep.angle 	  = 180;
-	jeep.location = Vec(400,400,0);
+	attachChild(body);
+	attachChild(front);
+	attachChild(window);
+	attachChild(gun);
+
+	angle 	 = 0;
+	location = Vec(400,400,0);
 
 }
 
@@ -99,10 +101,10 @@ public Jeep(Vec loc) {
 
 //The Following Functions
 //are used by the player
-//as well as the tank
+//as well as the Jeep
 //behaviors
 
-void Tank::moveUp() {
+void Jeep::moveUp() {
 	//Add to y if moving up
 	location.y   += .01;
 	//Set angle and direction
@@ -110,7 +112,7 @@ void Tank::moveUp() {
 	angle		  =  90;
 }
 
-void Tank::moveDown() {
+void Jeep::moveDown() {
 	//Subtract y if moving up
 	location.y   -= .01;
 	//Set angle and direction
@@ -118,7 +120,7 @@ void Tank::moveDown() {
 	angle		  =  270;
 }
 
-void Tank::moveLeft() {
+void Jeep::moveLeft() {
 	//Subtract x if moving left
 	location.x     -= .01;
 	//Set angle and direction
@@ -126,7 +128,7 @@ void Tank::moveLeft() {
 	angle		    =  180;
 }
 
-void Tank::moveRight() {
+void Jeep::moveRight() {
 	//Add x if moving right
 	location.x   += .01;
 	//Set angle and direction
@@ -134,7 +136,7 @@ void Tank::moveRight() {
 	angle		  =   0;
 }
 
-void Tank::moveUpRight() {
+void Jeep::moveUpRight() {
 	//Move up and right
 	//Divide by 2 because
 	//Both directions are
@@ -145,7 +147,7 @@ void Tank::moveUpRight() {
 	dir 		  = 'p';
 	angle		  = 45;
 }
-void Tank::moveUpLeft() {
+void Jeep::moveUpLeft() {
 	//Move up and left
 	//Divide by 2 because
 	//Both directions are
@@ -156,7 +158,7 @@ void Tank::moveUpLeft() {
 	dir 		  = 'q';
 	angle		  =  135;
 }
-void Tank::moveDownRight() {
+void Jeep::moveDownRight() {
 	//Move down and right
 	//Divide by 2 because
 	//Both directions are
@@ -167,7 +169,7 @@ void Tank::moveDownRight() {
 	dir 		  = 'm';
 	angle		  =  315;
 }
-void Tank::moveDownLeft() {
+void Jeep::moveDownLeft() {
 	//Move down and left
 	//Divide by 2 because
 	//Both directions are
