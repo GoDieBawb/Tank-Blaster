@@ -14,10 +14,6 @@ class Tower: public Node {
 }
 
 public Tower(Vec loc) {
-    Shape tower;
-    Shape roof;
-    Shape gun;
-
     Vec black(0,0,0);
     Vec gray(50,50,50);
 
