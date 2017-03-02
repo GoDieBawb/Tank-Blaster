@@ -3,7 +3,7 @@
 //Course: CMPS3350
 //Date: 2/24/17
 
-#include "../Behavior.cpp"
+#//include "../Behavior.cpp"
 #include "time.h"
 #include <stdlib.h>
 //#include "util/GIUtils.cpp"

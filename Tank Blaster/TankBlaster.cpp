@@ -1,16 +1,3 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <cstring>
-#include <math.h>
-#include <cmath>
-
-#include "scene/ShapeDefs.h"
-#include "util/InteractionManager.cpp"
-#include "util/GameDef.h"
-#include "util/GlUtils.cpp"
-#include "entity/unit/Jeep/Jeep.cpp"
-
 #define MAX_PARTICLES 5000
 #define GRAVITY 	  0.01
 #define rnd() (float)rand() / (float)RAND_MAX
@@ -27,8 +14,11 @@ int main() {
 	gu.initXWindows();
 	gu.init_opengl();
 
-	Jeep jeep( Vec(400,400,0) );
-	game.rootNode.attachChild(jeep);
+	Car car( Vec(400,400,0));
+	game.rootNode.attachChild(car);
+
+	Tower tower( Vec(100,100,0));
+	game.rootNode.attachChild(tower);
 
 	while (!checkEscape()) {
 

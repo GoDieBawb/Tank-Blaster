@@ -3,7 +3,7 @@
  * Description: Obosa Osagie-Amayo's code for Tank Blaster
  **/
 
-#include "./entity/unit/Behavior.cpp"
+//#include "./entity/unit/Behavior.cpp"
 
 struct BoxBehavior : public Behavior {
   void behave (Node &model);
@@ -13,10 +13,10 @@ struct BoxBehavior : public Behavior {
 void BoxBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
   
-  int top    = WINDOW_HEIGHT - 20;
-  int bottom = WINDOW_HEIGHT - WINDOW_HEIGHT;
-  int left   = (WINDOW_WIDTH - WINDOW_WIDTH) + 20;
-  int right  = WINDOW_WIDTH  - 20;
+  //int top    = WINDOW_HEIGHT - 20;
+  //int bottom = WINDOW_HEIGHT - WINDOW_HEIGHT;
+  //int left   = (WINDOW_WIDTH - WINDOW_WIDTH) + 20;
+  //int right  = WINDOW_WIDTH  - 20;
 
   while(1) {
 	  

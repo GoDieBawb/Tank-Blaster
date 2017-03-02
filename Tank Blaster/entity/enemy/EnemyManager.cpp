@@ -43,7 +43,7 @@ void EnemyManager::move() {
 
 		//Randomize location
 		int x = 0 + (rand() % (int) (800 - 0 + 1));
-		int y = 0 + (rand() % (int) (500 - 0 + 1));
+		//int y = 0 + (rand() % (int) (500 - 0 + 1));
 
 		
 		//Local Variable put on heap
