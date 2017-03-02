@@ -1,21 +1,17 @@
 /**
  * Source File: obosaO.cpp
- * Description: Move tank in a block pattern.
- * Course:      CMPS 3350
- * Lab:         5
- * Date:        2/23/2017
+ * Description: Obosa Osagie-Amayo's code for Tank Blaster
  **/
 
 #include "./entity/unit/Behavior.cpp"
-#include "time.h"
 
-struct UpDownLeftRightBehavior : public Behavior {
+struct BoxBehavior : public Behavior {
   void behave (Node &model);
-  UpDownLeftRightBehavior();
+  BoxBehavior();
 };
 
-void UpDownLeftRightBehavior::behave (Node &model) {
-  Tank &tank = (&Tank) model;
+void BoxBehavior::behave (Node &model) {
+  Tank &tank = (Tank&) model;
   
   int top    = WINDOW_HEIGHT - 20;
   int bottom = WINDOW_HEIGHT - WINDOW_HEIGHT;
@@ -24,7 +20,7 @@ void UpDownLeftRightBehavior::behave (Node &model) {
 
   while(1) {
 	  
-    switch(tank.body.location) {
+/*   switch(tank.body.location) {
       case (location.y < top):
         tank.moveUp();
         break;
@@ -37,9 +33,9 @@ void UpDownLeftRightBehavior::behave (Node &model) {
       case (location.x < right):
         tank.moveRight();
         break;
-      default: // do nothing
-        break;
     }
-    
+*/
+      tank.moveUp();
+ 
   }
 }
