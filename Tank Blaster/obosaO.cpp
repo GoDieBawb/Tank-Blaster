@@ -4,38 +4,45 @@
  **/
 
 //#include "./entity/unit/Behavior.cpp"
+#include <stdlib.h>
+
+#define WINDOWS_HEIGHT 800
+#define WINDOWS_WIDTH 600
 
 struct BoxBehavior : public Behavior {
   void behave (Node &model);
   BoxBehavior();
+  int box = rand() % 2;
 };
 
 void BoxBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
-  
-  //int top    = WINDOW_HEIGHT - 20;
-  //int bottom = WINDOW_HEIGHT - WINDOW_HEIGHT;
-  //int left   = (WINDOW_WIDTH - WINDOW_WIDTH) + 20;
-  //int right  = WINDOW_WIDTH  - 20;
 
   while(1) {
+	  if (box == 0) {
+		tank.moveUp();
+		box = 2;
+	} else if (box == 1) {
+		tank.moveUpRight();
+		box = 2;
+	}
 	  
-/*   switch(tank.body.location) {
-      case (location.y < top):
-        tank.moveUp();
-        break;
-      case (location.y > bottom):
-        tank.moveDown();
-        break;
-      case (location.x > left):
-        tank.moveLeft();
-        break;
-      case (location.x < right):
-        tank.moveRight();
-        break;
-    }
-*/
-      tank.moveUp();
+   if (tank.location.x <= WINDOWS_WIDTH) {
+	    tank.moveUpRight();
+		}
+	else if (tank.location.x < (WINDOWS_WIDTH - (WINDOWS_WIDTH * 0.9)) &&
+		tank.location.y > (WINDOWS_HEIGHT/2)) {
+		tank.moveLeft();
+	}
+
+	if (tank.location.x <= (WINDOWS_WIDTH - 20) && tank.location.y <= 
+		(WINDOWS_HEIGHT/2)) {
+		tank.moveUp();
+	}
+	else if (tank.location.x < (WINDOWS_WIDTH - 20) && tank.location.y >
+		(WINDOWS_HEIGHT/2)) {
+		tank.moveDown();
+	}
  
   }
 }
