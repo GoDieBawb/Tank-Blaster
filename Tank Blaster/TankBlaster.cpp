@@ -1,6 +1,9 @@
 #define MAX_PARTICLES 5000
 #define GRAVITY 	  0.01
 #define rnd() (float)rand() / (float)RAND_MAX
+#include "time.h"
+
+#include "entity/unit/Jeep/Jeep.cpp"
 
 Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
@@ -20,7 +23,16 @@ int main() {
 	Tower tower( Vec(100,100,0));
 	game.rootNode.attachChild(tower);
 
+	Jeep jeep( Vec(500,100,0));
+	game.rootNode.attachChild(jeep);
+
+	time_t t;
+
+	t = clock();
+
 	while (!checkEscape()) {
+	
+		t = clock();
 
 		//Update Interaction Manager
 		game.im.update(gu.dpy);
@@ -30,6 +42,10 @@ int main() {
 		gu.render(game);
 		//Check for escape condition
 		checkEscape();
+
+		t   = clock() - t;
+		tpf = double(t) / CLOCKS_PER_SEC * 1000;
+
 
 	}
 

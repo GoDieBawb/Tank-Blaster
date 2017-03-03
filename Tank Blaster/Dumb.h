@@ -1,3 +1,5 @@
+static float tpf;
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>

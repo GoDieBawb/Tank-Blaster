@@ -87,7 +87,7 @@ Jeep::Jeep(Vec loc) {
 	attachChild(gun);
 
 	angle 	 = 0;
-	location = Vec(400,400,0);
+	location = loc;
 
 }
 
