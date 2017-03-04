@@ -1,4 +1,5 @@
 static float tpf;
+static float osDiv;
 
 #include <iostream>
 #include <cstdlib>

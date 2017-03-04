@@ -96,7 +96,7 @@ Tank::Tank(Vec loc) {
 	dir			   = 'r';
 	location 	   = loc;
 
-	moveSpeed = .1;
+	moveSpeed = 1.15/osDiv;
 
 }
 

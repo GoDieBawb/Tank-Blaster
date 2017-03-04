@@ -11,7 +11,24 @@ GlUtils		gu; 			//Gl Utility Holds Gl Functions
 
 
 //Main Function
-int main() {
+int main(int argc, char* argv[]) {
+
+	/******************************/
+	/**Ubuntu approx. 11.5 faster**/
+	/******************************/
+	osDiv = 1;
+	std::cout << argc <<std::endl;
+	if (argc > 1) {
+
+		if (*argv[1] == 'u') {
+			osDiv = 11.5;
+		}
+
+	}
+
+	game.entm.pm.player.initTank();
+
+	/******************************/
 
 	//Initialize Gl Utility
 	gu.initXWindows();
