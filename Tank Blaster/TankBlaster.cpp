@@ -26,14 +26,12 @@ int main() {
 	Jeep jeep( Vec(500,100,0));
 	game.rootNode.attachChild(jeep);
 
-	time_t t;
-
-	t = clock();
+	time_t t = clock();
 
 	while (!checkEscape()) {
 	
 		t = clock();
-
+		//std::cout << tpf << std::endl; 
 		//Update Interaction Manager
 		game.im.update(gu.dpy);
 		//Update Entity Manager
