@@ -25,6 +25,13 @@ SpiralBehavior::SpiralBehavior() {
     spiral = rand() % 2;
 }
 
+struct HourglassBehavior : public Behavior {
+    void behave (Node &model);
+};
+
+HourglassBehavior::HourglassBehavior() {
+}
+
 void SpiralBehavior::behave (Node &model) {
 
     Tank &tank = (Tank&) model;
@@ -75,4 +82,8 @@ void SpiralBehavior::behave (Node &model) {
 	    tank.moveUpLeft();
 	}
    // }
+}
+
+void HourglassBehavior::behave (Node &model) {
+    Tank &tank = (Tank&) model;
 }
