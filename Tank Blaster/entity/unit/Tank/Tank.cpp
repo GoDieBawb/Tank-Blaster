@@ -94,11 +94,11 @@ Tank::Tank(Vec loc) {
 //This is not used at the moment
 Bullet Tank::shoot() {
 
-	std::cout << "Shoot\n";
+	//std::cout << "Shoot\n";
 	Bullet b;
 	Vec    spot;
-	b.body.width  = 2;
-	b.body.height = 2;
+	b.body.width  = 5;
+	b.body.height = 5;
 	b.dir		  = dir;
 
 	switch(dir) {
@@ -118,6 +118,23 @@ Bullet Tank::shoot() {
 		case 'r':
 			spot.x =  12;	
 			spot.y =   0;
+			break;
+
+		case 'q':
+			spot.x = -12/(sqrt(2)/2);	
+			spot.y =  12/(sqrt(2)/2);
+			break;
+		case 'p':
+			spot.x =  12/(sqrt(2)/2);	
+			spot.y =  12/(sqrt(2)/2);
+			break;
+		case 'z':
+			spot.x = -12/(sqrt(2)/2);	
+			spot.y = -12/(sqrt(2)/2);
+			break;
+		case 'm':
+			spot.x =   12/ (sqrt(2)/2);	
+			spot.y =  -12/(sqrt(2)/2);
 			break;
 
 	}

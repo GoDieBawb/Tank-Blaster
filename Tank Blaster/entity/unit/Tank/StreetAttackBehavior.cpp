@@ -1,10 +1,9 @@
-//#include "../Behavior.cpp"
 #include "time.h"
 
 struct StreetAttackBehavior : public Behavior {
 	
 	time_t lastShot; //Time for last act
-	bool inPos; //bool to determine zig or zag
+	bool inPos; //bool to whether to stop
 	void behave(Node &model); 
 	StreetAttackBehavior();
 };

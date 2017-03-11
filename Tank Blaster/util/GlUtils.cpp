@@ -53,7 +53,7 @@ class GlUtils {
 		Window win;
 		GLXContext glc;
 		void renderNode(Node *node);
-		//void drawBullets(Game *game);
+		void drawBullets();
 		void drawBox(Shape box);
 		void drawBox(Shape *box);
 	
@@ -192,18 +192,18 @@ void GlUtils::drawBox(Shape *box) {
 }
 
 
-/*
-void GlUtils::drawBullets(Game *game) {
 
-	for (int i = 0; i < game->bulletCount; i++) {
+void GlUtils::drawBullets() {
 
-		Bullet *b = &game->bullets[i];
-		drawBox(b->body);
+	for (int i = 0; i < bulletCount; i++) {
+
+		Bullet b = bullets[i];
+		drawBox(b.body);
 
 	}
 
 }
-*/
+
 
 //Recursively Renders a Node and All Children
 
@@ -292,9 +292,8 @@ void GlUtils::renderNode(Node *node) {
 void GlUtils::render(Game &game) {
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	//drawBullets(game);
 	renderNode(&game.rootNode);
-
+	drawBullets();
 	glXSwapBuffers(dpy, win);
 
 }

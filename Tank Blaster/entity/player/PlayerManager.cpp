@@ -84,13 +84,13 @@ void PlayerManager::actOnKeys() {
 	else if (im->right) {
 		tank->moveRight();
 	}
-/*
+
 	if (im->space) {
-		game.bullets[game.bulletCount] = tank->shoot();
-		game.bulletCount++;
+		bullets[bulletCount] = tank->shoot();
+		bulletCount++;
 		im->space = false;
 	}
-*/
+
 }
 
 //Called on Update Loop

@@ -4,26 +4,28 @@ struct Enemy {
 	Behavior* behavior;
 	Node*	  model;
 	Enemy(Node& n, Behavior& b);
+	int health;
 };
 
 Enemy::Enemy(Node& n, Behavior& b) {
 	model 	 = &n;
 	behavior = &b;
+	health   = 3;
 }
 
 //Enemy Manager will handle enemies and enemy behavior
 class EnemyManager {
 
 	private:
-		int    enemyCount;
-		Enemy* enemies[12];	
 		void   move();
 		void   init();
 
 	public:
+		int  enemyCount;
 		void update();
 		Node enemyNode;
 		EnemyManager();
+		Enemy* enemies[12];	
 
 };
 
@@ -51,7 +53,6 @@ void EnemyManager::move() {
 		StreetAttackBehavior* b = new StreetAttackBehavior();
 		Enemy* 				  e = new Enemy(*t,*b);
 
-
 		//Add to list and render node
 		enemies[enemyCount] = e;
 		enemyNode.attachChild(*t);
@@ -65,7 +66,7 @@ void EnemyManager::move() {
 
 		enemies[i]->behavior->behave(*enemies[i]->model);
 		
-		if (enemies[i]->model->location.y > 600) {
+		if (enemies[i]->model->location.y > 600 || enemies[i]->health <= 0) {
 
 			//Detach Child From Render Node
 			enemyNode.detachChild(*enemies[i]->model);

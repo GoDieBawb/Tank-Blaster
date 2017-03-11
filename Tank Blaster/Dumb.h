@@ -15,10 +15,18 @@ static float osDiv;
 #include "scene/ShapeDefs.h"
 #include "entity/unit/Behavior.cpp"
 
+Vec red    = Vec(255,0,0);
+Vec green  = Vec(0,255,0);
+Vec blue   = Vec(0,0,255);
+Vec yellow = Vec(255,255,0);
+
 struct Bullet {
 	Shape body;
 	char  dir;
+	char  source;
 };
+Bullet bullets[500];
+int bulletCount = 0;
 
 #include "robertR.cpp"
 #include "util/InteractionManager.cpp"

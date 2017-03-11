@@ -42,7 +42,7 @@ void FriendlyManager::initRoad() {
 	for (int i = 0; i < 10; i++) {
 
 		Shape *stripe 	   = new Shape();
-		stripe->color      = Vec(255,255,0);
+		stripe->color      = yellow;
 		stripe->height     = asphault->height/20;
 		stripe->width      = asphault->width/15;
 		stripe->location.y = 0;
@@ -116,6 +116,16 @@ void FriendlyManager::carCreateCheck() {
 		Car* 		  c = new Car(Vec(x,y,0));
 		CarBehavior*  b = new CarBehavior(left);
 		CarFriend* 	  f = new CarFriend(*c,*b);
+
+		int t = 1 + (rand() % (int) (3 - 1 + 3));
+		Vec color;
+		switch(t) {
+			case (1): color = red; break;
+			case (2): color = yellow; break;
+			case (3): color = green; break;
+		}
+		c->body.color  = color;
+		c->front.color = color;
 
 		//Add to list and render node
 		cars[carCount] = f;
