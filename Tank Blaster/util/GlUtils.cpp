@@ -6,8 +6,7 @@ extern "C" {
 	#include "fonts.h"
 }
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+
 
 //Cos by Degree
 float cosByAngle(int angle) {
@@ -45,8 +44,6 @@ void angleTest() {
 	float z = pointToDeg(11,0);
 
 	std::cout << " 0: " << w << " 180: " << x << " -90: " << y << " 90: " << z << std::endl;
-
-	
 
 }
 

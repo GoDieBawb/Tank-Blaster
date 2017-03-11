@@ -1,4 +1,3 @@
-#include "../Behavior.cpp"
 #include "time.h"
 
 struct ZigZagBehavior : public Behavior {

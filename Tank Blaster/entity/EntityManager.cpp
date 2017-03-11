@@ -1,11 +1,13 @@
 #include "player/PlayerManager.cpp"
 #include "enemy/EnemyManager.cpp"
+#include "friendly/FriendlyManager.cpp"
 
 class EntityManager {
 
 	public:
-		PlayerManager pm;
-		EnemyManager  em;
+		PlayerManager   pm;
+		EnemyManager    em;
+		FriendlyManager fm;
 		EntityManager(InteractionManager &i);
 		void update();
 
@@ -19,4 +21,5 @@ EntityManager::EntityManager(InteractionManager &i) : pm(i) {
 void EntityManager::update() {
 	pm.update();
 	em.update();
+	fm.update();
 }

@@ -15,8 +15,10 @@ Game::Game() : entm(im) {
 	//Name Root Node
 	rootNode.name = "Root Node";
 	//Attach Player and Enemy Nodes to Root Node
+	rootNode.attachChild(entm.fm.streetNode);	
 	rootNode.attachChild(entm.pm.playerNode);
 	rootNode.attachChild(entm.em.enemyNode);
+	rootNode.attachChild(entm.fm.carNode);
 }
 
 //Used to Print Games Data 

@@ -3,25 +3,22 @@
 #define rnd() (float)rand() / (float)RAND_MAX
 #include "time.h"
 
-#include "entity/unit/Jeep/Jeep.cpp"
-
 Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
 GlUtils		gu; 			//Gl Utility Holds Gl Functions
-
+void makeStreet();
 
 //Main Function
 int main(int argc, char* argv[]) {
 
 	/******************************/
-	/**Ubuntu approx. 11.5 faster**/
+	/**SomeLib approx 11.9 faster**/
 	/******************************/
 	osDiv = 1;
-	std::cout << argc <<std::endl;
 	if (argc > 1) {
 
 		if (*argv[1] == 'u') {
-			osDiv = 11.5;
+			osDiv = 11.9;
 		}
 
 	}
@@ -34,14 +31,9 @@ int main(int argc, char* argv[]) {
 	gu.initXWindows();
 	gu.init_opengl();
 
-	Car car( Vec(400,400,0));
-	game.rootNode.attachChild(car);
-
 	Tower tower( Vec(100,100,0));
 	game.rootNode.attachChild(tower);
 
-	Jeep jeep( Vec(500,100,0));
-	game.rootNode.attachChild(jeep);
 
 	time_t t = clock();
 
@@ -69,6 +61,11 @@ int main(int argc, char* argv[]) {
 
 	//Exit
 	return 0;
+
+}
+
+void makeStreet() {
+
 
 }
 

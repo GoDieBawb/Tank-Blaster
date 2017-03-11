@@ -84,6 +84,6 @@ void SpiralBehavior::behave (Node &model) {
    // }
 }
 
-void HourglassBehavior::behave (Node &model) {
-    Tank &tank = (Tank&) model;
-}
+//void HourglassBehavior::behave (Node &model) {
+//    Tank &tank = (Tank&) model;
+//}

@@ -1,12 +1,3 @@
-
-//This struct likely won't remain here
-struct Bullet {
-
-	Shape body;
-	char  dir;
-
-};
-
 //Class Definition. Tank extends node
 class Tank: public Node {
 

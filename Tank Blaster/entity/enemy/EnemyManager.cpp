@@ -1,4 +1,4 @@
-#include "../unit/Tank/ZigZagBehavior.cpp"
+#include "../unit/Tank/StreetAttackBehavior.cpp"
 
 struct Enemy {
 	Behavior* behavior;
@@ -47,9 +47,9 @@ void EnemyManager::move() {
 
 		
 		//Local Variable put on heap
-		Tank* 			t = new Tank(Vec(x,0,0));
-		ZigZagBehavior* b = new ZigZagBehavior();
-		Enemy* 			e = new Enemy(*t,*b);
+		Tank* 				  t = new Tank(Vec(x,0,0));
+		StreetAttackBehavior* b = new StreetAttackBehavior();
+		Enemy* 				  e = new Enemy(*t,*b);
 
 
 		//Add to list and render node
