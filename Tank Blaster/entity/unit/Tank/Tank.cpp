@@ -31,45 +31,40 @@ Tank::Tank(Vec loc) {
 
 	//Intialize Body
 
+	Vec black(0,0,0);
+	Vec gray(50,50,50);
+	Vec green(90,140,90);
+
 	//Body Dimensions
-	body.width 	   = 16;
-	body.height    = 16;
+	body.width = 24;
+	body.height = 16;
 
 	//Body is at center of TANK<<
-	body.location.x  = 0;
-	body.location.y  = 0;
+	body.location = Vec(0,0,0);
 
 	//Set color
-	body.color.x   = 90;
-	body.color.y   = 140;
-	body.color.z   = 90;
+	body.color = green;
 
 	//Set Hatch Dimensions
-	hatch.width    = 2;
-	hatch.height   = 2;
+	hatch.width    = 6;
+	hatch.height   = 6;
 
 	//Hatch is at CENTER OF TANK
-	hatch.location.x = 0;
-	hatch.location.y = 0;
+	hatch.location = Vec(0,0,0);
 
 	//Set Hatch Color
-	hatch.color.x  = 50;
-	hatch.color.y  = 50;
-	hatch.color.z  = 50;
+	hatch.color    = gray;
 
 	//Set Gun Dimensions
-	gun.width 	     = 12;
-	gun.height       = 2;
+	gun.width      = 14;
+	gun.height     = 3;
 
 	//Gun is located at (0,12) from
 	//Center of Tank
-	gun.location.x   = 12;
-	gun.location.y   = 0;
+	gun.location   = Vec(12,0,0);
 
 	//Set gun color
-	gun.color.x    = 50;
-	gun.color.y    = 50;
-	gun.color.z    = 50;
+	gun.color      = black;
 
 	//Set Names of Tank
 	body.name  = "Body";
@@ -84,7 +79,7 @@ Tank::Tank(Vec loc) {
 
 	//Tank starts facing upward
 	angle		   =   0;
-	dir			   = 'r';
+	dir	           = 'r';
 	location 	   = loc;
 
 	moveSpeed = 1.15/osDiv;
