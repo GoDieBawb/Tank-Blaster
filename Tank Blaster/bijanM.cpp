@@ -57,14 +57,21 @@ Tower::Tower(Vec loc) {
 }
 
 struct TowerBehavior : public Behavior {
-	//TowerBehavior();
+	TowerBehavior(bool left);
+	bool spinleft;
 	void behave(Node &model);
 };
+
+TowerBehavior::TowerBehavior(bool left) {
+	spinleft = left;
+}
 
 void TowerBehavior::behave(Node &model) {
 
 	Tower &tower = (Tower&) model;
-
-	tower.gun.angle += 0.5;
+	if(spinleft) 
+		tower.gun.angle -= 0.5;
+	else 
+		tower.gun.angle += 0.5;
 }
 
