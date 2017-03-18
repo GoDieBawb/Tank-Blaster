@@ -55,3 +55,16 @@ Tower::Tower(Vec loc) {
     angle = 0;
     location = loc;
 }
+
+struct TowerBehavior : public Behavior {
+	//TowerBehavior();
+	void behave(Node &model);
+};
+
+void TowerBehavior::behave(Node &model) {
+
+	Tower &tower = (Tower&) model;
+
+	tower.gun.angle += 0.5;
+}
+

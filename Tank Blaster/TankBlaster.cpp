@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
 	gu.init_opengl();
 
 	Tower tower( Vec(100,100,0));
+	TowerBehavior b;
 	game.rootNode.attachChild(tower);
 
 
@@ -47,6 +48,7 @@ int main(int argc, char* argv[]) {
 		game.entm.update();
 		//Render Game
 		gu.render(game);
+		b.behave(tower);
 		//Check for escape condition
 		checkEscape();
 
