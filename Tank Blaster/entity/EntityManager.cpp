@@ -103,6 +103,27 @@ void EntityManager::checkCollision() {
 			}
 
 		}
+
+		for (int j = 0; j < fm.carCount; j++) {
+
+			Node* cf = fm.carNode.nodeArr[j];
+
+			for (int k = 0; k < cf->shapeCount; k++) {
+
+				Shape s = *cf->shapeArr[k];
+				s.location.x += cf->location.x;
+				s.location.y += cf->location.y;
+
+				if (collides(s,*cur)) {
+					CarFriend *cf = fm.cars[j];
+					cf->health--;
+					bullets[i] = bullets[bulletCount-i];
+					bulletCount--;
+				}				
+				
+			}
+
+		}
 	
 	}
 

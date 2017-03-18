@@ -2,18 +2,18 @@
 class FriendlyManager {
 
 	private:
-		int    	   carCount;
-		time_t 	   lastCar; //Time for last act
-		CarFriend* cars[10];	
+		time_t 	   lastCar; //Time for last act	
 		void   	   move();
 		void   	   initRoad();
 
 	public:
+		int  carCount;
 		void carCreateCheck();
 		void update();
 		Node carNode;
 		Node streetNode;
 		FriendlyManager();
+		CarFriend* cars[10];
 
 };
 
@@ -38,6 +38,7 @@ void FriendlyManager::initRoad() {
 	streetNode.location.x = WINDOW_WIDTH  - asphault->width/2;
 
 	streetNode.attachChild(*asphault);
+	asphault->color = Vec(111,110,99);
 
 	for (int i = 0; i < 10; i++) {
 
@@ -65,7 +66,7 @@ void FriendlyManager::move() {
 		float xDist = cars[i]->model->location.x;
 		if (xDist < 0) xDist *= -1;
 
-		if (xDist > WINDOW_WIDTH+30) {
+		if (xDist > WINDOW_WIDTH+30 || cars[i]->health <= 0) {
 
 			//std::cout << "Removing Car" << std::endl;
 			//Detach Child From Render Node
@@ -74,7 +75,7 @@ void FriendlyManager::move() {
 			delete cars[i]->model;
 			delete cars[i]->behavior;
 			delete cars[i];
-			//Remove Tank from List
+			//Remove Car from List
 			cars[i] = cars[carCount-1];
 			carCount--;
 
@@ -88,7 +89,7 @@ void FriendlyManager::carCreateCheck() {
 
 	if (time(0) - lastCar < 2) return;
 
-	//Create an car if not enough
+	//Create a car if not enough
 	if (carCount < 10) {
 		lastCar = time(0);
 
@@ -123,6 +124,7 @@ void FriendlyManager::carCreateCheck() {
 			case (1): color = red; break;
 			case (2): color = yellow; break;
 			case (3): color = green; break;
+			case (4): color = blue; break;
 		}
 		c->body.color  = color;
 		c->front.color = color;
