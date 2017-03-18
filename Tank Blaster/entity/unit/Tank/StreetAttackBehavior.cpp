@@ -33,7 +33,8 @@ void StreetAttackBehavior::behave(Node &model) {
 		//printf("shoot\n");
 		//Set last act to now
 		lastShot = time(0);
-		tank.shoot();
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
 	}
 
 }
