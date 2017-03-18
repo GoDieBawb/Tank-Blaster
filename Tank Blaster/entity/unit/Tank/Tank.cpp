@@ -7,6 +7,8 @@ class Tank: public Node {
 	public:
 		Shape  body;
 		Shape  hatch;
+		Shape  turret;
+		Shape  lw,rw;
 		Shape  gun;
 		float  moveSpeed;
 		Tank();
@@ -29,21 +31,47 @@ Tank::Tank(){}
 //Construct Tanks with a starting point
 Tank::Tank(Vec loc) {
 
-	//Intialize Body
-
+	//set up color vectors
 	Vec black(0,0,0);
 	Vec gray(50,50,50);
+	Vec lightgray(80,80,80);
 	Vec green(90,140,90);
 
 	//Body Dimensions
-	body.width = 24;
-	body.height = 16;
+	body.width     = 24;
+	body.height    = 16;
 
-	//Body is at center of TANK<<
-	body.location = Vec(0,0,0);
+	//Body is the tank body
+	body.location  = Vec(0,0,0);
 
-	//Set color
-	body.color = green;
+	//turret dimensions
+	turret.width   = 14;
+	turret.height  = 10;
+
+	//set turret color
+	turret.color   = lightgray;
+
+	turret.location = Vec(0,0,0);
+	
+	//Set body color
+	body.color     = green;
+
+	//set right wheel dimensions
+	rw.width       = 18;
+	rw.height      = 4;
+
+	//set left wheel dimensions	
+	lw.width       = 18;
+	lw.height      = 4;
+
+	//set wheel color
+	lw.color       = gray;
+	rw.color       = gray;
+	
+	//wheels are at (12,0) from 
+	//center of tank
+	lw.location    = Vec(0,-9,0);
+	rw.location    = Vec(0, 9,0);
 
 	//Set Hatch Dimensions
 	hatch.width    = 6;
@@ -53,7 +81,7 @@ Tank::Tank(Vec loc) {
 	hatch.location = Vec(0,0,0);
 
 	//Set Hatch Color
-	hatch.color    = gray;
+	hatch.color    = green;
 
 	//Set Gun Dimensions
 	gun.width      = 14;
@@ -62,7 +90,7 @@ Tank::Tank(Vec loc) {
 	//Gun is located at (0,12) from
 	//Center of Tank
 	gun.location   = Vec(12,0,0);
-
+	
 	//Set gun color
 	gun.color      = black;
 
@@ -70,10 +98,17 @@ Tank::Tank(Vec loc) {
 	body.name  = "Body";
 	hatch.name = "Hatch";
 	gun.name   = "Gun";
+	turret.name = "Turret";
+	lw.name    = "LWheel";
+	rw.name    = "RWheel";
 	name 	   = "Tank";
 
 	//ATTACH CHILDREN TO TANK
+	attachChild(lw);
+	attachChild(rw);
+
 	attachChild(body);
+	attachChild(turret);
 	attachChild(hatch);
 	attachChild(gun);
 
