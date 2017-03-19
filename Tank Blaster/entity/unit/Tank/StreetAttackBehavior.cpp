@@ -27,12 +27,14 @@ void StreetAttackBehavior::behave(Node &model) {
 
 		return;
 
-	}
+	}	
 
 	if (time(0) - lastShot > 5) {
-
+		//printf("shoot\n");
 		//Set last act to now
 		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
 	}
 
 }

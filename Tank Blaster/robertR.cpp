@@ -186,11 +186,13 @@ struct CarFriend {
 	Behavior* behavior;
 	Node*	  model;
 	CarFriend(Node& n, Behavior& b);
+	int health;
 };
 
 CarFriend::CarFriend(Node& n, Behavior& b) {
 	model 	 = &n;
 	behavior = &b;
+	health   = 2;
 }
 
 struct CarBehavior : public Behavior {
