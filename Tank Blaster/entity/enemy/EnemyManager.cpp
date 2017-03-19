@@ -46,7 +46,7 @@ void EnemyManager::move() {
 
 			if (lanes[j] == false) {
 				//Randomize location
-				int x = 800 - ((j * 70) - 20);
+				int x = 800 - ((j * 60) + 110);
 				//int y = 0 + (rand() % (int) (500 - 0 + 1));
 
 
