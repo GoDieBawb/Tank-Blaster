@@ -12,11 +12,11 @@
 struct BoxBehavior : public Behavior {
   void behave (Node &model);
   BoxBehavior();
-  int box = rand() % 2;
 };
 
 void BoxBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
+  int box = rand() % 2;
 
   while(1) {
 	  if (box == 0) {
