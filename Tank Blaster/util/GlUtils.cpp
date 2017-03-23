@@ -1,6 +1,6 @@
 #include <GL/glx.h>
-#include <chrono> 
-#include <thread>
+//#include <chrono> 
+#//include <thread>
 
 extern "C" {
 	#include "fonts.h"
