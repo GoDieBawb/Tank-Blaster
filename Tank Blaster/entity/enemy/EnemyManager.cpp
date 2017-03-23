@@ -1,3 +1,4 @@
+#include "../unit/Tank/StreetAttackBehavior.cpp"
 
 struct Enemy {
 	Behavior* behavior;
@@ -55,7 +56,7 @@ void EnemyManager::move() {
 
 				//Local Variable put on heap
 				Tank* 				  t = new Tank(Vec(x,0,0));
-				SpiralBehavior* b = new SpiralBehavior();
+				StreetAttackBehavior* b = new StreetAttackBehavior();
 				Enemy* 				  e = new Enemy(*t,*b);
 				e->lane = j;
 				//Add to list and render node
