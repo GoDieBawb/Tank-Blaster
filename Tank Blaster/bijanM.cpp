@@ -57,21 +57,31 @@ Tower::Tower(Vec loc) {
 }
 
 struct TowerBehavior : public Behavior {
-	TowerBehavior(bool left);
-	bool spinleft;
+	TowerBehavior(int min, int max);
+	int minimum, maximum;
+	bool goingup, init;
 	void behave(Node &model);
 };
 
-TowerBehavior::TowerBehavior(bool left) {
-	spinleft = left;
+TowerBehavior::TowerBehavior(int min, int max) {
+	goingup = false;
+	init = false;
+	maximum = max; 
+	minimum = min;
 }
 
 void TowerBehavior::behave(Node &model) {
 
 	Tower &tower = (Tower&) model;
-	if(spinleft) 
-		tower.gun.angle -= 0.5;
-	else 
+	if(!init) {
+		tower.gun.angle = minimum + 1;
+	init = true;
+	}
+	if(goingup) 
 		tower.gun.angle += 0.5;
+	else 
+		tower.gun.angle -= 0.5;
+	if(tower.gun.angle > maximum || tower.gun.angle < minimum) 
+		goingup = !goingup;
 }
 

@@ -31,12 +31,12 @@ int main(int argc, char* argv[]) {
 	gu.initXWindows();
 	gu.init_opengl();
 
-	Tower tower1( Vec(50,50,0));
-	Tower tower2( Vec(750,50,0));
-	TowerBehavior b(true);
-	TowerBehavior b2(false);
-	game.rootNode.attachChild(tower1);
-	game.rootNode.attachChild(tower2);
+	Tower leftTower( Vec(50,50,0));
+	Tower rightTower( Vec(750,50,0));
+	TowerBehavior left(0,50);
+	TowerBehavior right(130,180);
+	game.rootNode.attachChild(leftTower);
+	game.rootNode.attachChild(rightTower);
 
 
 	time_t t = clock();
@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
 		game.entm.update();
 		//Render Game
 		gu.render(game);
-		b.behave(tower1);
-		b2.behave(tower2);
+		left.behave(leftTower);
+		right.behave(rightTower);
 		//Check for escape condition
 		checkEscape();
 
