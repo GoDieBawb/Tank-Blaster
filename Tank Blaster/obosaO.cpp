@@ -25,11 +25,12 @@ class Menu: public Node {
 
 Menu::Menu(Vec loc) {
   Vec lightgray(70, 70, 70);
+  Vec red(100,0,0);
 
   // Top Bar
   menuBar.width    = WINDOWS_WIDTH;
   menuBar.height   = WINDOWS_HEIGHT/10;
-  menuBar.color    = lightgray;
+  menuBar.color    = red;
 
   menuBar.location = Vec(0, 0, 0);
   menuBar.name = "Top Menu";

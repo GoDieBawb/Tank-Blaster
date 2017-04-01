@@ -38,6 +38,9 @@ int main(int argc, char* argv[]) {
 	game.rootNode.attachChild(leftTower);
 	game.rootNode.attachChild(rightTower);
 
+	Menu menuBar( Vec(0,550,0));
+	game.rootNode.attachChild(menuBar);
+
 
 	time_t t = clock();
 
