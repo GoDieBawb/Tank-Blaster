@@ -14,26 +14,28 @@
 // SECTION::Top Bar / FIXME -- incorrect object instantiation
 // -----------------------------------------------------------------------------
 
-class HUD: public Node {
+class Menu: public Node {
+  private:
+    char dir;
   public:
-    Shape topBar;
-    HUD();
-    HUD(Vec loc);
+    Shape menuBar;
+    Menu();
+    Menu(Vec loc);
 };
 
-HUD::HUD(Vec loc) {
+Menu::Menu(Vec loc) {
   Vec lightgray(70, 70, 70);
 
   // Top Bar
-  topBar.width    = WINDOWS_WIDTH;
-  topBar.height   = WINDOWS_HEIGHT/10;
-  topBar.color    = lightgray;
+  menuBar.width    = WINDOWS_WIDTH;
+  menuBar.height   = WINDOWS_HEIGHT/10;
+  menuBar.color    = lightgray;
 
-  topBar.location = Vec(WINDOWS_WIDTH/2, WINDOWS_HEIGHT-topBar.height, 0);
-  topBar.name = "Top HUD";
+  menuBar.location = Vec(0, 0, 0);
+  menuBar.name = "Top Menu";
 
   // Attach other elements after Top Bar
-  attachChild(topBar);
+  attachChild(menuBar);
   angle = 0;
   location = loc;
 }
