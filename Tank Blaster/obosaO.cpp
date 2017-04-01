@@ -10,31 +10,45 @@
 #define WINDOWS_HEIGHT 800
 #define WINDOWS_WIDTH 600
 
-struct HUD: public Shape {
-  Shape height, width;
-  Vec color, location;
-};
-
-struct BoxBehavior : public Behavior {
-  void behave (Node &model);
-  BoxBehavior();
-};
-
 // =============================================================================
 // SECTION::Top Bar / FIXME -- incorrect object instantiation
 // -----------------------------------------------------------------------------
-/*HUD topBar;
-topBar.width    = WINDOWS_WIDTH;
-topBar.height   = WINDOWS_HEIGHT/10;
-topBar.color    = blue;
-topBar.location = Vec(WINDOWS_WIDTH/2, WINDOWS_HEIGHT-topBar.height, 0);
-attachChild(topBar);*/
+
+class HUD: public Node {
+  public:
+    Shape topBar;
+    HUD();
+    HUD(Vec loc);
+};
+
+HUD::HUD(Vec loc) {
+  Vec lightgray(70, 70, 70);
+
+  // Top Bar
+  topBar.width    = WINDOWS_WIDTH;
+  topBar.height   = WINDOWS_HEIGHT/10;
+  topBar.color    = lightgray;
+
+  topBar.location = Vec(WINDOWS_WIDTH/2, WINDOWS_HEIGHT-topBar.height, 0);
+  topBar.name = "Top HUD";
+
+  // Attach other elements after Top Bar
+  attachChild(topBar);
+  angle = 0;
+  location = loc;
+}
+
 
 // =============================================================================
 
 // =============================================================================
 // SECTION::Box Behavior
 // -----------------------------------------------------------------------------
+
+struct BoxBehavior : public Behavior {
+  void behave (Node &model);
+  BoxBehavior();
+};
 
 void BoxBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
@@ -70,3 +84,12 @@ void BoxBehavior::behave (Node &model) {
 }
 
 // =============================================================================
+
+
+
+
+
+
+
+
+
