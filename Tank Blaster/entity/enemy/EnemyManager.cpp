@@ -1,5 +1,5 @@
 #include "../unit/Tank/StreetAttackBehavior.cpp"
-
+#include "../../jamesK.cpp"
 struct Enemy {
 	Behavior* behavior;
 	Node*	  model;
