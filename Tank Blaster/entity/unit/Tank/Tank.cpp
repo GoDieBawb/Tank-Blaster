@@ -57,11 +57,11 @@ Tank::Tank(Vec loc) {
 	body.color     = green;
 
 	//set right wheel dimensions
-	rw.width       = 18;
+	rw.width       = 28;
 	rw.height      = 4;
 
 	//set left wheel dimensions	
-	lw.width       = 18;
+	lw.width       = 28;
 	lw.height      = 4;
 
 	//set wheel color

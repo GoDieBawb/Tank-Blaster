@@ -6,6 +6,7 @@ class Tower: public Node {
     private: 
 	char dir;
     public:
+	Shape c1,c2,c3,c4;
 	Shape body, roof, gun, gunbase;
 	Tower();
 	Tower(Vec loc);
@@ -33,20 +34,48 @@ Tower::Tower(Vec loc) {
     gunbase.color = black;
     gunbase.width = 8;
     gunbase.height = 8;
+
+	c1.color  = lightgray;
+	c1.width  = 6;
+	c1.height = 6;
     
-    body.location = Vec(0,0,0);
-    roof.location = Vec(0,0,0);
+	c2.color  = lightgray;
+	c2.width  = 6;
+	c2.height = 6;
+    
+	c3.color  = lightgray;
+	c3.width  = 6;
+	c3.height = 6;
+
+	c4.color  = lightgray;
+	c4.width  = 6;
+	c4.height = 6;
+
+	body.location = Vec(0,0,0);
+	c1.location = Vec(14,18,0);    
+	c2.location = Vec(14,-18,0);    
+	c3.location = Vec(-14,18,0);    
+	c4.location = Vec(-14,-18,0);    
+	roof.location = Vec(0,0,0);
     gun.location = Vec(10,0,0);
     gunbase.location = Vec(0,0,0);
 
 
     body.name = "Body";
+	c1.name = "Corner 1";
+	c2.name = "Corner 2";
+	c3.name = "Corner 3";
+	c4.name = "Corner 4";
     roof.name = "Roof";
     gun.name = "Gun";
     gunbase.name = "Gun Base";
     name = "Tower";
 
     attachChild(body);
+	attachChild(c1);
+	attachChild(c2);
+	attachChild(c3);
+	attachChild(c4);
     attachChild(roof);
     attachChild(gun);
     attachChild(gunbase);
