@@ -1,5 +1,5 @@
 #include "../unit/Tank/StreetAttackBehavior.cpp"
-
+#include "../../jamesK.cpp"
 struct Enemy {
 	Behavior* behavior;
 	Node*	  model;
@@ -28,6 +28,8 @@ class EnemyManager {
 		EnemyManager();
 		Enemy* enemies[12];	
 		bool lanes[10];
+		int minlane;
+		int maxlane;
 };
 
 //Constructor initializes data memebrs
@@ -42,12 +44,14 @@ void EnemyManager::move() {
 
 	for (int j = 0; j < 10; j++) {
 		//Create an enemy if not enough
-		if (enemyCount < 10) {
+		if (enemyCount < 6) {
 
 			if (lanes[j] == false) {
 				//Randomize location
-				int x = 800 - ((j * 60) + 110);
+				int x = 800 - ((j * 100) + 145);
 				//int y = 0 + (rand() % (int) (500 - 0 + 1));
+				//int minlane = 800 - ((j * 100) + 95);
+				//int maxlane = 800 - ((j * 100) + 195);
 
 
 				//Local Variable put on heap

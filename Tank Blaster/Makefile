@@ -4,7 +4,7 @@
 all: TankBlaster
 
 TankBlaster: TankBlaster.cpp
-	g++ TankBlaster.cpp ./util/libggfonts.a -Wall -o TankBlaster -lX11 -lGL -lGLU -lm -g -include Dumb.h -include bijanM.cpp -include obosaO.cpp -include jamesK.cpp
+	g++ TankBlaster.cpp ./util/libggfonts.a -Wall -o TankBlaster -lX11 -lGL -lGLU -lm -g -include Dumb.h -include bijanM.cpp -include obosaO.cpp
 
 
 clean:
