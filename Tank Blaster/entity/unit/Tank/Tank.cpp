@@ -113,7 +113,7 @@ Tank::Tank(Vec loc) {
 	attachChild(gun);
 
 	//Tank starts facing upward
-	angle		   =   0;
+	angle		   =   90;
 	dir	           = 'r';
 	location 	   = loc;
 

@@ -34,7 +34,7 @@ Car::Car(Vec loc) {
 	front.color = red;
 
 	back.height = 9;
-	back.width = 1;
+	back.width = 4;
 	back.color = red;
 
 	w1.height=6;
@@ -60,8 +60,8 @@ Car::Car(Vec loc) {
 	body.location   = Vec(0,0,0);
 	front.location	= Vec(10,0,0);
 	back.location   = Vec(-10,0,0);
-	w1.location		= Vec(8,6,0);
-	w2.location		= Vec(8,-6,0);
+	w1.location		= Vec(9,6,0);
+	w2.location		= Vec(9,-6,0);
 	w3.location		= Vec(-9,6,0);
 	w4.location		= Vec(-9,-6,0);
 	window.location = Vec(7,0,0);

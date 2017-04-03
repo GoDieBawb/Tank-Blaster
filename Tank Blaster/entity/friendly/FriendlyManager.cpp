@@ -125,9 +125,11 @@ void FriendlyManager::carCreateCheck() {
 			case (2): color = yellow; break;
 			case (3): color = green; break;
 			case (4): color = blue; break;
+			default:  color = pink;
 		}
 		c->body.color  = color;
 		c->front.color = color;
+		c->back.color = color;
 
 		//Add to list and render node
 		cars[carCount] = f;

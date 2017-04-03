@@ -136,12 +136,10 @@ void GlUtils::init_opengl(void) {
 
 void GlUtils::drawBox(Shape box) {
 
-	//std::cout << box.location.x << " , " << box.location.y << std::endl;
-	//std::cout << box.width << " , " << box.height << std::endl;
-	std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
-	std::cout << " h: " << box.width << " w: " << box.height << " Angle: " << box.angle << std::endl;
+	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
+	//std::cout << " h: " << box.width << " w: " << box.height << " Angle: " << box.angle << std::endl;
 
-	if (isnan(box.angle)) {box.angle = 0;}
+	if (isnan(box.angle)) {box.angle = box.parent->angle;}
 
 	glColor3ub(box.color.x,box.color.y,box.color.z);
 
@@ -211,10 +209,7 @@ void GlUtils::drawBullets() {
 
 void GlUtils::renderNode(Node *node) {
 
-	//std::string a;
-	//int childCount = node->nodeCount + node->shapeCount;
-	//std::cout << "Attempting Render On Node: " << node->name << " Node Count: " << node->nodeCount << " Shape Count: " << node->shapeCount << std::endl;
-	//std::cout << "\n";
+	//std::cout << "Attempting Render On Node: " << node->name << " Node Count: " << node->nodeCount << " Node Angle: "<< node->angle << " Shape Count: " << node->shapeCount << std::endl;
 	
 	//Render Shapes in Node
 	for (int i =0; i < node->shapeCount; i++) {
@@ -227,7 +222,7 @@ void GlUtils::renderNode(Node *node) {
 		s = *ps;
 		s.name = ps->name;
 
-		//std::cout << "Shape: " << s.name << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
+		//std::cout << "Shape: " << s.name << " Angle Before: " << s.angle << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
 
 		//Magnitude from center of parent
 		float x	      = pow(s.location.x, 2);

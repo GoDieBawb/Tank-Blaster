@@ -19,6 +19,7 @@ Vec red    = Vec(255,0,0);
 Vec green  = Vec(0,255,0);
 Vec blue   = Vec(0,0,255);
 Vec yellow = Vec(255,255,0);
+Vec pink   = Vec(255,182,193);
 
 struct Bullet {
 	Shape body;

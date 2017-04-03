@@ -6,16 +6,22 @@ struct Vec {
 };
 
 //Abstract Spatial can be either Node or Spatial
+class Node;
 class Spatial {
 
 	public:
+		Spatial();
 		Vec location;
 		float angle;
 		std::string name;
-		//Node parent;
+		Node *parent;
 		Node getParent();
 
 };
+
+Spatial::Spatial() {
+	angle = 0;
+}
 
 //Shape is a type of spatial that has an actual Geometry being drawn
 class Shape: public Spatial {
@@ -28,9 +34,6 @@ class Shape: public Spatial {
 
 };
 
-Shape::Shape() {
-	name = "Shape";
-}
 
 //A Node is a Spatial that holds other Spatials
 class Node: public Spatial {
@@ -49,6 +52,10 @@ class Node: public Spatial {
 
 };
 
+Shape::Shape() {
+	name = "Shape";
+}
+
 //Construct Node
 Node::Node() {
 	name 	   = "Node";
@@ -60,14 +67,14 @@ Node::Node() {
 void Node::attachChild(Shape &s) {
 	shapeArr[shapeCount] = &s;
 	shapeCount++;
-	parent = this;
+	s.parent = this;
 }
 
 //Attach Node to Node
 void Node::attachChild(Node &n) {
 	nodeArr[nodeCount] = &n;
 	nodeCount++;
-	parent = this;
+	n.parent = this;
 }
 
 //Remove Shape Child from Node
