@@ -138,14 +138,16 @@ void GlUtils::drawBox(Shape box) {
 
 	//std::cout << box.location.x << " , " << box.location.y << std::endl;
 	//std::cout << box.width << " , " << box.height << std::endl;
-	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
-	//std::cout << " h: " << box.width << " w: " << box.height << std::endl;
+	std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
+	std::cout << " h: " << box.width << " w: " << box.height << " Angle: " << box.angle << std::endl;
+
+	if (isnan(box.angle)) {box.angle = 0;}
 
 	glColor3ub(box.color.x,box.color.y,box.color.z);
 
 	glPushMatrix();
 	
-	glTranslatef(box.location.x, box.location.y, box.location.z);
+	glTranslatef(box.location.x, box.location.y, 0);
 	glRotatef(box.angle, 0, 0, 1);
 
 	float w = box.width/2;

@@ -121,7 +121,7 @@ Tank::Tank(Vec loc) {
 
 }
 
-//This is not used at the moment
+
 Bullet Tank::shoot() {
 
 	//std::cout << "Shoot\n";

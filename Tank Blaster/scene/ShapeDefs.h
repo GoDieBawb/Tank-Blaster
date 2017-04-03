@@ -12,6 +12,8 @@ class Spatial {
 		Vec location;
 		float angle;
 		std::string name;
+		//Node parent;
+		Node getParent();
 
 };
 
@@ -58,12 +60,14 @@ Node::Node() {
 void Node::attachChild(Shape &s) {
 	shapeArr[shapeCount] = &s;
 	shapeCount++;
+	parent = this;
 }
 
 //Attach Node to Node
 void Node::attachChild(Node &n) {
 	nodeArr[nodeCount] = &n;
 	nodeCount++;
+	parent = this;
 }
 
 //Remove Shape Child from Node
