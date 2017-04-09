@@ -21,7 +21,7 @@ void StreetAttackBehavior::behave(Node &model) {
 
 		tank.moveUp();
 
-		if (tank.location.y > WINDOW_HEIGHT*.75) {
+		if (tank.location.y > WINDOW_HEIGHT*.65) {
 			inPos=true;		
 		}
 
@@ -30,7 +30,6 @@ void StreetAttackBehavior::behave(Node &model) {
 	}	
 
 	if (time(0) - lastShot > 5) {
-		//printf("shoot\n");
 		//Set last act to now
 		lastShot = time(0);
 		bullets[bulletCount]=tank.shoot();

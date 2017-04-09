@@ -39,6 +39,8 @@ int main(int argc, char* argv[]) {
 	game.rootNode.attachChild(rightTower);
 
 
+	Hud hud(game.rootNode);
+
 	time_t t = clock();
 
 	while (!checkEscape()) {
@@ -50,7 +52,8 @@ int main(int argc, char* argv[]) {
 		//Update Entity Manager
 		game.entm.update();
 		//Render Game
-		gu.render(game);
+		gu.render(game, hud);
+		//Stuff
 		left.behave(leftTower);
 		right.behave(rightTower);
 		//Check for escape condition

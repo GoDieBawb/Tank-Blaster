@@ -63,7 +63,7 @@ class GlUtils {
 		void    cleanupXWindows(void);
 		void    render(Game *game);
 		void    set_title(void);
-		void 	render(Game &game);
+		void 	render(Game &game, Hud &hud);
 		Display *dpy;
 
 };
@@ -286,11 +286,25 @@ void GlUtils::renderNode(Node *node) {
 
 }
 
-void GlUtils::render(Game &game) {
+void GlUtils::render(Game &game, Hud &hud) {
 
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	/*
+	Rect rect;
+	rect.centerx = 100;
+	rect.centery = 100;
+	rect.width	 = 100;
+	rect.height  = 40;
+	rect.bot	 = 100-20;
+	rect.top 	 = 100+20;
+	rect.left    = 100-50;
+	rect.right   = 100+50;
+	ggprint8b(&rect, 32, 0x00dddd00, "Requirements");
+	*/
 	renderNode(&game.rootNode);
 	drawBullets();
+	hud.update();
 	glXSwapBuffers(dpy, win);
 
 }

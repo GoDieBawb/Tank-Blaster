@@ -34,7 +34,7 @@ void FriendlyManager::initRoad() {
 	asphault->height = WINDOW_HEIGHT*.15;
 	asphault->width  = WINDOW_WIDTH;
 
-	streetNode.location.y = WINDOW_HEIGHT - asphault->height/2;
+	streetNode.location.y = WINDOW_HEIGHT - asphault->height/2 - WINDOW_HEIGHT/10;
 	streetNode.location.x = WINDOW_WIDTH  - asphault->width/2;
 
 	streetNode.attachChild(*asphault);
@@ -105,12 +105,12 @@ void FriendlyManager::carCreateCheck() {
 		//Randomize location
 		if (left) {
 			x = WINDOW_WIDTH;
-			y = WINDOW_HEIGHT*.97;
+			y = WINDOW_HEIGHT*.87;
 		}
 		
 		else {
 			x = 0;
-			y = WINDOW_HEIGHT*.88;
+			y = WINDOW_HEIGHT*.78;
 		}
 
 		//Local Variable put on heap

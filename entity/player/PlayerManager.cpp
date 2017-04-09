@@ -17,7 +17,7 @@ Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
 }
 
 void Player::initTank() {
-	tank.moveSpeed = 1.15/osDiv;
+	tank.moveSpeed = .05;
 }
 
 //Manages Player Actions and Behavior

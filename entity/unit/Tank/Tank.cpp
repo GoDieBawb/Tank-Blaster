@@ -117,7 +117,7 @@ Tank::Tank(Vec loc) {
 	dir	           = 'r';
 	location 	   = loc;
 
-	moveSpeed = 1.15/osDiv;
+	moveSpeed = .005;
 
 }
 
@@ -192,7 +192,7 @@ Bullet Tank::shoot() {
 
 void Tank::moveUp() {
 	//Add to y if moving up
-	location.y   += moveSpeed*tpf;
+	location.y   += moveSpeed;
 	//Set angle and direction
 	dir 		  = 'u';
 	angle		  =  90;
@@ -200,7 +200,7 @@ void Tank::moveUp() {
 
 void Tank::moveDown() {
 	//Subtract y if moving up
-	location.y   -= moveSpeed*tpf;
+	location.y   -= moveSpeed;
 	//Set angle and direction
 	dir 		  = 'd';
 	angle		  =  270;
@@ -208,7 +208,7 @@ void Tank::moveDown() {
 
 void Tank::moveLeft() {
 	//Subtract x if moving left
-	location.x     -= moveSpeed*tpf;
+	location.x     -= moveSpeed;
 	//Set angle and direction
 	dir 		    = 'l';
 	angle		    =  180;
@@ -216,7 +216,7 @@ void Tank::moveLeft() {
 
 void Tank::moveRight() {
 	//Add x if moving right
-	location.x   += moveSpeed*tpf;
+	location.x   += moveSpeed;
 	//Set angle and direction
 	dir 		  = 'r';
 	angle		  =   0;
@@ -227,8 +227,8 @@ void Tank::moveUpRight() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   += moveSpeed/2*tpf;
-	location.x   += moveSpeed/2*tpf;
+	location.y   += moveSpeed/2;
+	location.x   += moveSpeed/2;
 	//Set angle and direction
 	dir 		  = 'p';
 	angle		  = 45;
@@ -238,8 +238,8 @@ void Tank::moveUpLeft() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   += moveSpeed/2*tpf;
-	location.x   -= moveSpeed/2*tpf;
+	location.y   += moveSpeed/2;
+	location.x   -= moveSpeed/2;
 	//Set angle and direction
 	dir 		  = 'q';
 	angle		  =  135;
@@ -249,8 +249,8 @@ void Tank::moveDownRight() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   -= moveSpeed/2*tpf;
-	location.x   += moveSpeed/2*tpf;
+	location.y   -= moveSpeed/2;
+	location.x   += moveSpeed/2;
 	//Set angle and direction
 	dir 		  = 'm';
 	angle		  =  315;
@@ -260,8 +260,8 @@ void Tank::moveDownLeft() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   -= moveSpeed/2*tpf;
-	location.x   -= moveSpeed/2*tpf;
+	location.y   -= moveSpeed/2;
+	location.x   -= moveSpeed/2;
 	//Set angle and direction
 	dir 		  =  'z';
 	angle		  =  225;
