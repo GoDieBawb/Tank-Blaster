@@ -1,5 +1,5 @@
 #include "player/PlayerManager.cpp"
-#include "enemy/EnemyManager.cpp"
+#include "../jamesK.cpp"
 #include "friendly/FriendlyManager.cpp"
 
 class EntityManager {
