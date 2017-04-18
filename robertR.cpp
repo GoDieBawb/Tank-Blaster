@@ -1,3 +1,177 @@
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+//Basic 3f Vector
+struct Vec {
+	float x, y, z;
+	Vec() {x=0;y=0;z=0;}
+	Vec(float x, float y, float z) {this->x = x; this->y = y; this->z=z;};
+};
+
+//Abstract Spatial can be either Node or Spatial
+class Node;
+class Spatial {
+
+	public:
+		Spatial();
+		Vec location;
+		float angle;
+		std::string name;
+		Node *parent;
+		Node getParent();
+
+};
+
+Spatial::Spatial() {
+	angle = 0;
+}
+
+//Shape is a type of spatial that has an actual Geometry being drawn
+class Shape: public Spatial {
+
+	public:
+		float width, height;
+		float radius;
+		Vec color;
+		Shape();
+
+};
+
+
+//A Node is a Spatial that holds other Spatials
+class Node: public Spatial {
+
+	public:
+		Node();
+		Node  *nodeArr[15];
+		Shape *shapeArr[15];
+		int  shapeCount;
+		int  nodeCount;
+		void attachChild(Shape &s);
+		void attachChild(Node  &n);
+		void detachChild(Node &n);
+		void detachChild(Shape &s);  
+		void printTree();
+
+};
+
+Shape::Shape() {
+	name = "Shape";
+}
+
+//Construct Node
+Node::Node() {
+	name 	   = "Node";
+	shapeCount = 0;
+	nodeCount  = 0;
+}
+
+//Attach Shape to Node
+void Node::attachChild(Shape &s) {
+	shapeArr[shapeCount] = &s;
+	shapeCount++;
+	s.parent = this;
+}
+
+//Attach Node to Node
+void Node::attachChild(Node &n) {
+	nodeArr[nodeCount] = &n;
+	nodeCount++;
+	n.parent = this;
+}
+
+//Remove Shape Child from Node
+void Node::detachChild(Shape &s) {
+
+	for (int i =0; i < shapeCount; i++) {
+
+		if (shapeArr[i] == &s) {
+			shapeArr[i] = shapeArr[shapeCount];
+			shapeCount--;
+			return;
+		}
+
+	}
+
+	std::cout << "CHILD NOT FOUND!\n";
+
+}
+ 
+//Remove Node Child From Node
+void Node::detachChild(Node &n) {
+
+	for (int i =0; i < nodeCount; i++) {
+
+		if (nodeArr[i] == &n) {
+			nodeArr[i] = nodeArr[nodeCount-1];
+			nodeCount--;	
+			return;
+		}
+
+	}
+
+	std::cout << "CHILD NOT FOUND!\n";
+
+}
+
+//Recusrive Function to Print Nodes Children
+void Node::printTree() {
+
+	std::cout << name << "\n";
+
+	for (int i = 0; i < shapeCount; i++) {
+		std::cout << shapeArr[i]->name << " ";
+	}
+
+	for (int i = 0; i < nodeCount; i++) {
+		nodeArr[i]->printTree();
+	}
+
+	std::cout << "\n";
+
+}
+
+//Particle
+struct Particle {
+	Shape s;
+	Vec velocity;
+};
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+//Abstract Structure with a single function
+struct Behavior {
+	virtual void behave(Node &model) = 0;
+	virtual ~Behavior(){};
+};
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+struct Bullet {
+	Shape body;
+	char  dir;
+	char  source;
+};
+Bullet bullets[500];
+int bulletCount = 0;
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+//Public Color Vector
+Vec red    = Vec(255,0,0);
+Vec green  = Vec(0,255,0);
+Vec blue   = Vec(0,0,255);
+Vec yellow = Vec(255,255,0);
+Vec pink   = Vec(255,182,193);
+Vec black  = Vec(0,0,0);
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
 //Class Definition. Car extends node
 class Car: public Node {
 
@@ -217,3 +391,496 @@ void CarBehavior::behave(Node &model) {
 		car.moveRight();
 				
 }
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+
+class InteractionManager {
+
+	public:
+		void update(Display *dpy);
+		void check_mouse(XEvent *e);
+		void check_keys(XEvent *e);
+		bool leftClick, rightClick, esc, up, down, left, right, space;
+		Vec  cursorLocation;
+
+};
+
+void InteractionManager::update(Display *dpy) {
+	while (XPending(dpy)) {
+		XEvent e;
+		XNextEvent(dpy, &e);
+		check_mouse(&e);
+		check_keys(&e);
+	}
+
+}
+
+void InteractionManager::check_mouse(XEvent *e) {
+
+	static int savex = 0;
+	static int savey = 0;
+	static int n     = 0;
+
+	if (e->type == ButtonRelease) {
+
+		if (e->xbutton.button==1) {
+
+			//Left button was pressed
+			int y = WINDOW_HEIGHT - e->xbutton.y;
+			int x = WINDOW_HEIGHT - e->xbutton.x;
+			cursorLocation.x = x;
+			cursorLocation.y = y;
+			leftClick = false;
+			return;
+
+		}
+
+		return;
+	}
+
+	if (e->type == ButtonPress) {
+
+		if (e->xbutton.button==1) {
+
+			//Left button was pressed
+			int y = WINDOW_HEIGHT - e->xbutton.y;
+			int x = WINDOW_HEIGHT - e->xbutton.x;
+			cursorLocation.x = x;
+			cursorLocation.y = y;
+			leftClick = true;
+			return;
+
+		}
+
+		if (e->xbutton.button==3) {
+			//Right button was pressed
+			return;
+		}
+
+	}
+
+	//Did the mouse move?
+	if (savex != e->xbutton.x || savey != e->xbutton.y) {
+
+		savex = e->xbutton.x;
+		savey = e->xbutton.y;
+
+		cursorLocation.x = savex;
+		cursorLocation.y = savey;
+
+		if (++n < 10)
+			return;
+
+	}
+
+}
+
+void InteractionManager::check_keys(XEvent *e) {
+
+	if (e->type == KeyRelease) {
+
+		int key = XLookupKeysym(&e->xkey, 0);
+
+		if (key == XK_Escape) {
+			esc = false;
+		}
+
+		if (key == 65362) {
+			up = false;
+		}
+
+		if (key == 65364) {
+			down = false;
+		}
+
+		if (key == 65361) {
+			left = false;
+		}		
+
+		if (key == 65363) {
+			right = false;
+		}	
+
+		if (key == 32) {
+			space = false;
+		}
+
+	}
+
+	//Was there input from the keyboard?
+	if (e->type == KeyPress) {
+
+		int key = XLookupKeysym(&e->xkey, 0);
+
+		if (key == XK_Escape) {
+			esc = true;
+		}
+
+		if (key == 65362) {
+			up = true;
+		}
+
+		if (key == 65364) {
+			down = true;
+		}
+
+		if (key == 65361) {
+			left = true;
+		}		
+
+		if (key == 65363) {
+			right = true;
+		}	
+
+		if (key == 32) {
+			space = true;
+		}
+
+	}
+
+	return;
+
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+#include "entity/EntityManager.cpp"
+#include "gui/Hud.cpp"
+
+struct Game {
+
+	Node			   rootNode;
+	InteractionManager im;
+	EntityManager	   entm;
+	Hud hud;
+	Game();
+	void printDataTree();
+
+};
+
+//Game Constructor passes interactionmanager to entity manager
+Game::Game() : entm(im), hud(rootNode) {
+	//Name Root Node
+	rootNode.name = "Root Node";
+	//Attach Player and Enemy Nodes to Root Node
+	rootNode.attachChild(entm.fm.streetNode);	
+	rootNode.attachChild(entm.pm.playerNode);
+	rootNode.attachChild(entm.em.enemyNode);
+	rootNode.attachChild(entm.fm.carNode);
+}
+
+//Used to Print Games Data 
+void Game::printDataTree() {
+
+	std::cout << "\nGame Data:\n";
+
+	std::cout << rootNode.name 	  << std::endl;
+	std::cout << entm.pm.playerNode.name  << std::endl;
+	std::cout << entm.pm.player.tank.name << std::endl;
+	std::cout << entm.pm.player.tank.body.name << std::endl;
+	std::cout << entm.pm.player.tank.gun.name << std::endl;
+	std::cout << entm.pm.player.tank.hatch.name << std::endl;
+
+	std::cout << "\n";
+
+}
+
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+#include <GL/glx.h>
+
+
+//Cos by Degree
+float cosByAngle(int angle) {
+
+	float rad = angle*0.0174533;
+	return cos(rad);
+
+}
+
+//Sin by Degree
+float sinByAngle(int angle) {
+
+	float rad = angle*0.0174533;
+	return sin(rad);
+
+}
+
+float pointToDeg(float x, float y) {
+
+	float rad = atan2(y, x);
+	return rad * (180 / M_PI);
+
+}
+
+void angleTest() {
+
+	float a = cosByAngle(90);
+	float b = sinByAngle(90);
+
+	std::cout << "Cos 90: " << a << " Sin 90: " << b << std:: endl;
+
+	float w = pointToDeg(0,50);
+	float x = pointToDeg(0,-25);
+	float y = pointToDeg(-1,0);
+	float z = pointToDeg(11,0);
+
+	std::cout << " 0: " << w << " 180: " << x << " -90: " << y << " 90: " << z << std::endl;
+
+}
+
+class GlUtils {
+
+	private:
+		Window win;
+		GLXContext glc;
+		void set_title(void);
+		void renderNode(Node *node);
+		void drawBullets();
+		void drawBox(Shape box);
+		void drawBox(Shape *box);
+	
+	public:
+		void    initXWindows(void);
+		void    init_opengl(void);
+		void    cleanupXWindows(void);
+		void    render(Game *game);
+		void 	render(Game &game);
+		Display *dpy;
+
+};
+
+void GlUtils::set_title(void) {
+
+	//Set the window title bar.
+	XMapWindow(dpy, win);
+	XStoreName(dpy, win, "Tank Blaster");
+
+}
+
+void GlUtils::cleanupXWindows(void) {
+
+	cleanup_fonts();
+
+	//do not change
+	XDestroyWindow(dpy, win);
+	XCloseDisplay(dpy);
+
+}
+
+void GlUtils::initXWindows(void) {
+
+
+	//do not change
+	GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+	int w=WINDOW_WIDTH, h=WINDOW_HEIGHT;
+	dpy = XOpenDisplay(NULL);
+	if (dpy == NULL) {
+		std::cout << "\n\tcannot connect to X server\n" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	Window root = DefaultRootWindow(dpy);
+	XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
+	if (vi == NULL) {
+		std::cout << "\n\tno appropriate visual found\n" << std::endl;
+		exit(EXIT_FAILURE);
+	} 
+	Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
+	XSetWindowAttributes swa;
+	swa.colormap = cmap;
+	swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
+		ButtonPress | ButtonReleaseMask | PointerMotionMask |
+		StructureNotifyMask | SubstructureNotifyMask;
+	win = XCreateWindow(dpy, root, 0, 0, w, h, 0, vi->depth,
+		InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+	set_title();
+	glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
+	glXMakeCurrent(dpy, win, glc);
+}
+
+void GlUtils::init_opengl(void) {
+
+	//OpenGL initialization
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	//Initialize matrices
+	glMatrixMode(GL_PROJECTION); glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+	//Set 2D mode (no perspective)
+	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
+	//Set the screen background color
+	//glClearColor(0.1, 0.1, 0.1, 1.0);
+	glClearColor(.1, 1, .17, 1);
+	//Allow Fonts
+	glEnable(GL_TEXTURE_2D);
+	initialize_fonts();
+
+}
+
+void GlUtils::drawBox(Shape box) {
+
+	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
+	//std::cout << " h: " << box.width << " w: " << box.height << " Angle: " << box.angle << std::endl;
+
+	if (isnan(box.angle)) {box.angle = box.parent->angle;}
+
+	glColor3ub(box.color.x,box.color.y,box.color.z);
+
+	glPushMatrix();
+	
+	glTranslatef(box.location.x, box.location.y, 0);
+	glRotatef(box.angle, 0, 0, 1);
+
+	float w = box.width/2;
+	float h = box.height/2;
+
+	glBegin(GL_QUADS);
+		glVertex2i(-w,-h);
+		glVertex2i(-w, h);
+		glVertex2i( w, h);
+		glVertex2i( w,-h);
+	glEnd();
+	
+	glPopMatrix();
+
+}
+
+void GlUtils::drawBox(Shape *box) {
+
+	//printf("Drawing Shape: \n");
+	//std::cout << box->location.x << " , " << box->location.y << std::endl;
+	//std::cout << box->width << " , " << box->height << std::endl;
+	//std::cout << "Drawing Shape: " << box->name << " at: " << box->location.x << "," << box->location.y << "," << box->location.z << ",";
+	//std::cout << " h: " << box->width << " w: " << box->height << std::endl;
+
+	glColor3ub(box->color.x,box->color.y,box->color.z);
+
+	glPushMatrix();
+	
+	glTranslatef(box->location.x, box->location.y, box->location.z);
+	glRotatef(box->angle, 0, 0, 1);
+
+	float w = box->width/2;
+	float h = box->height/2;
+
+	glBegin(GL_QUADS);
+		glVertex2i(-w,-h);
+		glVertex2i(-w, h);
+		glVertex2i( w, h);
+		glVertex2i( w,-h);
+	glEnd();
+	
+	glPopMatrix();
+
+}
+
+
+
+void GlUtils::drawBullets() {
+
+	for (int i = 0; i < bulletCount; i++) {
+
+		Bullet b = bullets[i];
+		drawBox(b.body);
+
+	}
+
+}
+
+
+//Recursively Renders a Node and All Children
+
+void GlUtils::renderNode(Node *node) {
+
+	//std::cout << "Attempting Render On Node: " << node->name << " Node Count: " << node->nodeCount << " Node Angle: "<< node->angle << " Shape Count: " << node->shapeCount << std::endl;
+	
+	//Render Shapes in Node
+	for (int i =0; i < node->shapeCount; i++) {
+
+		//Array is list of pointers
+		Shape *ps = node->shapeArr[i];
+		
+		//Dereference as to not edit the actual location of the shape
+		Shape s;
+		s = *ps;
+		s.name = ps->name;
+
+		//std::cout << "Shape: " << s.name << " Angle Before: " << s.angle << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
+
+		//Magnitude from center of parent
+		float x	      = pow(s.location.x, 2);
+		float y 	  = pow(s.location.y, 2);
+
+		float mag    = x-y;
+
+		//No Negative Square Roots
+		if (mag<0) 
+			mag *=-1;
+
+		mag = sqrt(mag);
+
+		//Apply Angle of Parent Node to Shape;
+		s.angle      += node->angle;
+
+		//Sets the location of the shape based on its
+		//local translation multiplied by the cosine
+		//and sine of the angle
+
+		//Reference Angle for offset objects
+		float angle = pointToDeg(s.location.x, s.location.y);
+
+		//Uses Magnitude times multiplied by sine and cosine of the angles will give the proper offset distance
+		s.location.x  = mag * cosByAngle(s.angle+angle);	
+		s.location.y  = mag * sinByAngle(s.angle+angle);
+
+		//std::cout << "Shape: " << s.name << " x after: " << s.location.x << " y after: " << s.location.y << std::endl;
+		//std::this_thread::sleep_for (std::chrono::seconds(1));
+
+		//Sets the Location of the Node relative 
+		//To its parent 
+		s.location.x += node->location.x;	
+		s.location.y += node->location.y;
+		s.location.z += node->location.z;
+
+		//Draw the translated and rotated shape
+		drawBox(s);
+
+	}
+
+	//Render nodes recursively
+	for (int i = 0; i < node->nodeCount; i++) {
+
+		//Dereferenced copy of Node
+		Node n = *node->nodeArr[i];
+
+		//Apply Location and Angle of Parent
+		//to local translation
+		n.location.x += node->location.x;	
+		n.location.y += node->location.y;
+		n.location.z += node->location.z;
+		n.angle      += node->angle;
+
+		//Recursive Call
+		renderNode(&n);
+
+	}
+
+
+}
+
+void GlUtils::render(Game &game) {
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	renderNode(&game.rootNode);
+	drawBullets();
+	game.hud.update();
+	glXSwapBuffers(dpy, win);
+
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+

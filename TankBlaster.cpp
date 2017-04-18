@@ -6,7 +6,6 @@
 Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
 GlUtils		gu; 			//Gl Utility Holds Gl Functions
-void makeStreet();
 
 //Main Function
 int main(int argc, char* argv[]) {
@@ -38,9 +37,6 @@ int main(int argc, char* argv[]) {
 	game.rootNode.attachChild(leftTower);
 	game.rootNode.attachChild(rightTower);
 
-
-	Hud hud(game.rootNode);
-
 	time_t t = clock();
 
 	while (!checkEscape()) {
@@ -52,7 +48,7 @@ int main(int argc, char* argv[]) {
 		//Update Entity Manager
 		game.entm.update();
 		//Render Game
-		gu.render(game, hud);
+		gu.render(game);
 		//Stuff
 		left.behave(leftTower);
 		right.behave(rightTower);
@@ -73,14 +69,9 @@ int main(int argc, char* argv[]) {
 
 }
 
-void makeStreet() {
-
-
-}
-
 bool checkEscape() {
 
-	//If Interaction Manager has Excaped Pressed
+	//If Interaction Manager has Escape Pressed
 	//Return true
 	if (game.im.esc) {
 		return true;		

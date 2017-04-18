@@ -1,6 +1,4 @@
 #include <GL/glx.h>
-//#include <chrono> 
-#//include <thread>
 
 extern "C" {
 	#include "fonts.h"
@@ -52,6 +50,7 @@ class GlUtils {
 	private:
 		Window win;
 		GLXContext glc;
+		void set_title(void);
 		void renderNode(Node *node);
 		void drawBullets();
 		void drawBox(Shape box);
@@ -62,8 +61,7 @@ class GlUtils {
 		void    init_opengl(void);
 		void    cleanupXWindows(void);
 		void    render(Game *game);
-		void    set_title(void);
-		void 	render(Game &game, Hud &hud);
+		void 	render(Game &game);
 		Display *dpy;
 
 };
@@ -229,7 +227,6 @@ void GlUtils::renderNode(Node *node) {
 		float y 	  = pow(s.location.y, 2);
 
 		float mag    = x-y;
-		
 
 		//No Negative Square Roots
 		if (mag<0) 
@@ -286,25 +283,12 @@ void GlUtils::renderNode(Node *node) {
 
 }
 
-void GlUtils::render(Game &game, Hud &hud) {
+void GlUtils::render(Game &game) {
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	/*
-	Rect rect;
-	rect.centerx = 100;
-	rect.centery = 100;
-	rect.width	 = 100;
-	rect.height  = 40;
-	rect.bot	 = 100-20;
-	rect.top 	 = 100+20;
-	rect.left    = 100-50;
-	rect.right   = 100+50;
-	ggprint8b(&rect, 32, 0x00dddd00, "Requirements");
-	*/
 	renderNode(&game.rootNode);
 	drawBullets();
-	hud.update();
+	game.hud.update();
 	glXSwapBuffers(dpy, win);
 
 }
