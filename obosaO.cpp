@@ -9,6 +9,115 @@
 #define WINDOWS_HEIGHT 800
 #define WINDOWS_WIDTH 600
 
+//Constructor initializes data members
+PlayerManager::PlayerManager(InteractionManager &i) {
+
+	//Name Player Node
+	playerNode.name = "Player Node";
+	//Attach player tank to player node
+	playerNode.attachChild(player.tank);
+	//Set interaction manager
+	im = &i;
+
+}
+
+//Uses InteractionManager to listen for key presses
+void PlayerManager::actOnKeys() {
+
+	Tank* tank = &player.tank;
+
+	if (im->up && im->left) {
+		tank->moveUpLeft();
+	}
+
+	else if (im->up && im->right) {
+		tank->moveUpRight();
+	}
+
+	else if (im->up) {
+		tank->moveUp();
+	}
+
+	else if (im->down && im->left) {
+		tank->moveDownLeft();
+	}
+
+	else if (im->down && im->right) {
+		tank->moveDownRight();
+	}
+
+	else if (im->down) {
+		tank->moveDown();
+	}
+
+	else if (im->left) {
+		tank->moveLeft();
+	}
+
+	else if (im->right) {
+		tank->moveRight();
+	}
+
+	if (im->space) {
+		bullets[bulletCount] = tank->shoot();
+		bulletCount++;
+		im->space = false;
+	}
+
+}
+
+//Called on Update Loop
+void PlayerManager::update() {
+	actOnKeys();
+}
+
+Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0)) {
+
+	lifeDisplay.location.x = -WINDOW_WIDTH/2 + lifeDisplay.body.width;
+
+	bar.width  = WINDOW_WIDTH;
+	bar.height = WINDOW_HEIGHT/10;
+	bar.color  = red;
+	bar.angle  = 0;
+
+	hudNode.location.y  = WINDOW_HEIGHT - WINDOW_HEIGHT/20;
+	hudNode.location.x  = WINDOW_WIDTH/2;
+	hudNode.attachChild(bar);
+	hudNode.attachChild(lifeDisplay);
+
+	textShape.width        = WINDOW_WIDTH/5;
+	textShape.height       = WINDOW_HEIGHT/10; 
+	textShape.location.x   = WINDOW_WIDTH/5;
+	textShape.location.y   = WINDOW_HEIGHT;
+
+	rootNode.attachChild(hudNode);
+
+}
+
+void Hud::writeTestText() {
+	Rect r = boxToRect(textShape);
+	ggprint8b(&r, 32, 0x00dddd00, "Test Text Here");
+}
+
+void Hud::update() {
+	writeTestText();
+}
+
+Rect boxToRect(Shape &s) {
+
+	Rect rect;
+	rect.centerx = s.location.x;
+	rect.centery = s.location.y;
+	rect.width	 = s.width;
+	rect.height  = s.height;
+	rect.bot	 = s.location.y - s.height/2;
+	rect.top 	 = s.location.y + s.height/2;
+	rect.left    = s.location.x - s.width/2;
+	rect.right   = s.location.x + s.width/2;
+	return rect;
+
+}
+
 struct BoxBehavior : public Behavior {
   void behave (Node &model);
   BoxBehavior();
