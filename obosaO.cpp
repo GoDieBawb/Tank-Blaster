@@ -96,7 +96,7 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0))
 	bar.angle  = 0;
 
 	hudNode.location.y  = WINDOW_HEIGHT - WINDOW_HEIGHT/20;
-	hudnode.location.x  = window_width/2;
+	hudNode.location.x  = WINDOW_WIDTH/2;
 	hudNode.attachChild(bar);
 	hudNode.attachChild(lifeDisplay);
 
