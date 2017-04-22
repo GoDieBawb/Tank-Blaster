@@ -32,6 +32,4 @@ class EnemyManager {
 		EnemyManager();
 		Enemy* enemies[12];	
 		bool lanes[6];
-		int minlane;
-		int maxlane;
 };
