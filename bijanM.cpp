@@ -2,13 +2,13 @@
 //Description: creating an enemy tower object
 //Course: cmps 3350 Software Engineering
 //Constructor initializes data memebrs
-FriendlyManager::FriendlyManager() {
+
+FriendlyManager::FriendlyManager() : leftTower(Vec(50,50,0)), rightTower(Vec(750,50,0)), left(0,50), right(130,180) {
 
 	carCount 	 = 0;
 	carNode.name = "Car Node";
 	lastCar		 = time(0);
 	initRoad();
-
 }
 
 void FriendlyManager::initRoad() {
@@ -129,19 +129,9 @@ void FriendlyManager::update() {
 
 	carCreateCheck();
 	move();
-
+	left.behave(leftTower);	
+	right.behave(rightTower);
 }
-
-
-class Tower: public Node {
-    private: 
-	char dir;
-    public:
-	Shape c1,c2,c3,c4;
-	Shape body, roof, gun, gunbase;
-	Tower();
-	Tower(Vec loc);
-};
 
 Tower::Tower(Vec loc) {
     
@@ -151,8 +141,7 @@ Tower::Tower(Vec loc) {
     Vec green(90,140,90);
 
     body.height = 40;
-    body.width = 40;
-    body.color = green;
+
     
     roof.height = 20;
     roof.width = 20;
@@ -216,19 +205,13 @@ Tower::Tower(Vec loc) {
     location = loc;
 }
 
-struct TowerBehavior : public Behavior {
-	TowerBehavior(int min, int max);
-	int minimum, maximum;
-	bool goingup, init;
-	void behave(Node &model);
-};
-
 TowerBehavior::TowerBehavior(int min, int max) {
 	goingup = false;
 	init = false;
 	maximum = max; 
 	minimum = min;
 }
+
 
 void TowerBehavior::behave(Node &model) {
 
