@@ -1,5 +1,5 @@
 /**
- * Source File: obosaO.cpp
+ * Name:        Obosa Osagie-Amayo
  * Description: Obosa Osagie-Amayo's code for Tank Blaster
  **/
 
@@ -84,6 +84,7 @@ void PlayerManager::update()
 	actOnKeys();
 }
 
+// HUD =========================================================================
 Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0))
 {
 
@@ -95,7 +96,7 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0))
 	bar.angle  = 0;
 
 	hudNode.location.y  = WINDOW_HEIGHT - WINDOW_HEIGHT/20;
-	hudNode.location.x  = WINDOW_WIDTH/2;
+	hudnode.location.x  = window_width/2;
 	hudNode.attachChild(bar);
 	hudNode.attachChild(lifeDisplay);
 
