@@ -192,7 +192,7 @@ void BoxBehavior::behave (Node &model)
 struct LeftRightBehavior: public Behavior
 {
   void behave (Node &model);
-  BoxBehavior();
+  //BoxBehavior();
 };
 
 void LeftRightBehavior::behave (Node &model)
@@ -213,7 +213,7 @@ void LeftRightBehavior::behave (Node &model)
       box = 2;
     }
 
-    if (tank.location.x == windows_width - 20)
+    if (tank.location.x == WINDOWS_WIDTH - 20)
     {
       tank.moveLeft();
     }

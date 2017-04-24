@@ -24,15 +24,14 @@ class FriendlyManager {
 		void		maketowers();
 		void		move();
 		void		initRoad();
-		TowerBehavior left, right;
 
 	public:
 		int  carCount;
 		void carCreateCheck();
 		void update();
 		Node carNode;
-		Tower leftTower;
-		Tower rightTower;
+		Tower leftTower, rightTower;
+		TowerBehavior left, right;
 		Node streetNode;
 		FriendlyManager();
 		CarFriend* cars[10];
