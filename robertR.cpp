@@ -1,6 +1,154 @@
 
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
+//Finally a straight forward OpenAL sample program.
+//Gordon Griesel
+//2016
+//This demo plays two simultaneous sounds.
+//One is looping, the other is not looping.
+//
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <AL/alut.h>
+#include <pthread.h>
+
+//Buffers hold the sound information.
+ALuint alBuffer[2];
+//Source refers to the sound.
+ALuint alSource[2];
+
+ALuint alBufferExplode, alBufferMusic, alBufferShoot;
+ALuint alSourceExplode, alSourceMusic, alSourceShoot;
+
+void initExplosion();
+void initMusic();
+
+void initSound() {
+
+	alutInit(0, NULL);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("ERROR: alutInit()\n");
+		return;
+	}
+	//Clear error state.
+	alGetError();
+	//
+	//Setup the listener.
+	//Forward and up vectors are used.
+	float vec[6] = {0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f};
+	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+	alListenerfv(AL_ORIENTATION, vec);
+	alListenerf(AL_GAIN, 1.0f);
+	//
+	//Buffer holds the sound information.
+	alBufferExplode = alutCreateBufferFromFile("./Explode.wav");
+
+	//Source refers to the sound.
+	//Generate a source, and store it in a buffer.
+	alGenSources(1, &alSourceExplode);
+	alSourcei(alSourceExplode, AL_BUFFER, alBufferExplode);
+	alSourcef(alSourceExplode, AL_GAIN, 1.0f);
+	alSourcef(alSourceExplode, AL_PITCH, 1.0f);
+	alSourcei(alSourceExplode, AL_LOOPING, AL_FALSE);
+
+	if (alGetError() != AL_NO_ERROR) {
+		printf("ERROR: setting source\n");
+		return;
+	}
+
+	alBufferMusic   = alutCreateBufferFromFile("./Home_Base_Groove.wav");
+	//Generate a source, and store it in a buffer.
+	alGenSources(1, &alSourceMusic);
+	alSourcei(alSourceMusic, AL_BUFFER, alBufferMusic);
+	alSourcef(alSourceMusic, AL_GAIN, 1.0f);
+	alSourcef(alSourceMusic, AL_PITCH, 1.0f);
+	alSourcei(alSourceMusic, AL_LOOPING, AL_TRUE);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("ERROR: setting source\n");
+		return;
+	}
+
+	alBufferShoot   = alutCreateBufferFromFile("./Shoot.wav");
+	//Generate a source, and store it in a buffer.
+	alGenSources(1, &alSourceShoot);
+	alSourcei(alSourceShoot, AL_BUFFER, alBufferShoot);
+	alSourcef(alSourceShoot, AL_GAIN, 1.0f);
+	alSourcef(alSourceShoot, AL_PITCH, 1.0f);
+	alSourcei(alSourceShoot, AL_LOOPING, AL_FALSE);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("ERROR: setting source\n");
+		return;
+	}
+
+}
+
+
+void cleanUpSound() {
+
+	//First delete the source.
+	alDeleteSources(1, &alSourceExplode);
+	alDeleteSources(1, &alSourceMusic);
+	alDeleteSources(1, &alSourceShoot);
+	//Delete the buffer.
+	alDeleteBuffers(1, &alBufferExplode);
+	alDeleteBuffers(1, &alBufferMusic);
+	alDeleteBuffers(1, &alBufferShoot);
+	//Close out OpenAL itself.
+	//Get active context.
+	ALCcontext *Context = alcGetCurrentContext();
+	//Get device for active context.
+	ALCdevice *Device = alcGetContextsDevice(Context);
+	//Disable context.
+	alcMakeContextCurrent(NULL);
+	//Release context(s).
+	alcDestroyContext(Context);
+	//Close device.
+	alcCloseDevice(Device);
+
+}
+
+void playSound(ALuint source){
+	alSourcePlay(source);
+}
+
+void* runSong(void*) {
+	playSound(alSourceExplode);
+	pthread_exit(NULL);
+}
+
+void* runExplode(void*) {
+	playSound(alSourceMusic);
+	pthread_exit(NULL);
+}
+
+pthread_t soundThread[2];
+
+void doMusic() {
+	alSourcePlay(alSourceMusic);
+	//alSourcePlay(alSource[1]);
+	//pthread_create(&soundThread[0], NULL, runSong, NULL);
+}
+
+void doShoot() {
+	//printf("EXPLODE\n");
+	playSound(alSourceShoot);
+	//alSourcePlay(alSource[0]);		
+	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
+}
+
+void doExplosion() {
+	//printf("EXPLODE\n");
+	playSound(alSourceExplode);
+	//alSourcePlay(alSource[0]);		
+	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
 
 //Basic 3f Vector
 struct Vec {
@@ -281,7 +429,7 @@ Car::Car(Vec loc) {
 
 void Car::moveUp() {
 	//Add to y if moving up
-	location.y   += .05;
+	location.y   += .5;
 	//Set angle and direction
 	dir 		  = 'u';
 	angle		  =  90;
@@ -289,7 +437,7 @@ void Car::moveUp() {
 
 void Car::moveDown() {
 	//Subtract y if moving up
-	location.y   -= .05;
+	location.y   -= .5;
 	//Set angle and direction
 	dir 		  = 'd';
 	angle		  =  270;
@@ -297,7 +445,7 @@ void Car::moveDown() {
 
 void Car::moveLeft() {
 	//Subtract x if moving left
-	location.x     -= .05;
+	location.x     -= .5;
 	//Set angle and direction
 	dir 		    = 'l';
 	angle		    =  180;
@@ -305,7 +453,7 @@ void Car::moveLeft() {
 
 void Car::moveRight() {
 	//Add x if moving right
-	location.x   += .05;
+	location.x   += .5;
 	//Set angle and direction
 	dir 		  = 'r';
 	angle		  =   0;
@@ -316,8 +464,8 @@ void Car::moveUpRight() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   += .05/2;
-	location.x   += .05/2;
+	location.y   += .5/2;
+	location.x   += .5/2;
 	//Set angle and direction
 	dir 		  = 'p';
 	angle		  = 45;
@@ -327,8 +475,8 @@ void Car::moveUpLeft() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   += .05/2;
-	location.x   -= .05/2;
+	location.y   += .5/2;
+	location.x   -= .5/2;
 	//Set angle and direction
 	dir 		  = 'q';
 	angle		  =  135;
@@ -338,8 +486,8 @@ void Car::moveDownRight() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   -= .05/2;
-	location.x   += .05/2;
+	location.y   -= .5/2;
+	location.x   += .5/2;
 	//Set angle and direction
 	dir 		  = 'm';
 	angle		  =  315;
@@ -349,8 +497,8 @@ void Car::moveDownLeft() {
 	//Divide by 2 because
 	//Both directions are
 	//Being added to
-	location.y   -= .05/2;
-	location.x   -= .05/2;
+	location.y   -= .5/2;
+	location.x   -= .5/2;
 	//Set angle and direction
 	dir 		  =  'z';
 	angle		  =  225;
@@ -575,37 +723,38 @@ void EntityManager::updateBullets() {
 	for (int i = 0; i < bulletCount; i++) {
 
 		Bullet* cur = &bullets[i];
-		char   dir = cur->dir;
+		float speed = 3;
+		char   dir  = cur->dir;
 
 		switch (dir) {
 			
 		case 'u':
-			cur->body.location.y += .25;
+			cur->body.location.y += speed;
 			break;
 		case 'd':
-			cur->body.location.y -= .25;
+			cur->body.location.y -= speed;
 			break;
 		case 'l':
-			cur->body.location.x -= .25;
+			cur->body.location.x -= speed;
 			break;
 		case 'r':
-			cur->body.location.x += .25;
+			cur->body.location.x += speed;
 			break;
 		case 'q':
-			cur->body.location.x -= .25/2;
-			cur->body.location.y += .25/2;
+			cur->body.location.x -= speed/2;
+			cur->body.location.y += speed/2;
 			break;
 		case 'p':
-			cur->body.location.x += .25/2;
-			cur->body.location.y += .25/2;
+			cur->body.location.x += speed/2;
+			cur->body.location.y += speed/2;
 			break;
 		case 'z':
-			cur->body.location.x -= .25/2;
-			cur->body.location.y -= .25/2;
+			cur->body.location.x -= speed/2;
+			cur->body.location.y -= speed/2;
 			break;
 		case 'm':
-			cur->body.location.x += .25/2;
-			cur->body.location.y -= .25/2;
+			cur->body.location.x += speed/2;
+			cur->body.location.y -= speed/2;
 			break;
 
 		}
@@ -1059,4 +1208,3 @@ void GlUtils::render(Game &game) {
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
-
