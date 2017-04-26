@@ -97,7 +97,7 @@ struct TBehavior: public Behavior {
     bool inPos;
     void behave (Node &model);
     TBehavior (Node &model);
-    int midland;
+    int midlane;
     int minlane;
     int maxlane;
 };
@@ -113,7 +113,14 @@ void TBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
     while (!inPos) {
 	tank.moveUp();
-	if (tank.location.y = WINDOW_HEIGHT * .1) {
+	if (tank.location.y == WINDOW_HEIGHT * .1) {
+	    tank.moveRight();
+	    if (tank.location.x == maxlane) {
+		tank.moveLeft();
+	    }
+	    if (tank.location.x == minlane) {
+		tank.moveRight();
+	    }
 	}
 	if (tank.location.y > WINDOW_HEIGHT * .65) {
 	    inPos=true;		

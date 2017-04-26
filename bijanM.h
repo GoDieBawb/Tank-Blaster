@@ -22,7 +22,7 @@ class FriendlyManager {
 	private:
 		time_t 	   	lastCar; //Time for last act	
 		void		maketowers();
-		void		move();
+		void		moveCars();
 		void		initRoad();
 
 	public:
