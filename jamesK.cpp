@@ -76,7 +76,7 @@ void SpiralBehavior::behave (Node &model) {
 	if (tank.location.x < minlane) {
 	    tank.moveUpRight();
 	}
-	else if (tank.location.x < maxlane) {
+	else if (tank.location.x > maxlane) {
 	    tank.moveUpLeft();
 	}
 	if (tank.location.y > WINDOW_HEIGHT * .65) {
@@ -92,6 +92,8 @@ void SpiralBehavior::behave (Node &model) {
     }
 }
 
+//go up to a certain point then go right then left then back right midway
+//Making a "T"
 struct TBehavior: public Behavior {
     time_t lastShot;
     bool inPos;
@@ -100,6 +102,7 @@ struct TBehavior: public Behavior {
     int midlane;
     int minlane;
     int maxlane;
+    bool checkpoint[5];
 };
 
 TBehavior::TBehavior(Node &model) {
@@ -107,19 +110,88 @@ TBehavior::TBehavior(Node &model) {
     midlane = model.location.x;
     minlane = model.location.x - 50;
     maxlane = model.location.x + 50;
+    for (int i = 0; i < 5; i++) {
+	checkpoint[i] = false;
+    }
 }
 
 void TBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
     while (!inPos) {
 	tank.moveUp();
-	if (tank.location.y == WINDOW_HEIGHT * .1) {
-	    tank.moveRight();
+	while (checkpoint[0] == false) {
+	    if (tank.location.y == WINDOW_HEIGHT * .1) {
+		tank.moveRight();
+	    }
 	    if (tank.location.x == maxlane) {
 		tank.moveLeft();
 	    }
 	    if (tank.location.x == minlane) {
 		tank.moveRight();
+	    }
+	    if (tank.location.x == midlane) {
+		tank.moveUp();
+		checkpoint[0] = true;
+	    }
+	}
+	while (checkpoint[1] == false) {
+	    if (tank.location.y == WINDOW_HEIGHT * .2) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == maxlane) {
+		tank.moveLeft();
+	    }
+	    if (tank.location.x == minlane) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == midlane) {
+		tank.moveUp();
+		checkpoint[1] = true;
+	    }
+	}
+	while (checkpoint[2] == false) {
+	    if (tank.location.y == WINDOW_HEIGHT * .3) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == maxlane) {
+		tank.moveLeft();
+	    }
+	    if (tank.location.x == minlane) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == midlane) {
+		tank.moveUp();
+		checkpoint[2] = true;
+	    }
+	}
+	while (checkpoint[3] == false) {
+	    if (tank.location.y == WINDOW_HEIGHT * .4) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == maxlane) {
+		tank.moveLeft();
+	    }
+	    if (tank.location.x == minlane) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == midlane) {
+		tank.moveUp();
+		checkpoint[0] = true;
+	    }
+	}
+	while (checkpoint[4] == false) {
+	    if (tank.location.y == WINDOW_HEIGHT * .5) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == maxlane) {
+		tank.moveLeft();
+	    }
+	    if (tank.location.x == minlane) {
+		tank.moveRight();
+	    }
+	    if (tank.location.x == midlane) {
+		tank.moveUp();
+		checkpoint[4] = true;
 	    }
 	}
 	if (tank.location.y > WINDOW_HEIGHT * .65) {
@@ -129,6 +201,37 @@ void TBehavior::behave(Node &model) {
     }	
 
     if (time(0) - lastShot > 5) {
+	lastShot = time(0);
+	bullets[bulletCount]=tank.shoot();
+	bulletCount++;
+    }
+}
+
+struct SnakeBehavior : public Behavior {
+
+    time_t lastShot; //Time for last act
+    bool inPos; //bool to whether to stop
+    void behave(Node &model); 
+    SnakeBehavior();
+};
+
+SnakeBehavior::SnakeBehavior() {
+    //Initialize
+    lastShot = time(0);
+}
+
+void SnakeBehavior::behave(Node &model) {
+    Tank &tank = (Tank&) model;
+
+    if (!inPos) {
+	tank.moveUp();
+	if (tank.location.y > WINDOW_HEIGHT*.65) {
+	    inPos=true;		
+	}
+	return;
+    }	
+    if (time(0) - lastShot > 5) {
+	//Set last act to now
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -179,3 +282,37 @@ void EnemyManager::move() {
 void EnemyManager::update() {
     move();
 }
+
+//templete for behavior
+/*
+struct Behavior : public Behavior {
+
+    time_t lastShot; //Time for last act
+    bool inPos; //bool to whether to stop
+    void behave(Node &model); 
+    Behavior();
+};
+
+Behavior::Behavior() {
+    //Initialize
+    lastShot = time(0);
+}
+
+void NewBehavior::behave(Node &model) {
+    Tank &tank = (Tank&) model;
+
+    if (!inPos) {
+	tank.moveUp();
+	if (tank.location.y > WINDOW_HEIGHT*.65) {
+	    inPos=true;		
+	}
+	return;
+    }	
+    if (time(0) - lastShot > 5) {
+	//Set last act to now
+	lastShot = time(0);
+	bullets[bulletCount]=tank.shoot();
+	bulletCount++;
+    }
+}
+*/
