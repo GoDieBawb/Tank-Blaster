@@ -287,7 +287,7 @@ Tank::Tank(Vec loc) {
 	angle = 90;
 	dir	= 'r';
 	location = loc;
-	moveSpeed = .005;
+	moveSpeed = .25;
 }
 
 Bullet Tank::shoot() {
