@@ -1,6 +1,10 @@
-
+void doExplosion(){}
+void doMusic(){}
+void doShoot(){}
+void initSound(){}
+void cleanUpSound(){}
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
-
+/*
 //Finally a straight forward OpenAL sample program.
 //Gordon Griesel
 //2016
@@ -51,7 +55,7 @@ void initSound() {
 	//Generate a source, and store it in a buffer.
 	alGenSources(1, &alSourceExplode);
 	alSourcei(alSourceExplode, AL_BUFFER, alBufferExplode);
-	alSourcef(alSourceExplode, AL_GAIN, 1.0f);
+	alSourcef(alSourceExplode, AL_GAIN, .5f);
 	alSourcef(alSourceExplode, AL_PITCH, 1.0f);
 	alSourcei(alSourceExplode, AL_LOOPING, AL_FALSE);
 
@@ -64,7 +68,7 @@ void initSound() {
 	//Generate a source, and store it in a buffer.
 	alGenSources(1, &alSourceMusic);
 	alSourcei(alSourceMusic, AL_BUFFER, alBufferMusic);
-	alSourcef(alSourceMusic, AL_GAIN, 1.0f);
+	alSourcef(alSourceMusic, AL_GAIN, 5.0f);
 	alSourcef(alSourceMusic, AL_PITCH, 1.0f);
 	alSourcei(alSourceMusic, AL_LOOPING, AL_TRUE);
 	if (alGetError() != AL_NO_ERROR) {
@@ -76,7 +80,7 @@ void initSound() {
 	//Generate a source, and store it in a buffer.
 	alGenSources(1, &alSourceShoot);
 	alSourcei(alSourceShoot, AL_BUFFER, alBufferShoot);
-	alSourcef(alSourceShoot, AL_GAIN, 1.0f);
+	alSourcef(alSourceShoot, AL_GAIN, .1f);
 	alSourcef(alSourceShoot, AL_PITCH, 1.0f);
 	alSourcei(alSourceShoot, AL_LOOPING, AL_FALSE);
 	if (alGetError() != AL_NO_ERROR) {
@@ -146,7 +150,7 @@ void doExplosion() {
 	//alSourcePlay(alSource[0]);		
 	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
 }
-
+*/
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
