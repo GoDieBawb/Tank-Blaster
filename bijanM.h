@@ -7,6 +7,7 @@ class Tower: public Node {
     Shape body, roof, gun, gunbase;
     Tower();
     Tower(Vec loc);
+	Bullet shoot();
 };
 
 struct TowerBehavior : public Behavior {
@@ -18,23 +19,24 @@ struct TowerBehavior : public Behavior {
 };
 
 class FriendlyManager {
-
 	private:
-		time_t 	   	lastCar; //Time for last act	
-		void		maketowers();
-		void		moveCars();
-		void		initRoad();
+		time_t lastCar; //Time for last act	
+		void maketowers();
+		void moveCars();
+		void initRoad();
 
 	public:
-		int  carCount;
+		int carCount;
 		void carCreateCheck();
 		void update();
 		Node carNode;
-		Tower leftTower, rightTower;
-		TowerBehavior left, right;
+		Tower leftTower; 
+		Tower rightTower;
+		TowerBehavior left;
+		TowerBehavior right;
 		Node streetNode;
 		FriendlyManager();
-		CarFriend* cars[10];
+		CarFriend* cars[15];
 
 };
 
