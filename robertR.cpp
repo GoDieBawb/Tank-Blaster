@@ -837,7 +837,7 @@ void EntityManager::checkCollision() {
 
 bool EntityManager::collides(Shape s1, Shape s2) {
 
-	int x1 = s1.location.x;
+	int x1 = s1.location.x-5;
 	int x2 = s2.location.x;
 
 	int y1 = s1.location.y;
