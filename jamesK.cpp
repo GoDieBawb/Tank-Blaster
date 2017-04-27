@@ -24,16 +24,73 @@ StreetAttackBehavior::StreetAttackBehavior() {
 
 void StreetAttackBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
-
+	Vec PlayerLoc = game.entm.pm.player.tank.location;
     if (!inPos) {
-	tank.moveUp();
+	if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    	tank.moveDownRight();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    	tank.moveDownLeft();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    	tank.moveDown();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	else
+		tank.moveUp();
+	
 	if (tank.location.y > WINDOW_HEIGHT*.65) {
 	    inPos=true;		
 	}
 	return;
-    }	
+    }
+
     if (time(0) - lastShot > 5) {
 	//Set last act to now
+	
+	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    	tank.moveDownLeft();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    	tank.moveDownRight();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    	tank.moveDown();
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+	
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+		lastShot = time(0);
+		bullets[bulletCount]=tank.shoot();
+		bulletCount++;
+	}
+
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -267,6 +324,7 @@ void EnemyManager::move() {
 		enemyNode.detachChild(*enemies[i]->model);
 		//Delete because tanks put on heap
 		lanes[enemies[i]->lane] = false;
+		doExplosion();
 		delete enemies[i]->model;
 		delete enemies[i]->behavior;
 		delete enemies[i];
