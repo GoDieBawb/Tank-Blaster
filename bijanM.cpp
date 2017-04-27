@@ -57,6 +57,9 @@ void FriendlyManager::moveCars()
 			xDist *= -1;
 		}
 		if (xDist > WINDOW_WIDTH+30 || cars[i]->health <= 0) {
+			if (cars[i]->health <= 0) {
+				doExplosion();
+			}
 			//Detach Child From Render Node
 			carNode.detachChild(*cars[i]->model);
 			//Delete because tanks put on heap
@@ -76,7 +79,7 @@ void FriendlyManager::carCreateCheck()
 		return;
 	}
 	//Create a car if necessary
-	if (carCount < 10) {
+	if (carCount < 15) {
 		lastCar = time(0);
 		bool skip = (rand() % (int)(1-0+1));
 		if (skip) {
