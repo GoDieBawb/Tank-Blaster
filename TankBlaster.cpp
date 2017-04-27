@@ -21,6 +21,8 @@ int main(int argc, char* argv[]) {
 
 	}
 
+	initSound();
+	doMusic();
 	game.entm.pm.player.initTank();
 
 	/******************************/
@@ -55,7 +57,8 @@ int main(int argc, char* argv[]) {
 
 	//Cleanup GL Utility
 	gu.cleanupXWindows();
-
+	cleanUpSound();
+	
 	//Exit
 	return 0;
 
