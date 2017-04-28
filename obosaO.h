@@ -42,6 +42,8 @@ class Hud {
 		Shape textShape;
 		Node  hudNode;
 		Tank  lifeDisplay;
+		Tank  lifeDisplay2;
+		Tank  lifeDisplay3;
 	public:
 		Hud(Node &rootNode);
 		void writeTestText();

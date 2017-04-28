@@ -86,10 +86,12 @@ void PlayerManager::update()
 }
 
 // HUD =========================================================================
-Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0))
+Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0)), lifeDisplay2(Vec(30,0,0)), lifeDisplay3(Vec(60,0,0))
 {
 
 	lifeDisplay.location.x = -WINDOW_WIDTH/2 + lifeDisplay.body.width;
+	lifeDisplay2.location.x = -WINDOW_WIDTH/2 + (lifeDisplay2.body.width*2);
+	lifeDisplay3.location.x = -WINDOW_WIDTH/2 + (lifeDisplay3.body.width*3);
 
 	bar.width  = WINDOW_WIDTH;
 	bar.height = WINDOW_HEIGHT/10;
@@ -100,6 +102,8 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0))
 	hudNode.location.x  = WINDOW_WIDTH/2;
 	hudNode.attachChild(bar);
 	hudNode.attachChild(lifeDisplay);
+	hudNode.attachChild(lifeDisplay2);
+	hudNode.attachChild(lifeDisplay3);
 
 	textShape.width      = WINDOW_WIDTH/5;
 	textShape.height     = WINDOW_HEIGHT/10;
