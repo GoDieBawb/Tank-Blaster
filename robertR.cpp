@@ -1,12 +1,14 @@
+#ifdef noaudio
+
 void doExplosion(){}
 void doMusic(){}
 void doShoot(){}
 void initSound(){}
 void cleanUpSound(){}
-
+#else
 //Sound stuff based on Gordon's Worm Framework Sound
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
-/*
+
 //Finally a straight forward OpenAL sample program.
 //Gordon Griesel
 //2016
@@ -152,7 +154,7 @@ void doExplosion() {
 	//alSourcePlay(alSource[0]);		
 	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
 }
-*/
+#endif
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
