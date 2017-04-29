@@ -7,7 +7,6 @@ class Tower: public Node {
     Shape body, roof, gun, gunbase;
     Tower();
     Tower(Vec loc);
-	Bullet shoot();
 };
 
 struct TowerBehavior : public Behavior {
@@ -16,6 +15,7 @@ struct TowerBehavior : public Behavior {
     int minimum, maximum;
     bool goingup, init;
     void behave(Node &model);
+	void shoot();
 };
 
 class FriendlyManager {
