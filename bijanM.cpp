@@ -10,10 +10,13 @@
 //--Tank constructor creates a tank
 //--TowerBehavior makes the gun on the tower rotate
 //
+//--Friendly entities are blue, enemies are red. 
+//
 //
 //TO DO STILL: UPDATED 4/23
 //--make towers shoot bullets
-//--fix warnings for declarations of towers.
+//--keep track of car count. car count will act as a players "health"
+//
 
 FriendlyManager::FriendlyManager() : 
 	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
@@ -80,7 +83,6 @@ void FriendlyManager::carCreateCheck()
 	}
 	//Create a car if necessary
 	if (carCount < 20) {
-	://github.com/bmirkazemi/Tank-BlasteroMusic();
 		lastCar = time(0);
 		bool skip = (rand() % (int)(1-0+1));
 		if (skip) {
