@@ -16,8 +16,8 @@
 //--fix warnings for declarations of towers.
 
 FriendlyManager::FriendlyManager() : 
-	leftTower(Vec(50,50,0)), rightTower(Vec(750,50,0)), 
-	left(0,50), right(130,180) {
+	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
+	left(280,340), right(190,250) {
 
 	carCount = 0;
 	carNode.name = "Car Node";
@@ -79,7 +79,8 @@ void FriendlyManager::carCreateCheck()
 		return;
 	}
 	//Create a car if necessary
-	if (carCount < 15) {
+	if (carCount < 20) {
+	://github.com/bmirkazemi/Tank-BlasteroMusic();
 		lastCar = time(0);
 		bool skip = (rand() % (int)(1-0+1));
 		if (skip) {
@@ -142,10 +143,11 @@ Tower::Tower(Vec loc) {
     Vec lightgray(70,70,70);
     Vec gray(50,50,50);
     Vec green(90,140,90);
+	Vec lightblue(31,127,196);
 
     body.height = 40;
 	body.width = 40;
-	body.color = green;
+	body.color = lightblue;
     
     roof.height = 20;
     roof.width = 20;
@@ -212,6 +214,13 @@ TowerBehavior::TowerBehavior(int min, int max) {
 	init = false;
 	maximum = max; 
 	minimum = min;
+}
+
+void TowerBehavior::shoot() 
+{
+	
+
+
 }
 
 void TowerBehavior::behave(Node &model) 
