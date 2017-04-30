@@ -83,6 +83,17 @@ void Hud::checkCarCount() {
   }
 }
 
+void Hud::checkForRestart() {
+  if (game.im.enter) {
+    Player player = game.entm.pm.player;
+    player.score = 0;
+    player.health = 3;
+    player.isDead = false;
+
+    hudNode.detachChild(promptShape); 
+  }  
+}
+
 
 // HUD =========================================================================
 Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)), lifeDisplay3(Vec(60, 0, 0)),
@@ -134,13 +145,14 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 	textShape.location.x = WINDOW_WIDTH/5;
 	textShape.location.y = WINDOW_HEIGHT;
 
-	prompt.width  = WINDOW_WIDTH/3;
-	prompt.height = WINDOW_HEIGHT/5;
-	prompt.color  = Vec(201, 208, 201);
-	prompt.location = Vec(0, -WINDOW_HEIGHT/2, 0);
-	prompt.angle  = 0;
+	promptShape.width  = WINDOW_WIDTH/3;
+	promptShape.height = WINDOW_HEIGHT/5;
+	promptShape.color  = Vec(201, 208, 201);
+	promptShape.location = Vec(0, -WINDOW_HEIGHT/2, 0);
+	promptShape.angle  = 0;
+	promptShape.name = "Prompt";
 
-    hudNode.attachChild(prompt);
+    hudNode.attachChild(promptShape);
 	rootNode.attachChild(hudNode);
 
 }
@@ -148,11 +160,16 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 void Hud::checkGameState() {
 	bool isDead = game.entm.pm.player.isDead;
 	if (isDead) {
-    		
+      if (hudNode.hasChild(promptShape)) {
+//        prompt();
+	  }
+   
+      checkForRestart();
+    }
+}
 
-
-
-	}
+void Hud::prompt() {
+  hudNode.attachChild(promptShape);
 }
 
 void Hud::writeTestText() {

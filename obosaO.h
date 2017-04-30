@@ -48,7 +48,7 @@ class Hud {
 	private:
 		Shape bar;
 		Shape textShape;
-        Shape prompt;
+        Shape promptShape;
         Shape promptText;
 		Node  hudNode;
 		Tank  lifeDisplay;
@@ -57,6 +57,8 @@ class Hud {
         Car   car1;
         Car   car2;
         Car   car3;
+        void checkForRestart();
+        void prompt();
 	public:
 		Hud(Node &rootNode);
 		void writeTestText();
