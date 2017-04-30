@@ -529,6 +529,9 @@ void EnemyManager::move() {
 				lanes[enemies[i]->lane] = false;
 				doExplosion();
 				game.entm.pm.player.score += 100;
+				/*if (game.entm.pm.player.score % 5000 == 0) {
+					game.entm.pm.player.health++;
+				}*/
 				delete enemies[i]->model;
 				delete enemies[i]->behavior;
 				delete enemies[i];
