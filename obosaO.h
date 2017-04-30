@@ -13,8 +13,11 @@ struct Player {
 
 //Player constructor calls tank constructor with center screen vector
 Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
-
+	health = 3;
+	carsLeft = 3;
+	score = 0;
 }
+
 
 void Player::initTank() {
 	tank.moveSpeed = 1;
