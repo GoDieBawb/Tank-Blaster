@@ -5,6 +5,9 @@ struct Player {
 	Tank tank;
 	void initTank();
 	Player();
+    int score;
+    int health;
+    int carsLeft;
 
 };
 
@@ -30,6 +33,7 @@ class PlayerManager {
 		PlayerManager(InteractionManager &i);
 		Player getPlayer();
 		void update();
+        
 
 };
 
@@ -44,9 +48,14 @@ class Hud {
 		Tank  lifeDisplay;
 		Tank  lifeDisplay2;
 		Tank  lifeDisplay3;
+        Car   car1;
+        Car   car2;
+        Car   car3;
 	public:
 		Hud(Node &rootNode);
 		void writeTestText();
 		void update();
+	    void checkCarCount();
+	    void checkPlayerHealth();
 
 };
