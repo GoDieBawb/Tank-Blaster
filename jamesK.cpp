@@ -13,13 +13,16 @@ struct StreetAttackBehavior : public Behavior {
 
     time_t lastShot; //Time for last act
     bool inPos; //bool to whether to stop
-    void behave(Node &model); 
+    void behave(Node &model);
+	int randNum; 
     StreetAttackBehavior();
 };
 
 StreetAttackBehavior::StreetAttackBehavior() {
     //Initialize
+	srand(time(NULL));
     lastShot = time(0);
+	randNum = (rand() % 4) + 1;
 }
 
 void StreetAttackBehavior::behave(Node &model) {
@@ -61,7 +64,7 @@ void StreetAttackBehavior::behave(Node &model) {
 	return;
     }
 
-    if (time(0) - lastShot > 5) {
+    if (time(0) - lastShot > randNum) {
 	//Set last act to now
 	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
 	    tank.moveDownLeft();
