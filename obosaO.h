@@ -5,13 +5,19 @@ struct Player {
 	Tank tank;
 	void initTank();
 	Player();
+    int score;
+    int health;
+    int carsLeft;
 
 };
 
 //Player constructor calls tank constructor with center screen vector
 Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
-
+	health = 3;
+	carsLeft = 3;
+	score = 0;
 }
+
 
 void Player::initTank() {
 	tank.moveSpeed = 1;
@@ -30,6 +36,7 @@ class PlayerManager {
 		PlayerManager(InteractionManager &i);
 		Player getPlayer();
 		void update();
+        
 
 };
 
@@ -44,9 +51,14 @@ class Hud {
 		Tank  lifeDisplay;
 		Tank  lifeDisplay2;
 		Tank  lifeDisplay3;
+        Car   car1;
+        Car   car2;
+        Car   car3;
 	public:
 		Hud(Node &rootNode);
 		void writeTestText();
 		void update();
+	    void checkCarCount();
+	    void checkPlayerHealth();
 
 };
