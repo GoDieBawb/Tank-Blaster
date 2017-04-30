@@ -43,7 +43,8 @@ int main(int argc, char* argv[]) {
 		//Update Interaction Manager
 		game.im.update(gu.dpy);
 		//Update Entity Manager
-		game.entm.update();
+		if (!game.entm.pm.player.isDead)
+			game.entm.update();
 		//Render Game
 		gu.render(game);
 		//Check for escape condition
