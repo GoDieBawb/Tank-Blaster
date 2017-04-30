@@ -207,7 +207,9 @@ class Node: public Spatial {
 		void attachChild(Shape &s);
 		void attachChild(Node  &n);
 		void detachChild(Node &n);
-		void detachChild(Shape &s);  
+		void detachChild(Shape &s); 
+		bool hasChild(Node &n);
+		bool hasChild(Shape &s);   
 		void printTree();
 
 };
@@ -268,6 +270,33 @@ void Node::detachChild(Node &n) {
 	}
 
 	std::cout << "CHILD NOT FOUND!\n";
+
+}
+
+bool Node::hasChild(Node &n) {
+
+	for (int i =0; i < nodeCount; i++) {
+
+		if (nodeArr[i] == &n) {
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
+bool Node::hasChild(Shape &s) {
+
+	for (int i =0; i < shapeCount; i++) {
+
+		if (shapeArr[i] == &s) {
+			return true;
+		}
+
+	}
+
+	return false;
 
 }
 
@@ -560,7 +589,7 @@ class InteractionManager {
 		void update(Display *dpy);
 		void check_mouse(XEvent *e);
 		void check_keys(XEvent *e);
-		bool leftClick, rightClick, esc, up, down, left, right, space;
+		bool leftClick, rightClick, esc, up, down, left, right, space, enter;
 		Vec  cursorLocation;
 
 };
@@ -645,6 +674,10 @@ void InteractionManager::check_keys(XEvent *e) {
 			esc = false;
 		}
 
+		if (key == 65293) {
+			enter  = false;
+		}
+
 		if (key == 65362) {
 			up = false;
 		}
@@ -674,6 +707,10 @@ void InteractionManager::check_keys(XEvent *e) {
 
 		if (key == XK_Escape) {
 			esc = true;
+		}
+
+		if (key == 65364) {
+			enter = true;
 		}
 
 		if (key == 65362) {
@@ -831,6 +868,23 @@ void EntityManager::checkCollision() {
 				
 			}
 
+		}
+
+		Player *player = &pm.player;
+		for (int k = 0; k < player->tank.shapeCount; k++) {
+
+			Shape s 	  = *player->tank.shapeArr[k];
+			s.location.x += player->tank.location.x;
+			s.location.y += player->tank.location.y;
+			s.angle  	 += player->tank.angle;
+
+			if (collides(s, *cur)) {
+				player->health--;
+				bullets[i] = bullets[bulletCount-i];
+				bulletCount--;
+				printf("%d\n", player->health);
+			}		
+	
 		}
 	
 	}
