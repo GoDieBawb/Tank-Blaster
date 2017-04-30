@@ -143,6 +143,7 @@ void Hud::checkForRestart() {
     player->health   = 3;
 	player->carsLeft = 3;
     player->isDead   = false;
+	bulletCount		 = 0;
 	game.entm.em.clearEnemies();
     hudNode.detachChild(promptShape); 
 	textShape.location.x = WINDOW_WIDTH/3.5;
