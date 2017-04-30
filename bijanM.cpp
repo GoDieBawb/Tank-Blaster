@@ -20,7 +20,7 @@
 
 FriendlyManager::FriendlyManager() : 
 	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
-	left(280,340), right(190,250) {
+	left(-30,30), right(150,210) {
 
 	carCount = 0;
 	carNode.name = "Car Node";
@@ -150,11 +150,11 @@ Tower::Tower(Vec loc) {
 
     body.height = 40;
 	body.width = 40;
-	body.color = lightblue;
+	body.color = lightgray;
     
     roof.height = 20;
     roof.width = 20;
-    roof.color = lightgray;
+    roof.color = yellow;
 
     gun.color = black;
     gun.width = 18;
@@ -213,38 +213,101 @@ Tower::Tower(Vec loc) {
 }
 
 TowerBehavior::TowerBehavior(int min, int max) {
-	goingup = false;
-	init = false;
-	maximum = max; 
-	minimum = min;
+	goingup    = false;
+	init 	   = false;
+	shooting   = false;
+	maximum    = max; 
+	minimum    = min;
+	lastShot   = clock();
+	burstDelay = clock();
+	burstCount = 0;
 }
 
-void TowerBehavior::shoot() 
+void TowerBehavior::shoot(Vec loc) 
 {
 	
+	Bullet b;
+	b.body.width  = 5;
+	b.body.height = 5;
 
+	int ang = (maximum+minimum)/2;
+	if (ang < 0) ang*=-1;
+
+	if (ang == 0) {
+		b.dir = 'r';
+		b.body.location.x = loc.x + 12;
+		b.body.location.y = loc.y;
+	}
+	else {
+		b.dir = 'l';
+		b.body.location.x = loc.x - 12;
+		b.body.location.y = loc.y;
+	}
+
+	bullets[bulletCount] = b;
+
+	bulletCount++;
 
 }
 
 void TowerBehavior::behave(Node &model) 
 {
 	Tower &tower = (Tower&) model;
+
 	if (!init) {
 		tower.gun.angle = minimum + 1;
 		init = true;
 	}
-	if (goingup) { 
+
+	float shootAngle = (maximum+minimum)/2;
+	time_t t         = clock() - lastShot;
+	double delay     = ((float)t)/CLOCKS_PER_SEC*10;
+
+	if (delay > 6 && !shooting) {
+
+		float curAng = tower.gun.angle - shootAngle;
+		if (curAng < 0) curAng *= -1;
+
+		if (curAng < .1) {
+			shooting = true;
+			lastShot = clock();	
+		}
+
+	}
+
+	if (shooting) {
+
+		time_t t         = clock() - burstDelay;
+		double bDel      = ((float)t)/CLOCKS_PER_SEC*10;
+
+		if (bDel > .25) {
+			burstDelay = clock();
+			shoot(tower.location);
+			burstCount++;
+		}
+
+		if (burstCount == 3) {
+			shooting   = false;
+			burstCount = 0;		
+		}
+
+	}
+
+	else if (goingup) { 
 		tower.gun.angle += 0.5;
-	} else {
+	} 
+
+	else {
 		tower.gun.angle -= 0.5;
 	}
+
 	if (tower.gun.angle > maximum || tower.gun.angle < minimum) {
 		goingup = !goingup;
 	}
 }
 
 //Tanks without starting points are not tanks
-Tank::Tank(){}
+Tank::Tank() {}
 
 //Construct Tanks with a starting point
 Tank::Tank(Vec loc) {
@@ -311,9 +374,10 @@ Bullet Tank::shoot() {
 	time_t t     = clock() - lastShot;
 	double delay = ((float)t)/CLOCKS_PER_SEC*10;
 
-	if (delay < .25)
+	if (delay < 1)
 		return bullets[bulletCount];
 
+	doShoot();
 	lastShot = clock();
 
 	Bullet bullet;

@@ -78,7 +78,6 @@ void PlayerManager::actOnKeys() {
 		bullets[bulletCount] = tank->shoot();
 		bulletCount++;
 		im->space = false;
-                doShoot();
 	}
 
 }
