@@ -3,7 +3,6 @@
 #define rnd() (float)rand() / (float)RAND_MAX
 #include "time.h"
 
-Game 		game; 			//Game struct defined in util/GameDef.h
 bool 		checkEscape();	//Checks for Exit Condition
 GlUtils		gu; 			//Gl Utility Holds Gl Functions
 
@@ -22,6 +21,8 @@ int main(int argc, char* argv[]) {
 
 	}
 
+	initSound();
+	doMusic();
 	game.entm.pm.player.initTank();
 
 	/******************************/
@@ -56,7 +57,8 @@ int main(int argc, char* argv[]) {
 
 	//Cleanup GL Utility
 	gu.cleanupXWindows();
-
+	cleanUpSound();
+	
 	//Exit
 	return 0;
 

@@ -10,14 +10,17 @@
 //--Tank constructor creates a tank
 //--TowerBehavior makes the gun on the tower rotate
 //
+//--Friendly entities are blue, enemies are red. 
+//
 //
 //TO DO STILL: UPDATED 4/23
 //--make towers shoot bullets
-//--fix warnings for declarations of towers.
+//--keep track of car count. car count will act as a players "health"
+//
 
 FriendlyManager::FriendlyManager() : 
-	leftTower(Vec(50,50,0)), rightTower(Vec(750,50,0)), 
-	left(0,50), right(130,180) {
+	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
+	left(280,340), right(190,250) {
 
 	carCount = 0;
 	carNode.name = "Car Node";
@@ -57,6 +60,9 @@ void FriendlyManager::moveCars()
 			xDist *= -1;
 		}
 		if (xDist > WINDOW_WIDTH+30 || cars[i]->health <= 0) {
+			if (cars[i]->health <= 0) {
+				doExplosion();
+			}
 			//Detach Child From Render Node
 			carNode.detachChild(*cars[i]->model);
 			//Delete because tanks put on heap
@@ -76,7 +82,7 @@ void FriendlyManager::carCreateCheck()
 		return;
 	}
 	//Create a car if necessary
-	if (carCount < 10) {
+	if (carCount < 20) {
 		lastCar = time(0);
 		bool skip = (rand() % (int)(1-0+1));
 		if (skip) {
@@ -139,10 +145,11 @@ Tower::Tower(Vec loc) {
     Vec lightgray(70,70,70);
     Vec gray(50,50,50);
     Vec green(90,140,90);
+	Vec lightblue(31,127,196);
 
     body.height = 40;
 	body.width = 40;
-	body.color = green;
+	body.color = lightblue;
     
     roof.height = 20;
     roof.width = 20;
@@ -209,6 +216,13 @@ TowerBehavior::TowerBehavior(int min, int max) {
 	init = false;
 	maximum = max; 
 	minimum = min;
+}
+
+void TowerBehavior::shoot() 
+{
+	
+
+
 }
 
 void TowerBehavior::behave(Node &model) 

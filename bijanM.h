@@ -15,26 +15,28 @@ struct TowerBehavior : public Behavior {
     int minimum, maximum;
     bool goingup, init;
     void behave(Node &model);
+	void shoot();
 };
 
 class FriendlyManager {
-
 	private:
-		time_t 	   	lastCar; //Time for last act	
-		void		maketowers();
-		void		moveCars();
-		void		initRoad();
+		time_t lastCar; //Time for last act	
+		void maketowers();
+		void moveCars();
+		void initRoad();
 
 	public:
-		int  carCount;
+		int carCount;
 		void carCreateCheck();
 		void update();
 		Node carNode;
-		Tower leftTower, rightTower;
-		TowerBehavior left, right;
+		Tower leftTower; 
+		Tower rightTower;
+		TowerBehavior left;
+		TowerBehavior right;
 		Node streetNode;
 		FriendlyManager();
-		CarFriend* cars[10];
+		CarFriend* cars[15];
 
 };
 

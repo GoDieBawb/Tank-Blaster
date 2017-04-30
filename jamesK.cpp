@@ -24,16 +24,72 @@ StreetAttackBehavior::StreetAttackBehavior() {
 
 void StreetAttackBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
-
+    Vec PlayerLoc = game.entm.pm.player.tank.location;
     if (!inPos) {
-	tank.moveUp();
+	if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+	else
+	    tank.moveUp();
+
 	if (tank.location.y > WINDOW_HEIGHT*.65) {
 	    inPos=true;		
 	}
 	return;
-    }	
+    }
+
     if (time(0) - lastShot > 5) {
 	//Set last act to now
+	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -62,6 +118,7 @@ SpiralBehavior::SpiralBehavior(Node &model) {
 void SpiralBehavior::behave (Node &model) {
 
     Tank &tank = (Tank&) model;
+    Vec PlayerLoc = game.entm.pm.player.tank.location;
     //start the tank by which direction
     if (!inPos) {
 	if (spiral == 0) {
@@ -82,10 +139,68 @@ void SpiralBehavior::behave (Node &model) {
 	if (tank.location.y > WINDOW_HEIGHT * .65) {
 	    inPos=true;		
 	}
+	if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+	else
+	    tank.moveUp();
+
+	if (tank.location.y > WINDOW_HEIGHT*.65) {
+	    inPos=true;		
+	}
 	return;
     }	
 
     if (time(0) - lastShot > 5) {
+	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -117,6 +232,7 @@ TBehavior::TBehavior(Node &model) {
 
 void TBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
+    Vec PlayerLoc = game.entm.pm.player.tank.location;
     while (!inPos) {
 	tank.moveUp();
 	while (checkpoint[0] == false) {
@@ -197,10 +313,68 @@ void TBehavior::behave(Node &model) {
 	if (tank.location.y > WINDOW_HEIGHT * .65) {
 	    inPos=true;		
 	}
+	if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+	else
+	    tank.moveUp();
+
+	if (tank.location.y > WINDOW_HEIGHT*.65) {
+	    inPos=true;		
+	}
 	return;
     }	
 
     if (time(0) - lastShot > 5) {
+	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -213,6 +387,10 @@ struct SnakeBehavior : public Behavior {
     bool inPos; //bool to whether to stop
     void behave(Node &model); 
     SnakeBehavior();
+    SnakeBehavior(Node &model);
+    int midlane;
+    int minlane;
+    int maxlane;
 };
 
 SnakeBehavior::SnakeBehavior() {
@@ -220,18 +398,96 @@ SnakeBehavior::SnakeBehavior() {
     lastShot = time(0);
 }
 
+SnakeBehavior::SnakeBehavior(Node &model) {
+    midlane = model.location.x;
+    minlane = model.location.x - 50;
+    maxlane = model.location.x + 50;
+}
+
 void SnakeBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
+    Vec PlayerLoc = game.entm.pm.player.tank.location;
 
     if (!inPos) {
-	tank.moveUp();
+	tank.moveLeft();
+	while (time(0) - lastShot < 5) {
+	    tank.moveUp();
+	}
+
+	while (tank.location.x < minlane) {
+	    tank.moveRight();
+	    lastShot = time(0);
+	}
+	while (tank.location.x > maxlane) {
+	    tank.moveLeft();
+	    lastShot = time(0);
+	}
+
+	if (tank.location.y > WINDOW_HEIGHT*.65) {
+	    inPos=true;		
+	}
+	if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+	else
+	    tank.moveUp();
+
 	if (tank.location.y > WINDOW_HEIGHT*.65) {
 	    inPos=true;		
 	}
 	return;
     }	
+    
     if (time(0) - lastShot > 5) {
-	//Set last act to now
+	if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownLeft();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
+	    tank.moveDownRight();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y < tank.location.y) {
+	    tank.moveDown();
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
+
+	else if (PlayerLoc.x == tank.location.x && PlayerLoc.y > tank.location.y) {
+	    lastShot = time(0);
+	    bullets[bulletCount]=tank.shoot();
+	    bulletCount++;
+	}
 	lastShot = time(0);
 	bullets[bulletCount]=tank.shoot();
 	bulletCount++;
@@ -267,6 +523,7 @@ void EnemyManager::move() {
 		enemyNode.detachChild(*enemies[i]->model);
 		//Delete because tanks put on heap
 		lanes[enemies[i]->lane] = false;
+		doExplosion();
 		delete enemies[i]->model;
 		delete enemies[i]->behavior;
 		delete enemies[i];
@@ -284,22 +541,33 @@ void EnemyManager::update() {
 }
 
 //templete for behavior
-/*
-struct Behavior : public Behavior {
+
+struct aBehavior : public Behavior {
 
     time_t lastShot; //Time for last act
     bool inPos; //bool to whether to stop
     void behave(Node &model); 
-    Behavior();
+    aBehavior();
+    aBehavior (Node &model);
+    int midlane;
+    int minlane;
+    int maxlane;
 };
 
-Behavior::Behavior() {
+aBehavior::aBehavior() {
     //Initialize
     lastShot = time(0);
 }
 
-void NewBehavior::behave(Node &model) {
+aBehavior::aBehavior(Node &model) {
+    midlane = model.location.x;
+    minlane = model.location.x - 50;
+    maxlane = model.location.x + 50;
+}
+
+void aBehavior::behave(Node &model) {
     Tank &tank = (Tank&) model;
+    //Vec PlayerLoc = game.entm.pm.player.tank.location;
 
     if (!inPos) {
 	tank.moveUp();
@@ -315,4 +583,4 @@ void NewBehavior::behave(Node &model) {
 	bulletCount++;
     }
 }
-*/
+
