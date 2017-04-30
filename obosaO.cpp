@@ -83,19 +83,51 @@ void PlayerManager::actOnKeys()
 void PlayerManager::update()
 {
 	actOnKeys();
+    //checkPlayerHealth();
+}
+
+void Hud::checkCarCount() {
+  int carsLeft = game.entm.pm.player.carsLeft;
+
+  if (carsLeft == 2) {
+    // do something
+    hudNode.detachChild(car1); 
+  }
 }
 
 // HUD =========================================================================
-Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0)), lifeDisplay2(Vec(30,0,0)), lifeDisplay3(Vec(60,0,0))
+Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)), lifeDisplay3(Vec(60, 0, 0)),
+  car1(Vec(0, 0, 0)), car2(Vec(0, 0, 0)), car3(Vec(0, 0, 0))
 {
 
-	lifeDisplay.location.x = -WINDOW_WIDTH/2 + lifeDisplay.body.width;
+	lifeDisplay.location.x  = -WINDOW_WIDTH/2 + lifeDisplay.body.width;
 	lifeDisplay2.location.x = -WINDOW_WIDTH/2 + (lifeDisplay2.body.width*2);
 	lifeDisplay3.location.x = -WINDOW_WIDTH/2 + (lifeDisplay3.body.width*3);
 
+    // Angles
+    car1.angle = 90;
+    car2.angle = 90;
+    car3.angle = 90;
+    // Colors
+    car1.body.color  = blue;
+	car1.front.color = blue;
+	car1.back.color  = blue;
+
+    car2.body.color  = green;
+	car2.front.color = green;
+	car2.back.color  = green;
+
+    car3.body.color  = red;
+	car3.front.color = red;
+	car3.back.color  = red;
+    // Location
+	car1.location.x = WINDOW_WIDTH/2 - car1.body.width*2;
+	car2.location.x = WINDOW_WIDTH/2 - car2.body.width*3;
+	car3.location.x = WINDOW_WIDTH/2 - car3.body.width;
+
 	bar.width  = WINDOW_WIDTH;
 	bar.height = WINDOW_HEIGHT/10;
-	bar.color  = red;
+	bar.color  = Vec(201,208,201);
 	bar.angle  = 0;
 
 	hudNode.location.y  = WINDOW_HEIGHT - WINDOW_HEIGHT/20;
@@ -104,6 +136,9 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0,0,0)), lifeDisplay2(Vec(30,0,0)), l
 	hudNode.attachChild(lifeDisplay);
 	hudNode.attachChild(lifeDisplay2);
 	hudNode.attachChild(lifeDisplay3);
+	hudNode.attachChild(car1);
+	hudNode.attachChild(car2);
+	hudNode.attachChild(car3);
 
 	textShape.width      = WINDOW_WIDTH/5;
 	textShape.height     = WINDOW_HEIGHT/10;
@@ -123,6 +158,7 @@ void Hud::writeTestText()
 void Hud::update()
 {
 	writeTestText();
+    checkCarCount();
 }
 
 Rect boxToRect(Shape &s)
