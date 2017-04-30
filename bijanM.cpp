@@ -300,15 +300,25 @@ Tank::Tank(Vec loc) {
 	attachChild(gun);
 	
 	angle = 90;
-	dir	= 'r';
-	location = loc;
+	dir	  = 'u';
+	location  = loc;
 	moveSpeed = .25;
+	lastShot  = clock();
 }
 
 Bullet Tank::shoot() {
+
+	time_t t     = clock() - lastShot;
+	double delay = ((float)t)/CLOCKS_PER_SEC*10;
+
+	if (delay < .25)
+		return bullets[bulletCount];
+
+	lastShot = clock();
+
 	Bullet bullet;
 	Vec spot;
-	bullet.body.width = 5;
+	bullet.body.width  = 5;
 	bullet.body.height = 5;
 	bullet.dir = dir;
 

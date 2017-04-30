@@ -224,17 +224,20 @@ struct TBehavior: public Behavior {
 };
 
 TBehavior::TBehavior(Node &model) {
+
 	lastShot = time(0); 
 	midlane = model.location.x;
 	minlane = model.location.x - 50;
 	maxlane = model.location.x + 50;
+
 	for (int i = 0; i < 5; i++) {
 		checkpoint[i] = false;
 	}
+
 }
 
 void TBehavior::behave(Node &model) {
-	Tank &tank = (Tank&) model;
+	Tank &tank 	  = (Tank&) model;
 	Vec PlayerLoc = game.entm.pm.player.tank.location;
 	while (!inPos) {
 		tank.moveUp();
@@ -495,9 +498,11 @@ void SnakeBehavior::behave(Node &model) {
 		bullets[bulletCount]=tank.shoot();
 		bulletCount++;
 	}
+
 }
 
 void EnemyManager::move() {
+
 	for (int j = 0; j < 6; j++) {
 		//Create an enemy if not enough
 		if (enemyCount < 6) {
@@ -541,6 +546,22 @@ void EnemyManager::move() {
 			}
 		}
 	}
+}
+
+void EnemyManager::clearEnemies() {
+
+	for (int i = 0; i < enemyCount; i++) {
+		lanes[i] = false;
+		enemyNode.detachChild(*enemies[i]->model);
+		delete enemies[i]->model;
+		delete enemies[i]->behavior;
+		delete enemies[i];
+		//Remove Tank from List
+		enemies[i] = NULL;
+	}
+
+	enemyCount = 0;
+
 }
 
 //Called on Loop

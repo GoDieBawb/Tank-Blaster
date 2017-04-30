@@ -14,7 +14,7 @@ void cleanUpSound(){}
 //2016
 //This demo plays two simultaneous sounds.
 //One is looping, the other is not looping.
-//
+//Modified By: Robert Ripley for Tank-Blaster April,2017
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -137,22 +137,14 @@ pthread_t soundThread[2];
 
 void doMusic() {
 	alSourcePlay(alSourceMusic);
-	//alSourcePlay(alSource[1]);
-	//pthread_create(&soundThread[0], NULL, runSong, NULL);
 }
 
 void doShoot() {
-	//printf("EXPLODE\n");
 	playSound(alSourceShoot);
-	//alSourcePlay(alSource[0]);		
-	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
 }
 
 void doExplosion() {
-	//printf("EXPLODE\n");
 	playSound(alSourceExplode);
-	//alSourcePlay(alSource[0]);		
-	//pthread_create(&soundThread[1], NULL, runExplosion, NULL);
 }
 #endif
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -709,7 +701,7 @@ void InteractionManager::check_keys(XEvent *e) {
 			esc = true;
 		}
 
-		if (key == 65364) {
+		if (key == 65293) {
 			enter = true;
 		}
 
@@ -812,7 +804,7 @@ void EntityManager::updateBullets() {
 			bulletCount--;
 		}
 
-		else if (y > WINDOW_HEIGHT || y < 0 ) {
+		else if (y >= WINDOW_HEIGHT - WINDOW_HEIGHT/10 || y < 0 ) {
 			bullets[i] = bullets[bulletCount-1];
 			bulletCount--;
 		}
@@ -843,6 +835,7 @@ void EntityManager::checkCollision() {
 					enemy->health--;
 					bullets[i] = bullets[bulletCount-i];
 					bulletCount--;
+					break;
 				}				
 				
 			}
@@ -864,6 +857,7 @@ void EntityManager::checkCollision() {
 					cf->health--;
 					bullets[i] = bullets[bulletCount-i];
 					bulletCount--;
+					break;
 				}				
 				
 			}
@@ -882,7 +876,8 @@ void EntityManager::checkCollision() {
 				player->health--;
 				bullets[i] = bullets[bulletCount-i];
 				bulletCount--;
-				printf("%d\n", player->health);
+				if (player->health < 0) player->health=0;
+				break;
 			}		
 	
 		}
@@ -935,7 +930,7 @@ struct Game {
 };
 
 //Game Constructor passes interactionmanager to entity manager
-Game::Game() : entm(im), hud(rootNode) {
+Game::Game() : entm(im) {
 	//Name Root Node
 	rootNode.name = "Root Node";
 	//Attach Player and Enemy Nodes to Root Node
@@ -943,6 +938,7 @@ Game::Game() : entm(im), hud(rootNode) {
 	rootNode.attachChild(entm.pm.playerNode);
 	rootNode.attachChild(entm.em.enemyNode);
 	rootNode.attachChild(entm.fm.carNode);
+	rootNode.attachChild(hud.hudNode);
 }
 
 //Used to Print Games Data 

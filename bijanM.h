@@ -45,6 +45,7 @@ class Tank: public Node {
 
 	private:
 		char dir;
+		time_t lastShot; //Time for last act
 
 	public:
 		Shape  body;

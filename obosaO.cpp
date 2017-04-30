@@ -22,6 +22,21 @@ PlayerManager::PlayerManager(InteractionManager &i) {
 
 }
 
+void PlayerManager::checkLoss() {
+
+	if (player.health <= 0 || player.carsLeft <= 0) {
+
+		player.isDead = true;
+
+		if (player.health <= 0) {
+			player.die();
+			playerNode.detachChild(player.tank);
+		}
+
+	}
+
+}
+
 // Uses InteractionManager to listen for key presses
 void PlayerManager::actOnKeys() {
 
@@ -71,36 +86,92 @@ void PlayerManager::actOnKeys() {
 // Called on Update Loop
 void PlayerManager::update() {
 	actOnKeys();
-    //checkPlayerHealth();
+	checkLoss();
 }
 
-void Hud::checkCarCount() {
+void Hud::checkDisplays() {
   int carsLeft = game.entm.pm.player.carsLeft;
+  int health   = game.entm.pm.player.health;
 
-  if (carsLeft == 2) {
-    // do something
-    hudNode.detachChild(car1); 
+  switch(carsLeft) {
+
+	case 0:
+		if (hudNode.hasChild(car3))
+			hudNode.detachChild(car3);
+		game.entm.pm.player.isDead = true;
+		break;
+
+	case 1:
+		if (hudNode.hasChild(car2))
+			hudNode.detachChild(car2);
+		break;	
+
+	case 2:
+		if (hudNode.hasChild(car1))
+			hudNode.detachChild(car1);
+		break;
+
   }
+
+  switch(health) {
+
+	case 0:
+		if (hudNode.hasChild(lifeDisplay3))
+			hudNode.detachChild(lifeDisplay3);
+		game.entm.pm.player.isDead = true;
+		break;
+
+	case 1:
+		if (hudNode.hasChild(lifeDisplay2))
+			hudNode.detachChild(lifeDisplay2);
+		break;	
+
+	case 2:
+		if (hudNode.hasChild(lifeDisplay1))
+			hudNode.detachChild(lifeDisplay1);
+		break;
+
+  }
+
 }
 
 void Hud::checkForRestart() {
-  if (game.im.enter) {
-    Player player = game.entm.pm.player;
-    player.score = 0;
-    player.health = 3;
-    player.isDead = false;
 
+  if (game.im.enter) {
+
+    Player *player   = &game.entm.pm.player;
+    player->score    = 0;
+    player->health   = 3;
+	player->carsLeft = 3;
+    player->isDead   = false;
+	game.entm.em.clearEnemies();
     hudNode.detachChild(promptShape); 
+	textShape.location.x = WINDOW_WIDTH/3.5;
+	textShape.location.y = WINDOW_HEIGHT - bar.height/4;
+
+	if (!game.entm.pm.playerNode.hasChild(player->tank)) {
+		game.entm.pm.playerNode.attachChild(player->tank);
+	}
+
+	if (!hudNode.hasChild(car1)) hudNode.attachChild(car1);
+	if (!hudNode.hasChild(car2)) hudNode.attachChild(car2);
+	if (!hudNode.hasChild(car3)) hudNode.attachChild(car3);
+
+	if (!hudNode.hasChild(lifeDisplay1)) hudNode.attachChild(lifeDisplay1);
+	if (!hudNode.hasChild(lifeDisplay2)) hudNode.attachChild(lifeDisplay2);
+	if (!hudNode.hasChild(lifeDisplay3)) hudNode.attachChild(lifeDisplay3);
+
   }  
+
 }
 
 
 // HUD =========================================================================
-Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)), lifeDisplay3(Vec(60, 0, 0)),
+Hud::Hud() : lifeDisplay1(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)), lifeDisplay3(Vec(60, 0, 0)),
   car1(Vec(0, 0, 0)), car2(Vec(0, 0, 0)), car3(Vec(0, 0, 0))
 {
 
-	lifeDisplay.location.x  = -WINDOW_WIDTH/2 + lifeDisplay.body.width;
+	lifeDisplay1.location.x  = -WINDOW_WIDTH/2 + lifeDisplay1.body.width;
 	lifeDisplay2.location.x = -WINDOW_WIDTH/2 + (lifeDisplay2.body.width*2);
 	lifeDisplay3.location.x = -WINDOW_WIDTH/2 + (lifeDisplay3.body.width*3);
 
@@ -133,7 +204,7 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 	hudNode.location.y  = WINDOW_HEIGHT - WINDOW_HEIGHT/20;
 	hudNode.location.x  = WINDOW_WIDTH/2;
 	hudNode.attachChild(bar);
-	hudNode.attachChild(lifeDisplay);
+	hudNode.attachChild(lifeDisplay1);
 	hudNode.attachChild(lifeDisplay2);
 	hudNode.attachChild(lifeDisplay3);
 	hudNode.attachChild(car1);
@@ -142,44 +213,62 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 
 	textShape.width      = WINDOW_WIDTH/5;
 	textShape.height     = WINDOW_HEIGHT/10;
-	textShape.location.x = WINDOW_WIDTH/5;
-	textShape.location.y = WINDOW_HEIGHT;
+	textShape.location.x = WINDOW_WIDTH/3.5;
+	textShape.location.y = WINDOW_HEIGHT - bar.height/4;
 
-	promptShape.width  = WINDOW_WIDTH/3;
-	promptShape.height = WINDOW_HEIGHT/5;
-	promptShape.color  = Vec(201, 208, 201);
+	promptShape.width    = WINDOW_WIDTH/3;
+	promptShape.height   = WINDOW_HEIGHT/5;
+	promptShape.color    = Vec(201, 208, 201);
 	promptShape.location = Vec(0, -WINDOW_HEIGHT/2, 0);
-	promptShape.angle  = 0;
-	promptShape.name = "Prompt";
+	promptShape.angle    = 0;
+
+	promptText.width      = WINDOW_WIDTH/3;
+	promptText.height     = WINDOW_HEIGHT/5;
+	promptText.location.x = WINDOW_WIDTH/2 + promptShape.width/2;
+	promptText.location.y = WINDOW_HEIGHT/2;
 
     hudNode.attachChild(promptShape);
-	rootNode.attachChild(hudNode);
 
 }
 
 void Hud::checkGameState() {
+
 	bool isDead = game.entm.pm.player.isDead;
+
 	if (isDead) {
-      if (hudNode.hasChild(promptShape)) {
-//        prompt();
-	  }
-   
+      prompt();
       checkForRestart();
     }
 }
 
 void Hud::prompt() {
-  hudNode.attachChild(promptShape);
+
+  writePromptText();
+  if (!hudNode.hasChild(promptShape)) {
+  		hudNode.attachChild(promptShape);
+		textShape.location.x = WINDOW_WIDTH/2 + promptShape.width/4;
+		textShape.location.y = WINDOW_HEIGHT/2;
+  }
+
 }
 
-void Hud::writeTestText() {
+void Hud::writePromptText() {
+	char buf[20];
+	sprintf(buf, "Press Enter to Start");
+	Rect r = boxToRect(promptText);
+	ggprint16(&r, 32, 0x000000, buf);
+}
+
+void Hud::writeScoreText() {
+	char buf[20];
+	sprintf(buf, "Score: %d", game.entm.pm.player.score);
 	Rect r = boxToRect(textShape);
-	ggprint8b(&r, 32, 0x00dddd00, "Tank Blaster");
+	ggprint16(&r, 32, 0x000000, buf);
 }
 
 void Hud::update() {
-	writeTestText();
-    checkCarCount();
+	writeScoreText();
+    checkDisplays();
 	checkGameState();
 }
 
@@ -190,8 +279,8 @@ Rect boxToRect(Shape &s) {
 	rect.centery = s.location.y;
 	rect.width	 = s.width;
 	rect.height  = s.height;
-	rect.bot	   = s.location.y - s.height/2;
-	rect.top 	   = s.location.y + s.height/2;
+	rect.bot	 = s.location.y - s.height/2;
+	rect.top 	 = s.location.y + s.height/2;
 	rect.left    = s.location.x - s.width/2;
 	rect.right   = s.location.x + s.width/2;
 

@@ -28,6 +28,7 @@ class EnemyManager {
 	public:
 		int  enemyCount;
 		void update();
+		void clearEnemies();
 		Node enemyNode;
 		EnemyManager();
 		Enemy* enemies[12];	
