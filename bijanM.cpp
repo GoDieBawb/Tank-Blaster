@@ -61,6 +61,7 @@ void FriendlyManager::moveCars()
 		}
 		if (xDist > WINDOW_WIDTH+30 || cars[i]->health <= 0) {
 			if (cars[i]->health <= 0) {
+				game.entm.pm.player.carsLeft--;
 				doExplosion();
 			}
 			//Detach Child From Render Node
