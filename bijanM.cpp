@@ -252,10 +252,11 @@ Tank::Tank(Vec loc) {
 	Vec gray(50,50,50);
 	Vec lightgray(80,80,80);
 	Vec green(90,140,90);
+	Vec lightblue(31,127,196);
 
 	body.width = 24;
 	body.height = 16;
-	body.color = green;
+	body.color = lightblue;
 
 	turret.width = 14;
 	turret.height = 10;
