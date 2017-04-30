@@ -83,6 +83,7 @@ void Hud::checkCarCount() {
   }
 }
 
+
 // HUD =========================================================================
 Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)), lifeDisplay3(Vec(60, 0, 0)),
   car1(Vec(0, 0, 0)), car2(Vec(0, 0, 0)), car3(Vec(0, 0, 0))
@@ -133,8 +134,25 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 	textShape.location.x = WINDOW_WIDTH/5;
 	textShape.location.y = WINDOW_HEIGHT;
 
+	prompt.width  = WINDOW_WIDTH/3;
+	prompt.height = WINDOW_HEIGHT/5;
+	prompt.color  = Vec(201, 208, 201);
+	prompt.location = Vec(0, -WINDOW_HEIGHT/2, 0);
+	prompt.angle  = 0;
+
+    hudNode.attachChild(prompt);
 	rootNode.attachChild(hudNode);
 
+}
+
+void Hud::checkGameState() {
+	bool isDead = game.entm.pm.player.isDead;
+	if (isDead) {
+    		
+
+
+
+	}
 }
 
 void Hud::writeTestText() {
@@ -145,6 +163,7 @@ void Hud::writeTestText() {
 void Hud::update() {
 	writeTestText();
     checkCarCount();
+	checkGameState();
 }
 
 Rect boxToRect(Shape &s) {

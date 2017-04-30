@@ -8,7 +8,7 @@ struct Player {
     int score;
     int health;
     int carsLeft;
-
+	bool isDead;
 };
 
 //Player constructor calls tank constructor with center screen vector
@@ -16,6 +16,7 @@ Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
 	health = 3;
 	carsLeft = 3;
 	score = 0;
+	isDead = true;
 }
 
 
@@ -47,6 +48,8 @@ class Hud {
 	private:
 		Shape bar;
 		Shape textShape;
+        Shape prompt;
+        Shape promptText;
 		Node  hudNode;
 		Tank  lifeDisplay;
 		Tank  lifeDisplay2;
@@ -58,6 +61,7 @@ class Hud {
 		Hud(Node &rootNode);
 		void writeTestText();
 		void update();
+		void checkGameState();
 	    void checkCarCount();
 	    void checkPlayerHealth();
 
