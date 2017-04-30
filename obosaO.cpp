@@ -11,8 +11,7 @@
 // Player Manager ==============================================================
 
 // Constructor initializes data members
-PlayerManager::PlayerManager(InteractionManager &i)
-{
+PlayerManager::PlayerManager(InteractionManager &i) {
 
 	// Name Player Node
 	playerNode.name = "Player Node";
@@ -24,53 +23,43 @@ PlayerManager::PlayerManager(InteractionManager &i)
 }
 
 // Uses InteractionManager to listen for key presses
-void PlayerManager::actOnKeys()
-{
+void PlayerManager::actOnKeys() {
 
 	Tank* tank = &player.tank;
 
-	if (im->up && im->left)
-  {
+	if (im->up && im->left) {
 		tank->moveUpLeft();
 	}
 
-	else if (im->up && im->right)
-  {
+	else if (im->up && im->right) {
 		tank->moveUpRight();
 	}
 
-	else if (im->up)
-  {
+	else if (im->up) {
 		tank->moveUp();
 	}
 
-	else if (im->down && im->left)
-  {
+	else if (im->down && im->left) {
 		tank->moveDownLeft();
 	}
 
-	else if (im->down && im->right)
-  {
+	else if (im->down && im->right) {
 		tank->moveDownRight();
 	}
 
-	else if (im->down)
-  {
+	else if (im->down) {
 		tank->moveDown();
 	}
 
-	else if (im->left)
-  {
+	else if (im->left) {
 		tank->moveLeft();
 	}
 
-	else if (im->right)
-  {
+	else if (im->right) {
 		tank->moveRight();
 	}
 
-	if (im->space)
-  {
+	if (im->space) {
 		bullets[bulletCount] = tank->shoot();
 		bulletCount++;
 		im->space = false;
@@ -80,8 +69,7 @@ void PlayerManager::actOnKeys()
 }
 
 // Called on Update Loop
-void PlayerManager::update()
-{
+void PlayerManager::update() {
 	actOnKeys();
     //checkPlayerHealth();
 }
@@ -149,20 +137,17 @@ Hud::Hud(Node &rootNode) : lifeDisplay(Vec(0, 0, 0)), lifeDisplay2(Vec(30, 0, 0)
 
 }
 
-void Hud::writeTestText()
-{
+void Hud::writeTestText() {
 	Rect r = boxToRect(textShape);
 	ggprint8b(&r, 32, 0x00dddd00, "Tank Blaster");
 }
 
-void Hud::update()
-{
+void Hud::update() {
 	writeTestText();
     checkCarCount();
 }
 
-Rect boxToRect(Shape &s)
-{
+Rect boxToRect(Shape &s) {
 
 	Rect rect;
 	rect.centerx = s.location.x;
@@ -177,52 +162,42 @@ Rect boxToRect(Shape &s)
 	return rect;
 }
 
-
 // Tank Behaviors ==============================================================
 
 // Box Behavior
-struct BoxBehavior : public Behavior
-{
+struct BoxBehavior : public Behavior {
   void behave (Node &model);
   BoxBehavior();
 };
 
-void BoxBehavior::behave (Node &model)
-{
+void BoxBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
   int box = rand() % 2;
 
-  while(1)
-  {
-	  if (box == 0)
-    {
+  while(1) {
+	  if (box == 0) {
       tank.moveUp();
       box = 2;
     }
-    else if (box == 1)
-    {
+    else if (box == 1) {
       tank.moveUpRight();
       box = 2;
     }
 
-    if (tank.location.x <= WINDOWS_WIDTH)
-    {
+    if (tank.location.x <= WINDOWS_WIDTH) {
       tank.moveUpRight();
     }
     else if (tank.location.x < (WINDOWS_WIDTH - (WINDOWS_WIDTH * 0.9)) &&
-      tank.location.y > (WINDOWS_HEIGHT/2))
-    {
+      tank.location.y > (WINDOWS_HEIGHT/2)) {
       tank.moveLeft();
     }
 
     if (tank.location.x <= (WINDOWS_WIDTH - 20) &&
-      tank.location.y <= (WINDOWS_HEIGHT/2))
-    {
+      tank.location.y <= (WINDOWS_HEIGHT/2)) {
       tank.moveUp();
     }
     else if (tank.location.x < (WINDOWS_WIDTH - 20) &&
-      tank.location.y > (WINDOWS_HEIGHT/2))
-    {
+      tank.location.y > (WINDOWS_HEIGHT/2)) {
       tank.moveDown();
     }
   }
@@ -230,36 +205,29 @@ void BoxBehavior::behave (Node &model)
 
 
 // Left, Right Behavior
-struct LeftRightBehavior: public Behavior
-{
+struct LeftRightBehavior: public Behavior {
   void behave (Node &model);
   //BoxBehavior();
 };
 
-void LeftRightBehavior::behave (Node &model)
-{
+void LeftRightBehavior::behave (Node &model) {
   Tank &tank = (Tank&) model;
   int box    = rand() % 2;
 
-  while(1)
-  {
-	  if (box == 0)
-    {
+  while(1) {
+	  if (box == 0) {
       tank.moveLeft();
       box = 2;
     }
-    else if (box == 1)
-    {
+    else if (box == 1) {
       tank.moveRight();
       box = 2;
     }
 
-    if (tank.location.x == WINDOWS_WIDTH - 20)
-    {
+    if (tank.location.x == WINDOWS_WIDTH - 20) {
       tank.moveLeft();
     }
-    else if (tank.location.x == (WINDOWS_WIDTH-WINDOWS_WIDTH) + 20)
-    {
+    else if (tank.location.x == (WINDOWS_WIDTH-WINDOWS_WIDTH) + 20) {
       tank.moveRight();
     }
   }
