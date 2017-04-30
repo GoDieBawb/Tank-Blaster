@@ -505,6 +505,7 @@ void EnemyManager::move() {
 
 		//Local Variable put on heap
 		Tank* t = new Tank(Vec(x,0,0));
+		t->body.color = Vec(200,38,33);
 		StreetAttackBehavior* b = new StreetAttackBehavior();
 		Enemy* e = new Enemy(*t,*b);
 		e->lane = j;
