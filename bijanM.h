@@ -12,10 +12,12 @@ class Tower: public Node {
 struct TowerBehavior : public Behavior {
     TowerBehavior(int min, int max);
 	TowerBehavior();
-    int minimum, maximum;
-    bool goingup, init;
+    int minimum, maximum, burstCount;
+    bool goingup, init, shooting;
+	time_t lastShot;
+	time_t burstDelay;
     void behave(Node &model);
-	void shoot();
+	void shoot(Vec loc);
 };
 
 class FriendlyManager {
