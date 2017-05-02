@@ -9,18 +9,6 @@ GlUtils		gu; 			//Gl Utility Holds Gl Functions
 //Main Function
 int main(int argc, char* argv[]) {
 
-	/******************************/
-	/**SomeLib approx 11.9 faster**/
-	/******************************/
-	osDiv = 1;
-	if (argc > 1) {
-
-		if (*argv[1] == 'u') {
-			osDiv = 11.9;
-		}
-
-	}
-
 	initSound();
 	doMusic();
 	game.entm.pm.player.initTank();
@@ -34,11 +22,8 @@ int main(int argc, char* argv[]) {
 	game.rootNode.attachChild(game.entm.fm.leftTower);
 	game.rootNode.attachChild(game.entm.fm.rightTower);
 
-	time_t t = clock();
-
 	while (!checkEscape()) {
 	
-		t = clock();
 		//std::cout << tpf << std::endl; 
 		//Update Interaction Manager
 		game.im.update(gu.dpy);
@@ -49,10 +34,6 @@ int main(int argc, char* argv[]) {
 		gu.render(game);
 		//Check for escape condition
 		checkEscape();
-
-		t   = clock() - t;
-		tpf = double(t) / CLOCKS_PER_SEC * 1000;
-
 
 	}
 

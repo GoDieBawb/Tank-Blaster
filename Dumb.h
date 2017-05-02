@@ -1,9 +1,6 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-static float tpf;
-static float osDiv;
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>

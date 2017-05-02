@@ -1057,6 +1057,7 @@ float sinByAngle(int angle) {
 
 }
 
+//arch tangent to degrees
 float pointToDeg(float x, float y) {
 
 	float rad = atan2(y, x);
@@ -1064,6 +1065,7 @@ float pointToDeg(float x, float y) {
 
 }
 
+//Debug Test for a reference angle. 
 void angleTest() {
 
 	float a = cosByAngle(90);
@@ -1080,6 +1082,7 @@ void angleTest() {
 
 }
 
+//Class Declaration
 class GlUtils {
 
 	private:
@@ -1119,6 +1122,7 @@ void GlUtils::cleanupXWindows(void) {
 
 }
 
+//Initialize Display
 void GlUtils::initXWindows(void) {
 
 
@@ -1149,6 +1153,7 @@ void GlUtils::initXWindows(void) {
 	glXMakeCurrent(dpy, win, glc);
 }
 
+//Init Open GL
 void GlUtils::init_opengl(void) {
 
 	//OpenGL initialization
@@ -1167,6 +1172,8 @@ void GlUtils::init_opengl(void) {
 
 }
 
+
+//Draw Boes
 void GlUtils::drawBox(Shape box) {
 
 	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
@@ -1224,8 +1231,7 @@ void GlUtils::drawBox(Shape *box) {
 
 }
 
-
-
+//Draw the Bullets
 void GlUtils::drawBullets() {
 
 	for (int i = 0; i < bulletCount; i++) {
@@ -1318,6 +1324,7 @@ void GlUtils::renderNode(Node *node) {
 
 }
 
+//Render Game
 void GlUtils::render(Game &game) {
 
 	glClear(GL_COLOR_BUFFER_BIT);
