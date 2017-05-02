@@ -811,7 +811,8 @@ void EntityManager::checkCollision() {
 	//Bullet Collision
 	for (int i = 0; i < bulletCount; i++) {
 
-		Shape* cur = &bullets[i].body;
+		Shape cur = bullets[i].body;
+        cur.location.x += 10;
 
 		for (int j = 0; j < em.enemyCount; j++) {
 
@@ -824,7 +825,7 @@ void EntityManager::checkCollision() {
 				s.location.y += ce->location.y;
 				s.angle  	 += ce->angle;
 
-				if (collides(s,*cur)) {
+				if (collides(s,cur)) {
 					Enemy *enemy = em.enemies[j];
 					enemy->health--;
 					bullets[i] = bullets[bulletCount-i];
@@ -846,7 +847,7 @@ void EntityManager::checkCollision() {
 				s.location.x += cf->location.x;
 				s.location.y += cf->location.y;
 
-				if (collides(s,*cur)) {
+				if (collides(s,cur)) {
 					CarFriend *cf = fm.cars[j];
 					cf->health--;
 					bullets[i] = bullets[bulletCount-i];
@@ -865,7 +866,7 @@ void EntityManager::checkCollision() {
 			s.location.y += player->tank.location.y;
 			s.angle  	 += player->tank.angle;
 
-			if (collides(s, *cur)) {
+			if (collides(s, cur)) {
 				player->health--;
 				bullets[i] = bullets[bulletCount-i];
 				bulletCount--;
@@ -960,7 +961,7 @@ void EntityManager::checkCollision() {
 
 bool EntityManager::collides(Shape s1, Shape s2) {
 
-	float x1 = s1.location.x-5;
+	float x1 = s1.location.x;
 	float y1 = s1.location.y;
 
 	float w1 = s1.width;
