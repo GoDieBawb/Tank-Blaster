@@ -37,6 +37,7 @@ class PlayerManager {
 		InteractionManager* im;
 		void actOnKeys();
 		void checkLoss();
+        bool shootPressed;
 
 	public:
 		Player player;

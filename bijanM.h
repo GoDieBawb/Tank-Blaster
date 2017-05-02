@@ -1,4 +1,4 @@
-//Enemy Manager will handle enemies and enemy behavior
+//Friendly Manager will handle enemies and enemy behavior
 class Tower: public Node {
     private:
     char dir;

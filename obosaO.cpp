@@ -75,10 +75,18 @@ void PlayerManager::actOnKeys() {
 	}
 
 	if (im->space) {
-		bullets[bulletCount] = tank->shoot();
-		bulletCount++;
-		im->space = false;
+        if (!shootPressed) {
+		    bullets[bulletCount] = tank->shoot();
+            doShoot();
+		    bulletCount++;
+            shootPressed = true;        
+        }
 	}
+
+    else {
+        if (shootPressed)
+		    shootPressed = false;
+    }
 
 }
 

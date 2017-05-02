@@ -375,10 +375,11 @@ Bullet Tank::shoot() {
 	time_t t     = clock() - lastShot;
 	double delay = ((float)t)/CLOCKS_PER_SEC*10;
 
-	if (delay < 1)
+	if (delay < .1) {
+		bulletCount--;
 		return bullets[bulletCount];
+	}
 
-	doShoot();
 	lastShot = clock();
 
 	Bullet bullet;
@@ -390,35 +391,35 @@ Bullet Tank::shoot() {
 	switch(dir) {		
 		case 'u':
 			spot.x =  0;	
-			spot.y = 12;
+			spot.y = 12*1.5;
 			break;
 		case 'd':
 			spot.x =   0;	
-			spot.y = -12;
+			spot.y = -12*1.5;
 			break;
 		case 'l':
-			spot.x = -12;	
+			spot.x = -12*1.5;	
 			spot.y =   0;
 			break;
 		case 'r':
-			spot.x =  12;	
+			spot.x =  25;	
 			spot.y =   0;
 			break;
 		case 'q':
-			spot.x = -12/(sqrt(2)/2);	
-			spot.y =  12/(sqrt(2)/2);
+			spot.x = -12/(sqrt(2)/2)*1.5;	
+			spot.y =  12/(sqrt(2)/2)*1.5;
 			break;
 		case 'p':
-			spot.x =  12/(sqrt(2)/2);	
-			spot.y =  12/(sqrt(2)/2);
+			spot.x =  12/(sqrt(2)/2)*1.5;	
+			spot.y =  12/(sqrt(2)/2)*1.5;
 			break;
 		case 'z':
-			spot.x = -12/(sqrt(2)/2);	
-			spot.y = -12/(sqrt(2)/2);
+			spot.x = -12/(sqrt(2)/2)*1.5;	
+			spot.y = -12/(sqrt(2)/2)*1.5;
 			break;
 		case 'm':
-			spot.x =   12/ (sqrt(2)/2);	
-			spot.y =  -12/(sqrt(2)/2);
+			spot.x =   12/ (sqrt(2)/2)*1.5;	
+			spot.y =  -12/(sqrt(2)/2)*1.5;
 			break;
 	}
 	spot.x += location.x;

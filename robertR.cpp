@@ -123,16 +123,6 @@ void playSound(ALuint source){
 	alSourcePlay(source);
 }
 
-void* runSong(void*) {
-	playSound(alSourceExplode);
-	pthread_exit(NULL);
-}
-
-void* runExplode(void*) {
-	playSound(alSourceMusic);
-	pthread_exit(NULL);
-}
-
 pthread_t soundThread[2];
 
 void doMusic() {
@@ -813,8 +803,12 @@ void EntityManager::updateBullets() {
 	
 }
 
+//Possibly one of the worst methods ever written.
 void EntityManager::checkCollision() {
 
+	Player *player = &pm.player;
+
+	//Bullet Collision
 	for (int i = 0; i < bulletCount; i++) {
 
 		Shape* cur = &bullets[i].body;
@@ -864,7 +858,6 @@ void EntityManager::checkCollision() {
 
 		}
 
-		Player *player = &pm.player;
 		for (int k = 0; k < player->tank.shapeCount; k++) {
 
 			Shape s 	  = *player->tank.shapeArr[k];
@@ -884,22 +877,106 @@ void EntityManager::checkCollision() {
 	
 	}
 
+	//Player Collision With Entities
+	for (int k = 0; k < player->tank.shapeCount; k++) {
+
+		Shape s 	  = *player->tank.shapeArr[k];
+		s.location.x += player->tank.location.x;
+		s.location.y += player->tank.location.y;
+		s.angle  	 += player->tank.angle;
+
+		//Enemy Check
+		for (int j = 0; j < em.enemyCount; j++) {
+
+			Node* ce = em.enemyNode.nodeArr[j];
+
+			for (int i = 0; i < ce->shapeCount; i++) {
+
+				Shape cur       = *ce->shapeArr[i];
+				cur.location.x += ce->location.x;
+				cur.location.y += ce->location.y;
+				cur.angle  	   += ce->angle;
+
+				if (collides(s,cur)) {
+					Enemy *enemy = em.enemies[j];
+					enemy->health=0;
+					player->health=0;
+					break;
+				}				
+				
+			}
+
+		}
+
+		//Car Check
+		for (int h = 0; h < fm.carNode.nodeCount; h++) {
+
+			Node* cf = fm.carNode.nodeArr[h];
+
+			for (int i = 0; i < cf->shapeCount; i++) {
+
+				Shape cur       = *cf->shapeArr[i];
+				cur.location.x += cf->location.x;
+				cur.location.y += cf->location.y;
+				cur.angle  	   += cf->angle;
+
+				if (collides(s,cur)) {
+					CarFriend *car = fm.cars[h];
+					car->health    = 0;
+					player->health = 0;
+					break;
+				}				
+				
+			}
+
+		}
+
+		//Tower Check
+		for (int i = 0; i < 2; i++) {
+
+			Node t;
+			if (i==0) t = fm.leftTower;
+			else 	  t = fm.rightTower;
+
+			for (int j = 0; j < t.shapeCount; j++) {
+
+				Shape cur 	    = *t.shapeArr[j];
+				cur.location.x += t.location.x;
+				cur.location.y += t.location.y;
+				cur.angle  	   += t.angle;
+
+				if (collides(s,cur)) {
+					player->health=0;
+					break;
+				}	
+
+			}
+	
+		}
+	
+	}
+
 }
 
 bool EntityManager::collides(Shape s1, Shape s2) {
 
-	int x1 = s1.location.x-5;
-	int x2 = s2.location.x;
+	float x1 = s1.location.x-5;
+	float y1 = s1.location.y;
 
-	int y1 = s1.location.y;
-	int y2 = s2.location.y;
+	float w1 = s1.width;
+	float h1 = s1.height;
 
-	if (x1 >= x2-s2.width && x1 <= x2+s2.width) {
+	float x2 = s2.location.x;
+	float y2 = s2.location.y;
 
-		if (y1 >= y2-s2.height && y1 <= y2+s2.height) {
-				return true;
-		}
+	float w2 = s2.width;
+	float h2 = s2.height;
 
+
+
+
+	if (x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && h1 + y1 > y2) {
+		return true;
 	}
 
 	return false;
