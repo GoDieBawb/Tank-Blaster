@@ -169,7 +169,7 @@ struct Game {
 class GlUtils {
 
     private:
-        Window win;                  W//GL Window
+        Window win;                  //GL Window
         GLXContext glc;              //GL Context
         void set_title(void);        //Sets window title
         void renderNode(Node *node); //Renders Node recursively
