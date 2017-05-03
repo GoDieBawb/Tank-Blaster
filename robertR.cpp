@@ -8,7 +8,7 @@ Global Declarations
 *----------------------------------------------------------------*/
 
 //Bullet stuff
-Bullet bullets[500];
+Bullet bullets[1000];
 int bulletCount = 0;
 
 //Public Color Vector
@@ -34,7 +34,8 @@ Spatial::Spatial() {
 
 /*----------------------------------------------------------------/
 Shape functions
-Functionality: Shape is a type of spatial that has an actual Geometry being drawn
+Functionality: Shape is a type of spatial that has an actual Geometry 
+being drawn
 *----------------------------------------------------------------*/
 
 //Shape constructor gives shape generic name
@@ -323,7 +324,8 @@ void Car::moveDownLeft() {
 
 /*----------------------------------------------------------------/
 Car Friend Functions
-Functionality: Represents the friendly car. Holds a car model and a car friend behavior
+Functionality: Represents the friendly car. Holds a car model and a 
+car friend behavior
 *----------------------------------------------------------------*/
 
 //Car Friend Constructor. Takes model and behavior. Sets health
@@ -358,8 +360,8 @@ void CarBehavior::behave(Node &model) {
 
 /*----------------------------------------------------------------/
 Interaction Manager Functions
-Functionality: Interaction Manager holds public booleans to show what keys are pressed
-as well as functions to act on key presses and mouse clicks.
+Functionality: Interaction Manager holds public booleans to show what 
+keys are pressed as well as functions to act on key presses and mouse clicks.
 *----------------------------------------------------------------*/
 
 //Update loop for the interaction manager
@@ -512,8 +514,10 @@ void InteractionManager::check_keys(XEvent *e) {
 
 /*----------------------------------------------------------------/
 Entity Manager Functions
-Functionality: Entity Manager is responsible for holding the data managers for the player friendlies
-and enemies. This class also checks for collisions and updates the bullets. It updates the data managers via its update loop.
+Functionality: Entity Manager is responsible for holding the data 
+managers for the player friendlies and enemies. This class also 
+checks for collisions and updates the bullets. It updates the data 
+managers via its update loop.
 *----------------------------------------------------------------*/
 
 
@@ -781,8 +785,8 @@ void EntityManager::update() {
 
 /*----------------------------------------------------------------/
 Game Functions
-Functionality: Game structure is the root of the game. Holds the entity manager, the hud,
-interaction manager and the root node.
+Functionality: Game structure is the root of the game. Holds the entity 
+manager, the hud, interaction manager and the root node.
 *----------------------------------------------------------------*/
 
 //Game Constructor passes interactionmanager to entity manager
@@ -815,9 +819,9 @@ void Game::printDataTree() {
 
 /*----------------------------------------------------------------/
 GL Utility Functions
-Functionality: GlUtils hold the render logic of the game. It initializes the GL members
-and contains the logic necessary to act on spatials rotation, locations,
-angles, and sizes.
+Functionality: GlUtils hold the render logic of the game. It initializes the 
+GL members and contains the logic necessary to act on spatials rotation, 
+locations, angles, and sizes.
 *----------------------------------------------------------------*/
 
 

@@ -7,7 +7,9 @@
 struct Vec {
     float x, y, z;       //Three float vector
     Vec() {x=0;y=0;z=0;} //Constructor initializes values to 0
-    Vec(float x, float y, float z) {this->x = x; this->y = y; this->z=z;}; //Constructor with setter
+    Vec(float x, float y, float z) { //Setter Constructor
+	this->x = x; this->y = y; this->z=z;
+    };
 };
 
 
@@ -26,7 +28,8 @@ class Spatial {
 
 };
 
-//Functionality: Shape is a type of spatial that has an actual Geometry being drawn
+//Functionality: Shape is a type of spatial that has an actual Geometry 
+//being drawn
 class Shape: public Spatial {
 
     public:
@@ -59,8 +62,8 @@ class Node: public Spatial {
 
 //Functionality: Abstract Structure with a single function
 struct Behavior {
-    virtual void behave(Node &model) = 0; //Abstract function will be called by extend class
-    virtual ~Behavior(){};                //Virtual constructor for abstract class
+    virtual void behave(Node &model) = 0; //function will be called by derived
+    virtual ~Behavior(){}; //Virtual constructor for abstract class
 };
 
 
@@ -91,7 +94,8 @@ class Car: public Node {
 
 };
 
-//Functionality: Represents the friendly car. Holds a car model and a car friend behavior
+//Functionality: Represents the friendly car. Holds a car model and 
+//a car friend behavior
 struct CarFriend {
     Behavior* behavior; //Car friend abstract behavior
     Node*      model;   //Model of car
@@ -106,15 +110,17 @@ struct CarBehavior : public Behavior {
     void behave(Node &model); //Implements behave function
 };
 
-//Functionality: Interaction Manager holds public booleans to show what keys are pressed
-//As well as functions to act on key presses and mouse clicks
+//Functionality: Interaction Manager holds public booleans to show 
+//what keys are pressed as well as functions to act on key presses and 
+//mouse clicks
 class InteractionManager {
 
     public:
         void update(Display *dpy);   //Update loop takes display
         void check_mouse(XEvent *e); //Checks for mouse actions
         void check_keys(XEvent *e);  //Checks for key presses
-        bool leftClick, rightClick, esc, up, down, left, right, space, enter; //bools for presses
+		//bools for presses
+        bool leftClick, rightClick, esc, up, down, left, right, space, enter;
         Vec  cursorLocation; //Location of thge cursor
 
 };
@@ -126,43 +132,44 @@ class InteractionManager {
 #include "obosaO.h"
 #include "jamesK.h"
 
-//Functionality: Entity Manager is responsible for holding the data managers for the player friendlies
-//and enemies. This class also checks for collisions and updates the bullets.
-//It updates the data managers via its update loop.
+//Functionality: Entity Manager is responsible for holding the data 
+//managers for the player friendlies and enemies. This class also 
+//checks for collisions and updates the bullets.
+//It also updates the data managers via its update loop.
 class EntityManager {
 
     public:
         PlayerManager   pm; //Player Manager
         EnemyManager    em; //Enemy Manager
         FriendlyManager fm; //Friendly Manager
-        EntityManager(InteractionManager &i); //Entity Manager requires interaction manager
+        EntityManager(InteractionManager &i); //Entity Manager constructor
         void update(); //update loop
-        void updateBullets(); //updates bullets locations and determines removal
-        void checkCollision(); //Checks for collisions between bullets entities and player
-        bool collides(Shape s1, Shape s2); //Returns true if two shapes collide
+        void updateBullets(); //updates bullets locations and removal
+        void checkCollision(); //Checks for collisions between entities
+        bool collides(Shape s1, Shape s2); //Returns true if shapes collide
 
 };
 
-//Functionality: Game structure is the root of the game. Holds the entity manager, the hud,
-//interaction manager and the root node.
+//Functionality: Game structure is the root of the game. Holds the entity 
+//manager, the hud, interaction manager and the root node.
 struct Game {
 
-    Node               rootNode; //Base node of game. All nodes are rendered from here
+    Node               rootNode; //Base node. All nodes are rendered from here
     InteractionManager im;       //Interaction Manager checks keys
-    EntityManager      entm;     //Entity Manager manages player bullets enemies and friendlies
+    EntityManager      entm;     //Entity Manager manages entities
     Hud hud;                     //Heads up display for gui
     Game();                      //Constructor declaration
     void printDataTree();        //prints some debug info about the game
 
 };
 
-//Functionality: GlUtils hold the render logic of the game. It initializes the GL Members
-//And contains the logic necessary to act on spatials rotation, locations,
-//angles, and sizes.
+//Functionality: GlUtils hold the render logic of the game. It initializes 
+//the GL Members And contains the logic necessary to act on spatials rotation, 
+//locations, angles, and sizes.
 class GlUtils {
 
     private:
-        Window win;                   //GL Window
+        Window win;                  W//GL Window
         GLXContext glc;              //GL Context
         void set_title(void);        //Sets window title
         void renderNode(Node *node); //Renders Node recursively
