@@ -3,6 +3,10 @@
 //Course: CMPS3350
 //Date Created: 2/24/17
 
+//Set spawn points to each enemy so it doesnt spawn randomly at the bottom of the screen
+//initialize behavior patteren to indiviual tanks
+//give behaviors a bit more beef to fire back at player for added difficulty
+
 //Constructor initializes data memebrs
 EnemyManager::EnemyManager() {
 	enemyCount 	   = 0;
