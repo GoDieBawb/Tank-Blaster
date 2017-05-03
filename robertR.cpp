@@ -1,204 +1,40 @@
-#ifdef noaudio
+/*----------------------------------------------------------------/
+Global Declarations
+*----------------------------------------------------------------*/
 
-void doExplosion(){}
-void doMusic(){}
-void doShoot(){}
-void initSound(){}
-void cleanUpSound(){}
-#else
-//Sound stuff based on Gordon's Worm Framework Sound
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
+//Bullet stuff
+Bullet bullets[500];
+int bulletCount = 0;
 
-//Finally a straight forward OpenAL sample program.
-//Gordon Griesel
-//2016
-//This demo plays two simultaneous sounds.
-//One is looping, the other is not looping.
-//Modified By: Robert Ripley for Tank-Blaster April,2017
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <AL/alut.h>
-#include <pthread.h>
+//Public Color Vector
+Vec red    = Vec(255,0,0);
+Vec green  = Vec(0,255,0);
+Vec blue   = Vec(0,0,255);
+Vec yellow = Vec(255,255,0);
+Vec pink   = Vec(255,182,193);
+Vec black  = Vec(0,0,0);
 
-//Buffers hold the sound information.
-ALuint alBuffer[2];
-//Source refers to the sound.
-ALuint alSource[2];
+Game 		game;
 
-ALuint alBufferExplode, alBufferMusic, alBufferShoot;
-ALuint alSourceExplode, alSourceMusic, alSourceShoot;
-
-void initExplosion();
-void initMusic();
-
-void initSound() {
-
-	alutInit(0, NULL);
-	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: alutInit()\n");
-		return;
-	}
-	//Clear error state.
-	alGetError();
-	//
-	//Setup the listener.
-	//Forward and up vectors are used.
-	float vec[6] = {0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f};
-	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
-	alListenerfv(AL_ORIENTATION, vec);
-	alListenerf(AL_GAIN, 1.0f);
-	//
-	//Buffer holds the sound information.
-	alBufferExplode = alutCreateBufferFromFile("./Explode.wav");
-
-	//Source refers to the sound.
-	//Generate a source, and store it in a buffer.
-	alGenSources(1, &alSourceExplode);
-	alSourcei(alSourceExplode, AL_BUFFER, alBufferExplode);
-	alSourcef(alSourceExplode, AL_GAIN, .5f);
-	alSourcef(alSourceExplode, AL_PITCH, 1.0f);
-	alSourcei(alSourceExplode, AL_LOOPING, AL_FALSE);
-
-	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: setting source\n");
-		return;
-	}
-
-	alBufferMusic   = alutCreateBufferFromFile("./Home_Base_Groove.wav");
-	//Generate a source, and store it in a buffer.
-	alGenSources(1, &alSourceMusic);
-	alSourcei(alSourceMusic, AL_BUFFER, alBufferMusic);
-	alSourcef(alSourceMusic, AL_GAIN, 5.0f);
-	alSourcef(alSourceMusic, AL_PITCH, 1.0f);
-	alSourcei(alSourceMusic, AL_LOOPING, AL_TRUE);
-	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: setting source\n");
-		return;
-	}
-
-	alBufferShoot   = alutCreateBufferFromFile("./Shoot.wav");
-	//Generate a source, and store it in a buffer.
-	alGenSources(1, &alSourceShoot);
-	alSourcei(alSourceShoot, AL_BUFFER, alBufferShoot);
-	alSourcef(alSourceShoot, AL_GAIN, .1f);
-	alSourcef(alSourceShoot, AL_PITCH, 1.0f);
-	alSourcei(alSourceShoot, AL_LOOPING, AL_FALSE);
-	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: setting source\n");
-		return;
-	}
-
-}
-
-
-void cleanUpSound() {
-
-	//First delete the source.
-	alDeleteSources(1, &alSourceExplode);
-	alDeleteSources(1, &alSourceMusic);
-	alDeleteSources(1, &alSourceShoot);
-	//Delete the buffer.
-	alDeleteBuffers(1, &alBufferExplode);
-	alDeleteBuffers(1, &alBufferMusic);
-	alDeleteBuffers(1, &alBufferShoot);
-	//Close out OpenAL itself.
-	//Get active context.
-	ALCcontext *Context = alcGetCurrentContext();
-	//Get device for active context.
-	ALCdevice *Device = alcGetContextsDevice(Context);
-	//Disable context.
-	alcMakeContextCurrent(NULL);
-	//Release context(s).
-	alcDestroyContext(Context);
-	//Close device.
-	alcCloseDevice(Device);
-
-}
-
-void playSound(ALuint source){
-	alSourcePlay(source);
-}
-
-pthread_t soundThread[2];
-
-void doMusic() {
-	alSourcePlay(alSourceMusic);
-}
-
-void doShoot() {
-	playSound(alSourceShoot);
-}
-
-void doExplosion() {
-	playSound(alSourceExplode);
-}
-#endif
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-//Basic 3f Vector
-struct Vec {
-	float x, y, z;
-	Vec() {x=0;y=0;z=0;}
-	Vec(float x, float y, float z) {this->x = x; this->y = y; this->z=z;};
-};
-
-//Abstract Spatial can be either Node or Spatial
-class Node;
-class Spatial {
-
-	public:
-		Spatial();
-		Vec location;
-		float angle;
-		std::string name;
-		Node *parent;
-		Node getParent();
-
-};
+/*----------------------------------------------------------------/
+Spatial Functions
+*----------------------------------------------------------------*/
 
 Spatial::Spatial() {
 	angle = 0;
 }
 
-//Shape is a type of spatial that has an actual Geometry being drawn
-class Shape: public Spatial {
-
-	public:
-		float width, height;
-		float radius;
-		Vec color;
-		Shape();
-
-};
-
-
-//A Node is a Spatial that holds other Spatials
-class Node: public Spatial {
-
-	public:
-		Node();
-		Node  *nodeArr[15];
-		Shape *shapeArr[15];
-		int  shapeCount;
-		int  nodeCount;
-		void attachChild(Shape &s);
-		void attachChild(Node  &n);
-		void detachChild(Node &n);
-		void detachChild(Shape &s); 
-		bool hasChild(Node &n);
-		bool hasChild(Shape &s);   
-		void printTree();
-
-};
+/*----------------------------------------------------------------/
+Shape functions
+*----------------------------------------------------------------*/
 
 Shape::Shape() {
 	name = "Shape";
 }
+
+/*----------------------------------------------------------------/
+Node Functions
+*----------------------------------------------------------------*/
 
 //Construct Node
 Node::Node() {
@@ -299,65 +135,9 @@ void Node::printTree() {
 
 }
 
-//Particle
-struct Particle {
-	Shape s;
-	Vec velocity;
-};
-
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-//Abstract Structure with a single function
-struct Behavior {
-	virtual void behave(Node &model) = 0;
-	virtual ~Behavior(){};
-};
-
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-struct Bullet {
-	Shape body;
-	char  dir;
-	char  source;
-};
-Bullet bullets[500];
-int bulletCount = 0;
-
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-//Public Color Vector
-Vec red    = Vec(255,0,0);
-Vec green  = Vec(0,255,0);
-Vec blue   = Vec(0,0,255);
-Vec yellow = Vec(255,255,0);
-Vec pink   = Vec(255,182,193);
-Vec black  = Vec(0,0,0);
-
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-//Class Definition. Car extends node
-class Car: public Node {
-
-	private:
-		char dir;
-
-	public:
-		Shape body,front,back,window,w1,w2,w3,w4;
-		Car(Vec loc);
-		void   moveRight();
-		void   moveLeft();
-		void   moveUp();
-		void   moveDown();
-		void   moveUpLeft();
-		void   moveUpRight();
-		void   moveDownLeft();
-		void   moveDownRight();
-
-};
+/*----------------------------------------------------------------/
+Car Functions
+*----------------------------------------------------------------*/
 
 Car::Car(Vec loc) {
 
@@ -523,12 +303,9 @@ void Car::moveDownLeft() {
 	angle		  =  225;
 }
 
-struct CarFriend {
-	Behavior* behavior;
-	Node*	  model;
-	CarFriend(Node& n, Behavior& b);
-	int health;
-};
+/*----------------------------------------------------------------/
+Car Friend Functions
+*----------------------------------------------------------------*/
 
 CarFriend::CarFriend(Node& n, Behavior& b) {
 	model 	 = &n;
@@ -536,13 +313,9 @@ CarFriend::CarFriend(Node& n, Behavior& b) {
 	health   = 2;
 }
 
-struct CarBehavior : public Behavior {
-
-	bool isLeft;
-	CarBehavior(bool left);
-	void behave(Node &model);
-
-};
+/*----------------------------------------------------------------/
+Car Behavior Functions
+*----------------------------------------------------------------*/
 
 CarBehavior::CarBehavior(bool left) {
 	isLeft = left;
@@ -559,22 +332,10 @@ void CarBehavior::behave(Node &model) {
 				
 }
 
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-
-class InteractionManager {
-
-	public:
-		void update(Display *dpy);
-		void check_mouse(XEvent *e);
-		void check_keys(XEvent *e);
-		bool leftClick, rightClick, esc, up, down, left, right, space, enter;
-		Vec  cursorLocation;
-
-};
+/*----------------------------------------------------------------/
+Interaction Manager Functions
+*----------------------------------------------------------------*/
 
 void InteractionManager::update(Display *dpy) {
 	while (XPending(dpy)) {
@@ -721,25 +482,10 @@ void InteractionManager::check_keys(XEvent *e) {
 
 }
 
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------/
+Entity Manager Functions
+*----------------------------------------------------------------*/
 
-#include "bijanM.h"
-#include "obosaO.h"
-#include "jamesK.h"
-
-class EntityManager {
-
-	public:
-		PlayerManager   pm;
-		EnemyManager    em;
-		FriendlyManager fm;
-		EntityManager(InteractionManager &i);
-		void update();
-		void updateBullets();
-		void checkCollision();
-		bool collides(Shape s1, Shape s2);
-
-};
 
 //Constructor passes InteractionManager to PlayerManager
 EntityManager:: EntityManager(InteractionManager &i) : pm(i) {
@@ -804,6 +550,7 @@ void EntityManager::updateBullets() {
 }
 
 //Possibly one of the worst methods ever written.
+//This is definitely not the way this should be done.
 void EntityManager::checkCollision() {
 
 	Player *player = &pm.player;
@@ -993,19 +740,9 @@ void EntityManager::update() {
 	fm.update();
 }
 
-
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-struct Game {
-
-	Node			   rootNode;
-	InteractionManager im;
-	EntityManager	   entm;
-	Hud hud;
-	Game();
-	void printDataTree();
-
-};
+/*----------------------------------------------------------------/
+Game Functions
+*----------------------------------------------------------------*/
 
 //Game Constructor passes interactionmanager to entity manager
 Game::Game() : entm(im) {
@@ -1035,16 +772,15 @@ void Game::printDataTree() {
 
 }
 
-Game 		game; 			//Game struct defined in util/GameDef.h
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
-
-#include <GL/glx.h>
+/*----------------------------------------------------------------/
+GL Utility Functions
+*----------------------------------------------------------------*/
 
 
 //Cos by Degree
 float cosByAngle(int angle) {
 
-	float rad = angle*0.0174533;
+    float rad = angle*0.0174533;
 	return cos(rad);
 
 }
@@ -1081,28 +817,6 @@ void angleTest() {
 	std::cout << " 0: " << w << " 180: " << x << " -90: " << y << " 90: " << z << std::endl;
 
 }
-
-//Class Declaration
-class GlUtils {
-
-	private:
-		Window win;
-		GLXContext glc;
-		void set_title(void);
-		void renderNode(Node *node);
-		void drawBullets();
-		void drawBox(Shape box);
-		void drawBox(Shape *box);
-	
-	public:
-		void    initXWindows(void);
-		void    init_opengl(void);
-		void    cleanupXWindows(void);
-		void    render(Game *game);
-		void 	render(Game &game);
-		Display *dpy;
-
-};
 
 void GlUtils::set_title(void) {
 
@@ -1160,7 +874,7 @@ void GlUtils::init_opengl(void) {
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	//Initialize matrices
 	glMatrixMode(GL_PROJECTION); glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
 	//Set 2D mode (no perspective)
 	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
 	//Set the screen background color
@@ -1173,11 +887,8 @@ void GlUtils::init_opengl(void) {
 }
 
 
-//Draw Boes
+//Draw Boxes
 void GlUtils::drawBox(Shape box) {
-
-	//std::cout << "Drawing Shape: " << box.name << " at: " << box.location.x << "," << box.location.y << "," << box.location.z << ",";
-	//std::cout << " h: " << box.width << " w: " << box.height << " Angle: " << box.angle << std::endl;
 
 	if (isnan(box.angle)) {box.angle = box.parent->angle;}
 
@@ -1190,35 +901,6 @@ void GlUtils::drawBox(Shape box) {
 
 	float w = box.width/2;
 	float h = box.height/2;
-
-	glBegin(GL_QUADS);
-		glVertex2i(-w,-h);
-		glVertex2i(-w, h);
-		glVertex2i( w, h);
-		glVertex2i( w,-h);
-	glEnd();
-	
-	glPopMatrix();
-
-}
-
-void GlUtils::drawBox(Shape *box) {
-
-	//printf("Drawing Shape: \n");
-	//std::cout << box->location.x << " , " << box->location.y << std::endl;
-	//std::cout << box->width << " , " << box->height << std::endl;
-	//std::cout << "Drawing Shape: " << box->name << " at: " << box->location.x << "," << box->location.y << "," << box->location.z << ",";
-	//std::cout << " h: " << box->width << " w: " << box->height << std::endl;
-
-	glColor3ub(box->color.x,box->color.y,box->color.z);
-
-	glPushMatrix();
-	
-	glTranslatef(box->location.x, box->location.y, box->location.z);
-	glRotatef(box->angle, 0, 0, 1);
-
-	float w = box->width/2;
-	float h = box->height/2;
 
 	glBegin(GL_QUADS);
 		glVertex2i(-w,-h);
@@ -1248,8 +930,6 @@ void GlUtils::drawBullets() {
 
 void GlUtils::renderNode(Node *node) {
 
-	//std::cout << "Attempting Render On Node: " << node->name << " Node Count: " << node->nodeCount << " Node Angle: "<< node->angle << " Shape Count: " << node->shapeCount << std::endl;
-	
 	//Render Shapes in Node
 	for (int i =0; i < node->shapeCount; i++) {
 
@@ -1260,8 +940,6 @@ void GlUtils::renderNode(Node *node) {
 		Shape s;
 		s = *ps;
 		s.name = ps->name;
-
-		//std::cout << "Shape: " << s.name << " Angle Before: " << s.angle << " x before: " << s.location.x << " y before: " << s.location.y << std::endl;
 
 		//Magnitude from center of parent
 		float x	      = pow(s.location.x, 2);
@@ -1285,12 +963,10 @@ void GlUtils::renderNode(Node *node) {
 		//Reference Angle is point from center of parent at angle 0
 		float angle = pointToDeg(s.location.x, s.location.y);
 
-		//Uses Magnitude times multiplied by sine and cosine of the angles will give the proper offset distance
+		//Uses Magnitude times multiplied by sine and cosine of the angles will give the proper 
+        //offset distance
 		s.location.x  = mag * cosByAngle(s.angle+angle);	
 		s.location.y  = mag * sinByAngle(s.angle+angle);
-
-		//std::cout << "Shape: " << s.name << " x after: " << s.location.x << " y after: " << s.location.y << std::endl;
-		//std::this_thread::sleep_for (std::chrono::seconds(1));
 
 		//Sets the Location of the Node relative 
 		//To its parent 
@@ -1335,5 +1011,5 @@ void GlUtils::render(Game &game) {
 
 }
 
-/*------------------------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
 

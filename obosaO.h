@@ -1,5 +1,3 @@
-//#include "entity/unit/Tank/Tank.cpp"
-
 struct Player {
 
 	Tank tank;
