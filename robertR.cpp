@@ -39,7 +39,7 @@ Functionality: Shape is a type of spatial that has an actual Geometry being draw
 
 //Shape constructor gives shape generic name
 Shape::Shape() {
-    name = "Shape";
+    name = "S";
 }
 
 /*----------------------------------------------------------------/
@@ -49,7 +49,7 @@ Functionality: A Node is a Spatial that holds other Spatials
 
 //Construct Node
 Node::Node() {
-    name        = "Node";
+    name        = "N";
     shapeCount = 0;
     nodeCount  = 0;
 }

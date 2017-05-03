@@ -362,6 +362,8 @@ Bullet Tank::shoot() {
 
 	Bullet bullet;
 	Vec spot;
+	bullet.body.name  = "b";
+	bullet.body.angle = 0; 
 	bullet.body.width  = 5;
 	bullet.body.height = 5;
 	bullet.dir = dir;
