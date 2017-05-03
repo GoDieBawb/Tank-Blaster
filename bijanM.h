@@ -26,7 +26,6 @@ class FriendlyManager {
 		void maketowers();
 		void moveCars();
 		void initRoad();
-
 	public:
 		int carCount;
 		void carCreateCheck();
@@ -39,16 +38,13 @@ class FriendlyManager {
 		Node streetNode;
 		FriendlyManager();
 		CarFriend* cars[15];
-
 };
 
 //Class Definition. Tank extends node
 class Tank: public Node {
-
 	private:
 		char dir;
 		time_t lastShot; //Time for last act
-
 	public:
 		Shape  body;
 		Shape  hatch;

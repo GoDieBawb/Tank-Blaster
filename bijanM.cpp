@@ -10,12 +10,11 @@
 //--Tank constructor creates a tank
 //--TowerBehavior makes the gun on the tower rotate
 //
-//--Friendly entities are blue, enemies are red. 
+//--Friendly entities are blue or yellow, enemies are red. 
 //
 //
-//TO DO STILL: UPDATED 4/23
-//--make towers shoot bullets
-//--keep track of car count. car count will act as a players "health"
+//TO DO STILL: UPDATED 5/1
+//
 //
 
 FriendlyManager::FriendlyManager() : 
@@ -213,94 +212,73 @@ Tower::Tower(Vec loc) {
 }
 
 TowerBehavior::TowerBehavior(int min, int max) {
-	goingup    = false;
-	init 	   = false;
-	shooting   = false;
-	maximum    = max; 
-	minimum    = min;
-	lastShot   = clock();
-	burstDelay = clock();
-	burstCount = 0;
+	goingup 	= false;
+	init 		= false;
+	shooting 	= false;
+	maximum 	= max; 
+	minimum 	= min;
+	lastShot 	= clock();
+	burstDelay 	= clock();
+	burstCount 	= 0;
 }
 
 void TowerBehavior::shoot(Vec loc) 
 {
-	
 	Bullet b;
 	b.body.width  = 5;
 	b.body.height = 5;
-
-	int ang = (maximum+minimum)/2;
-	if (ang < 0) ang*=-1;
-
-	if (ang == 0) {
+	int angle = (maximum + minimum)/2;
+	if (angle < 0) angle*=-1;
+	if (angle == 0) {
 		b.dir = 'r';
 		b.body.location.x = loc.x + 12;
 		b.body.location.y = loc.y;
-	}
-	else {
+	} else {
 		b.dir = 'l';
 		b.body.location.x = loc.x - 12;
 		b.body.location.y = loc.y;
 	}
-
 	bullets[bulletCount] = b;
-
 	bulletCount++;
-
 }
 
 void TowerBehavior::behave(Node &model) 
 {
 	Tower &tower = (Tower&) model;
-
 	if (!init) {
 		tower.gun.angle = minimum + 1;
 		init = true;
 	}
-
-	float shootAngle = (maximum+minimum)/2;
-	time_t t         = clock() - lastShot;
-	double delay     = ((float)t)/CLOCKS_PER_SEC*10;
-
+	float shootAngle = (maximum + minimum) / 2;
+	time_t t = clock() - lastShot;
+	double delay = ((float)(t)) / CLOCKS_PER_SEC*10;
 	if (delay > 6 && !shooting) {
-
-		float curAng = tower.gun.angle - shootAngle;
-		if (curAng < 0) curAng *= -1;
-
-		if (curAng < .1) {
+		float currentAngle = tower.gun.angle - shootAngle;
+		if (currentAngle < 0) {
+			currentAngle *= -1;
+		}
+		if (currentAngle < .1) {
 			shooting = true;
 			lastShot = clock();	
 		}
-
 	}
-
 	if (shooting) {
-
-		time_t t         = clock() - burstDelay;
-		double bDel      = ((float)t)/CLOCKS_PER_SEC*10;
-
-		if (bDel > .25) {
+		time_t t = clock() - burstDelay;
+		double bDelay = ((float)t)/CLOCKS_PER_SEC*10;
+		if (bDelay > .25) {
 			burstDelay = clock();
 			shoot(tower.location);
 			burstCount++;
 		}
-
 		if (burstCount == 3) {
 			shooting   = false;
 			burstCount = 0;		
 		}
-
-	}
-
-	else if (goingup) { 
+	} else if (goingup) { 
 		tower.gun.angle += 0.5;
-	} 
-
-	else {
+	} else {
 		tower.gun.angle -= 0.5;
 	}
-
 	if (tower.gun.angle > maximum || tower.gun.angle < minimum) {
 		goingup = !goingup;
 	}
