@@ -1,3 +1,8 @@
+//Name: Robert Ripley
+//Description: Tank-Blaster Framework
+//Course: CMPS3350
+//Date: Spring 2017
+
 /*----------------------------------------------------------------/
 Global Declarations
 *----------------------------------------------------------------*/
@@ -14,26 +19,32 @@ Vec yellow = Vec(255,255,0);
 Vec pink   = Vec(255,182,193);
 Vec black  = Vec(0,0,0);
 
+//Game struct holds and updates data managers
 Game         game;
 
 /*----------------------------------------------------------------/
 Spatial Functions
+Functionality: Abstract Spatial can be either Node or Spatial
 *----------------------------------------------------------------*/
 
+//Spatial constructor intializes angle to 0
 Spatial::Spatial() {
     angle = 0;
 }
 
 /*----------------------------------------------------------------/
 Shape functions
+Functionality: Shape is a type of spatial that has an actual Geometry being drawn
 *----------------------------------------------------------------*/
 
+//Shape constructor gives shape generic name
 Shape::Shape() {
     name = "Shape";
 }
 
 /*----------------------------------------------------------------/
 Node Functions
+Functionality: A Node is a Spatial that holds other Spatials
 *----------------------------------------------------------------*/
 
 //Construct Node
@@ -91,6 +102,7 @@ void Node::detachChild(Node &n) {
 
 }
 
+//Returns true if the node parameter is a child of the node
 bool Node::hasChild(Node &n) {
 
     for (int i =0; i < nodeCount; i++) {
@@ -104,6 +116,7 @@ bool Node::hasChild(Node &n) {
     return false;
 }
 
+//Returns true if shape parameter is a child of the node
 bool Node::hasChild(Shape &s) {
 
     for (int i =0; i < shapeCount; i++) {
@@ -137,12 +150,14 @@ void Node::printTree() {
 
 /*----------------------------------------------------------------/
 Car Functions
+Functionality: Car is an extension of node. Is a model of a car and can move
 *----------------------------------------------------------------*/
 
+//Car Constructor. Creates a car and sets data members
 Car::Car(Vec loc) {
 
+    //Set piece shapes and colors
     Vec black(0,0,0);
-    Vec red(255,0,0);
     Vec gray(50,50,50);
     Vec blue(135,205,250);
 
@@ -178,25 +193,28 @@ Car::Car(Vec loc) {
     window.height = 10;
     window.width  = 5;
 
-    body.location   = Vec(0,0,0);
-    front.location    = Vec(10,0,0);
-    back.location   = Vec(-10,0,0);
+    //Set piece locations
+    body.location      = Vec(0,0,0);
+    front.location     = Vec(10,0,0);
+    back.location      = Vec(-10,0,0);
     w1.location        = Vec(9,6,0);
     w2.location        = Vec(9,-6,0);
     w3.location        = Vec(-9,6,0);
     w4.location        = Vec(-9,-6,0);
-    window.location = Vec(7,0,0);
+    window.location    = Vec(7,0,0);
 
+    //Set piece names
     body.name   = "Body";
     front.name  = "Front";
     back.name   = "Back";
     window.name = "Window";
-    w1.name = "w1";
-    w2.name = "w2";
-    w3.name = "w3";
-    w4.name = "w4";
-    name     = "Car";
+    w1.name     = "w1";
+    w2.name     = "w2";
+    w3.name     = "w3";
+    w4.name     = "w4";
+    name        = "Car";
 
+    //Attach Pieces to nde
     attachChild(w1);
     attachChild(w2);
     attachChild(w3);
@@ -300,27 +318,32 @@ void Car::moveDownLeft() {
     location.x   -= .5/2;
     //Set angle and direction
     dir           =  'z';
-    angle          =  225;
+    angle         =  225;
 }
 
 /*----------------------------------------------------------------/
 Car Friend Functions
+Functionality: Represents the friendly car. Holds a car model and a car friend behavior
 *----------------------------------------------------------------*/
 
+//Car Friend Constructor. Takes model and behavior. Sets health
 CarFriend::CarFriend(Node& n, Behavior& b) {
-    model      = &n;
+    model    = &n;
     behavior = &b;
     health   = 2;
 }
 
 /*----------------------------------------------------------------/
 Car Behavior Functions
+Functionality: Car behavior makes car move left or right on behave
 *----------------------------------------------------------------*/
 
+//Construct car behavior. Car either drives left or right
 CarBehavior::CarBehavior(bool left) {
     isLeft = left;
 }
 
+//Moves car left or right based on type
 void CarBehavior::behave(Node &model) {  
 
     Car &car = (Car&) model;
@@ -335,8 +358,11 @@ void CarBehavior::behave(Node &model) {
 
 /*----------------------------------------------------------------/
 Interaction Manager Functions
+Functionality: Interaction Manager holds public booleans to show what keys are pressed
+as well as functions to act on key presses and mouse clicks.
 *----------------------------------------------------------------*/
 
+//Update loop for the interaction manager
 void InteractionManager::update(Display *dpy) {
     while (XPending(dpy)) {
         XEvent e;
@@ -347,6 +373,7 @@ void InteractionManager::update(Display *dpy) {
 
 }
 
+//Checks for the Mouse Pressed
 void InteractionManager::check_mouse(XEvent *e) {
 
     static int savex = 0;
@@ -407,6 +434,7 @@ void InteractionManager::check_mouse(XEvent *e) {
 
 }
 
+//Check Keys for Press and Release
 void InteractionManager::check_keys(XEvent *e) {
 
     if (e->type == KeyRelease) {
@@ -484,6 +512,8 @@ void InteractionManager::check_keys(XEvent *e) {
 
 /*----------------------------------------------------------------/
 Entity Manager Functions
+Functionality: Entity Manager is responsible for holding the data managers for the player friendlies
+and enemies. This class also checks for collisions and updates the bullets. It updates the data managers via its update loop.
 *----------------------------------------------------------------*/
 
 
@@ -491,14 +521,17 @@ Entity Manager Functions
 EntityManager:: EntityManager(InteractionManager &i) : pm(i) {
 }
 
+//Moves each bullet and checks position for removal
 void EntityManager::updateBullets() {
 
+    //For each bullet
     for (int i = 0; i < bulletCount; i++) {
 
         Bullet* cur = &bullets[i];
         float speed = 3;
         char   dir  = cur->dir;
 
+        //Move bullets based on direction
         switch (dir) {
             
         case 'u':
@@ -532,6 +565,7 @@ void EntityManager::updateBullets() {
 
         }
 
+        //Check for off screen
         int x = cur->body.location.x;
         int y = cur->body.location.y;
 
@@ -549,8 +583,8 @@ void EntityManager::updateBullets() {
     
 }
 
-//Possibly one of the worst methods ever written.
-//This is definitely not the way this should be done.
+//Check for collisions between bullets
+//Entities and the Player
 void EntityManager::checkCollision() {
 
     Player *player = &pm.player;
@@ -561,6 +595,7 @@ void EntityManager::checkCollision() {
         Shape cur = bullets[i].body;
         cur.location.x += 10;
 
+        //Check Bullet hitting enemy
         for (int j = 0; j < em.enemyCount; j++) {
 
             Node* ce = em.enemyNode.nodeArr[j];
@@ -584,6 +619,7 @@ void EntityManager::checkCollision() {
 
         }
 
+        //Check for bullet hitting a friendly
         for (int j = 0; j < fm.carCount; j++) {
 
             Node* cf = fm.carNode.nodeArr[j];
@@ -606,6 +642,8 @@ void EntityManager::checkCollision() {
 
         }
 
+
+        //Check for the bullet hitting a tank
         for (int k = 0; k < player->tank.shapeCount; k++) {
 
             Shape s       = *player->tank.shapeArr[k];
@@ -706,6 +744,7 @@ void EntityManager::checkCollision() {
 
 }
 
+//Returns true if two shapes collide
 bool EntityManager::collides(Shape s1, Shape s2) {
 
     float x1 = s1.location.x;
@@ -742,6 +781,8 @@ void EntityManager::update() {
 
 /*----------------------------------------------------------------/
 Game Functions
+Functionality: Game structure is the root of the game. Holds the entity manager, the hud,
+interaction manager and the root node.
 *----------------------------------------------------------------*/
 
 //Game Constructor passes interactionmanager to entity manager
@@ -774,6 +815,9 @@ void Game::printDataTree() {
 
 /*----------------------------------------------------------------/
 GL Utility Functions
+Functionality: GlUtils hold the render logic of the game. It initializes the GL members
+and contains the logic necessary to act on spatials rotation, locations,
+angles, and sizes.
 *----------------------------------------------------------------*/
 
 
@@ -887,21 +931,27 @@ void GlUtils::init_opengl(void) {
 }
 
 
-//Draw Boxes
+//Draw Box
 void GlUtils::drawBox(Shape box) {
 
+    //Ensure no isnan error from offset stuff
     if (isnan(box.angle)) {box.angle = box.parent->angle;}
-
+    
+    //Set color of box
     glColor3ub(box.color.x,box.color.y,box.color.z);
 
     glPushMatrix();
     
+    //Set location
     glTranslatef(box.location.x, box.location.y, 0);
+    //Set angle    
     glRotatef(box.angle, 0, 0, 1);
 
+    //Set width and height /2
     float w = box.width/2;
     float h = box.height/2;
 
+    //Actually draw the box
     glBegin(GL_QUADS);
         glVertex2i(-w,-h);
         glVertex2i(-w, h);
@@ -927,7 +977,6 @@ void GlUtils::drawBullets() {
 
 
 //Recursively Renders a Node and All Children
-
 void GlUtils::renderNode(Node *node) {
 
     //Render Shapes in Node

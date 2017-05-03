@@ -1,161 +1,181 @@
-//Basic 3f Vector
+//Name: Robert Ripley
+//Description: Tank-Blaster Framework
+//Course: CMPS3350
+//Date: Spring 2017
+
+//Functionality: Basic 3f Vector
 struct Vec {
-    float x, y, z;
-    Vec() {x=0;y=0;z=0;}
-    Vec(float x, float y, float z) {this->x = x; this->y = y; this->z=z;};
+    float x, y, z;       //Three float vector
+    Vec() {x=0;y=0;z=0;} //Constructor initializes values to 0
+    Vec(float x, float y, float z) {this->x = x; this->y = y; this->z=z;}; //Constructor with setter
 };
 
-//Abstract Spatial can be either Node or Spatial
-class Node;
+
+class Node; //Forward declaration
+
+//Functionality: Abstract Spatial can be either Node or Spatial
 class Spatial {
 
     public:
-        Spatial();
-        Vec location;
-        float angle;
-        std::string name;
-        Node *parent;
-        Node getParent();
+        Spatial();        //Declare Constructor
+        Vec location;     //Location of Spatial
+        float angle;      //Angle of Spatial
+        std::string name; //Name of Spatial
+        Node *parent;     //Has a parent Node
+        Node getParent(); //Returns the parent Node
 
 };
 
-//Shape is a type of spatial that has an actual Geometry being drawn
+//Functionality: Shape is a type of spatial that has an actual Geometry being drawn
 class Shape: public Spatial {
 
     public:
-        float width, height;
-        float radius;
-        Vec color;
-        Shape();
+        float width, height; //Width and height of shape if box
+        float radius;        //Radius of shape if circle
+        Vec color;           //Color of shape
+        Shape();             //Declare Constructor
 
 };
 
 
-//A Node is a Spatial that holds other Spatials
+//Functionality: A Node is a Spatial that holds other Spatials
 class Node: public Spatial {
 
     public:
         Node();
-        Node  *nodeArr[15];
-        Shape *shapeArr[15];
-        int  shapeCount;
-        int  nodeCount;
-        void attachChild(Shape &s);
-        void attachChild(Node  &n);
-        void detachChild(Node &n);
-        void detachChild(Shape &s); 
-        bool hasChild(Node &n);
-        bool hasChild(Shape &s);   
-        void printTree();
+        Node  *nodeArr[15];         //Array Of Child Nodes
+        Shape *shapeArr[15];        //Array of Child Shapes
+        int  shapeCount;            //Size of Shape Array
+        int  nodeCount;             //Size of Node Array
+        void attachChild(Shape &s); //Attach a shape to Node
+        void attachChild(Node  &n); //Attach a node to Node
+        void detachChild(Node &n);  //Remove node from node
+        void detachChild(Shape &s); //Remove shape from node
+        bool hasChild(Node &n);     //Returns true if node has parameter child
+        bool hasChild(Shape &s);    //Returns true if node has parameter child
+        void printTree();           //Prints Nodes children
 
 };
 
-//Abstract Structure with a single function
+//Functionality: Abstract Structure with a single function
 struct Behavior {
-    virtual void behave(Node &model) = 0;
-    virtual ~Behavior(){};
+    virtual void behave(Node &model) = 0; //Abstract function will be called by extend class
+    virtual ~Behavior(){};                //Virtual constructor for abstract class
 };
 
 
+//Functionality: Bullet Structure
 struct Bullet {
-    Shape body;
-    char  dir;
-    char  source;
+    Shape body;    //Actual shape of the bullet
+    char  dir;     //Direction of travel
+    char  source;  //Source of bullet player enemy or tower
 };
 
-//Class Definition. Car extends node
+//Functionality: Car is an extension of node. Is a model of a car and can move
 class Car: public Node {
 
     private:
-        char dir;
+        char dir; //Direction of travel
 
     public:
-        Shape body,front,back,window,w1,w2,w3,w4;
-        Car(Vec loc);
-        void   moveRight();
-        void   moveLeft();
-        void   moveUp();
-        void   moveDown();
-        void   moveUpLeft();
-        void   moveUpRight();
-        void   moveDownLeft();
-        void   moveDownRight();
+        Shape body,front,back,window,w1,w2,w3,w4; //Shapes of car pieces
+        Car(Vec loc);             //Constructor takes starting spot
+        void   moveRight();       //moves car right
+        void   moveLeft();        //moves car left
+        void   moveUp();          //moves car up
+        void   moveDown();        //moves car down
+        void   moveUpLeft();      //moves car left and up
+        void   moveUpRight();     //moves car right and up
+        void   moveDownLeft();    //moves car left and down
+        void   moveDownRight();   //moves car right and down
 
 };
 
+//Functionality: Represents the friendly car. Holds a car model and a car friend behavior
 struct CarFriend {
-    Behavior* behavior;
-    Node*      model;
-    CarFriend(Node& n, Behavior& b);
-    int health;
+    Behavior* behavior; //Car friend abstract behavior
+    Node*      model;   //Model of car
+    CarFriend(Node& n, Behavior& b); //Constructor takes model and behavior
+    int health; //Health of car
 };
 
+//Functionality: Car behavior makes car move left or right on behave
 struct CarBehavior : public Behavior {
-
-    bool isLeft;
-    CarBehavior(bool left);
-    void behave(Node &model);
-
+    bool isLeft;              //Determines whether car is left or right
+    CarBehavior(bool left);   //Car Behavior Constructor
+    void behave(Node &model); //Implements behave function
 };
 
+//Functionality: Interaction Manager holds public booleans to show what keys are pressed
+//As well as functions to act on key presses and mouse clicks
 class InteractionManager {
 
     public:
-        void update(Display *dpy);
-        void check_mouse(XEvent *e);
-        void check_keys(XEvent *e);
-        bool leftClick, rightClick, esc, up, down, left, right, space, enter;
-        Vec  cursorLocation;
+        void update(Display *dpy);   //Update loop takes display
+        void check_mouse(XEvent *e); //Checks for mouse actions
+        void check_keys(XEvent *e);  //Checks for key presses
+        bool leftClick, rightClick, esc, up, down, left, right, space, enter; //bools for presses
+        Vec  cursorLocation; //Location of thge cursor
 
 };
 
+//These have to be included here
+//These depend on prior declarations
+//While future declarations depend on these
 #include "bijanM.h"
 #include "obosaO.h"
 #include "jamesK.h"
 
+//Functionality: Entity Manager is responsible for holding the data managers for the player friendlies
+//and enemies. This class also checks for collisions and updates the bullets.
+//It updates the data managers via its update loop.
 class EntityManager {
 
     public:
-        PlayerManager   pm;
-        EnemyManager    em;
-        FriendlyManager fm;
-        EntityManager(InteractionManager &i);
-        void update();
-        void updateBullets();
-        void checkCollision();
-        bool collides(Shape s1, Shape s2);
+        PlayerManager   pm; //Player Manager
+        EnemyManager    em; //Enemy Manager
+        FriendlyManager fm; //Friendly Manager
+        EntityManager(InteractionManager &i); //Entity Manager requires interaction manager
+        void update(); //update loop
+        void updateBullets(); //updates bullets locations and determines removal
+        void checkCollision(); //Checks for collisions between bullets entities and player
+        bool collides(Shape s1, Shape s2); //Returns true if two shapes collide
 
 };
 
+//Functionality: Game structure is the root of the game. Holds the entity manager, the hud,
+//interaction manager and the root node.
 struct Game {
 
-    Node               rootNode;
-    InteractionManager im;
-    EntityManager      entm;
-    Hud hud;
-    Game();
-    void printDataTree();
+    Node               rootNode; //Base node of game. All nodes are rendered from here
+    InteractionManager im;       //Interaction Manager checks keys
+    EntityManager      entm;     //Entity Manager manages player bullets enemies and friendlies
+    Hud hud;                     //Heads up display for gui
+    Game();                      //Constructor declaration
+    void printDataTree();        //prints some debug info about the game
 
 };
 
-//Class Declaration
+//Functionality: GlUtils hold the render logic of the game. It initializes the GL Members
+//And contains the logic necessary to act on spatials rotation, locations,
+//angles, and sizes.
 class GlUtils {
 
     private:
-        Window win;
-        GLXContext glc;
-        void set_title(void);
-        void renderNode(Node *node);
-        void drawBullets();
-        void drawBox(Shape box);
+        Window win;                   //GL Window
+        GLXContext glc;              //GL Context
+        void set_title(void);        //Sets window title
+        void renderNode(Node *node); //Renders Node recursively
+        void drawBullets();          //Draws bullets to the screen
+        void drawBox(Shape box);     //Draws a box shape
     
     public:
-        void    initXWindows(void);
-        void    init_opengl(void);
-        void    cleanupXWindows(void);
-        void    render(Game *game);
-        void     render(Game &game);
-        Display *dpy;
+        void    initXWindows(void);    //initialize window
+        void    init_opengl(void);     //initialize open gl
+        void    cleanupXWindows(void); //cleans up window
+        void    render(Game *game);    //renders hud and root node
+        void     render(Game &game);   //renders hud and root nde
+        Display *dpy;                  //Game Display
 
 };
 
