@@ -2,20 +2,46 @@
 //Description: individual file for Software engineering game
 //Course: cmps 3350 Software Engineering
 //
-//
 //Functionality: 
-//--FriendlyManager manages the friendly entities such as cars, towers.
-//--creation of the road and the movement of the cars at top of screen
-//--Tower constructor creates a tower
-//--Tank constructor creates a tank
-//--TowerBehavior makes the gun on the tower rotate
 //
-//--Friendly entities are blue or yellow, enemies are red. 
+//-->FRIENDLYMANAGER manages the functionality of the friendly entities. 
+//1. in the friendly manager, initRoad, the road is created, given a color, 
+//location, etc.
+//2. the moveCars function makes the cars drive on the road as well as 
+//deletes a car/ makes an explosion noise when a car is killed.
+//3. carCreateCheck function will create a car when the number of cars 
+//reaches a certain number, and put it in the right/left lane by random 
+//and it will also give the cars created a random color.
+//4. The FriendlyManager is called on an update loop.
+//
+//-->TOWER
+//1.Tower constructor creates a tower
+//
+//-->TOWERBEHAVIOR
+//1. make the guns rotate
+//2. make the gun shoot at 3 burst delay.
+//
+//-->TANK
+//1.Tank constructor creates a tank
 //
 //
-//TO DO STILL: UPDATED 5/1
+//MORE INFORMATION:
+//objective of game: High score
+//--Friendly tanks are blue
+//--Enemy tanks are red
+//--Towers are neutral (yellow) can kill both red/blue tanks
+//--Player can die by the following: 
+//1. collision with enemy tanks
+//2. collision with cars.
+//3. getting shot by 3 bullets
+//4. allowing 3 cars to get blown up.
+//
+//CAR HEALTH: 1 shot
+//TANK HEALTH: 3 shots
 //
 //
+//TO DO LIST: UPDATED 5/2
+//FINISHED!!!!
 
 FriendlyManager::FriendlyManager() : 
 	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
@@ -32,8 +58,8 @@ void FriendlyManager::initRoad()
 	Shape *asphault = new Shape();
 	asphault->height = WINDOW_HEIGHT*.15;
 	asphault->width = WINDOW_WIDTH;
-	streetNode.location.y = WINDOW_HEIGHT 
-							- asphault->height/2 - WINDOW_HEIGHT/10;
+	streetNode.location.y = WINDOW_HEIGHT - asphault->height/2 - 
+	    WINDOW_HEIGHT/10;
 	streetNode.location.x = WINDOW_WIDTH - asphault->width/2;
 	streetNode.attachChild(*asphault);
 	asphault->color = Vec(111,110,99);
@@ -43,8 +69,8 @@ void FriendlyManager::initRoad()
 		stripe->height = asphault->height/20;
 		stripe->width = asphault->width/15;
 		stripe->location.y = 0;
-		stripe->location.x = (-asphault->width/2) 
-							+ (asphault->width/20) + ( (asphault->width/10)*i);
+		stripe->location.x = (-asphault->width/2) + (asphault->width/20) + 
+		    ( (asphault->width/10)*i);
 		streetNode.attachChild(*stripe);
 	}
 }
@@ -124,14 +150,12 @@ void FriendlyManager::carCreateCheck()
 		car->body.color = color;
 		car->front.color = color;
 		car->back.color = color;
-		//Add to list and render node
 		cars[carCount] = friendly;
 		carNode.attachChild(*car);
 		carCount++;
 	}
 }
 
-//Called on Loop
 void FriendlyManager::update() 
 {
 	carCreateCheck();
@@ -141,27 +165,27 @@ void FriendlyManager::update()
 }
 
 Tower::Tower(Vec loc) {   
-    Vec black(0,0,0);
-    Vec lightgray(70,70,70);
-    Vec gray(50,50,50);
-    Vec green(90,140,90);
+	Vec black(0,0,0);
+	Vec lightgray(70,70,70);
+	Vec gray(50,50,50);
+	Vec green(90,140,90);
 	Vec lightblue(31,127,196);
 
-    body.height = 40;
+	body.height = 40;
 	body.width = 40;
 	body.color = lightgray;
     
-    roof.height = 20;
-    roof.width = 20;
-    roof.color = yellow;
+	roof.height = 20;
+	roof.width = 20;
+	roof.color = yellow;
 
-    gun.color = black;
-    gun.width = 18;
-    gun.height = 4;
+	gun.color = black;
+	gun.width = 18;
+	gun.height = 4;
 
-    gunbase.color = black;
-    gunbase.width = 8;
-    gunbase.height = 8;
+	gunbase.color = black;
+	gunbase.width = 8;
+	gunbase.height = 8;
 
 	c1.color = lightgray;
 	c1.width = 6;
@@ -169,7 +193,7 @@ Tower::Tower(Vec loc) {
     
 	c2.color = lightgray;
 	c2.width = 6;
-	c2.height = 6;
+	c2.height= 6;
     
 	c3.color = lightgray;
 	c3.width = 6;
@@ -185,47 +209,47 @@ Tower::Tower(Vec loc) {
 	c3.location = Vec(-14,18,0);    
 	c4.location = Vec(-14,-18,0);    
 	roof.location = Vec(0,0,0);
-    gun.location = Vec(10,0,0);
-    gunbase.location = Vec(0,0,0);
+	gun.location = Vec(10,0,0);
+	gunbase.location = Vec(0,0,0);
 
-    body.name = "Body";
+	body.name = "Body";
 	c1.name = "Corner 1";
 	c2.name = "Corner 2";
 	c3.name = "Corner 3";
 	c4.name = "Corner 4";
-    roof.name = "Roof";
-    gun.name = "Gun";
-    gunbase.name = "Gun Base";
-    name = "Tower";
+	roof.name = "Roof";
+	gun.name = "Gun";
+	gunbase.name = "Gun Base";
+	name = "Tower";
 
-    attachChild(body);
+    	attachChild(body);
 	attachChild(c1);
 	attachChild(c2);
 	attachChild(c3);
 	attachChild(c4);
-    attachChild(roof);
-    attachChild(gun);
-    attachChild(gunbase);
+	attachChild(roof);
+	attachChild(gun);
+	attachChild(gunbase);
 
-    angle = 0;
-    location = loc;
+	angle = 0;
+	location = loc;
 }
 
 TowerBehavior::TowerBehavior(int min, int max) {
-	goingup 	= false;
-	init 		= false;
-	shooting 	= false;
-	maximum 	= max; 
-	minimum 	= min;
-	lastShot 	= clock();
-	burstDelay 	= clock();
-	burstCount 	= 0;
+	goingup = false;
+	init = false;
+	shooting = false;
+	maximum = max; 
+	minimum = min;
+	lastShot = clock();
+	burstDelay = clock();
+	burstCount = 0;
 }
 
 void TowerBehavior::shoot(Vec loc) 
 {
 	Bullet b;
-	b.body.width  = 5;
+	b.body.width = 5;
 	b.body.height = 5;
 	int angle = (maximum + minimum)/2;
 	if (angle < 0) angle*=-1;
@@ -284,10 +308,8 @@ void TowerBehavior::behave(Node &model)
 	}
 }
 
-//Tanks without starting points are not tanks
 Tank::Tank() {}
 
-//Construct Tanks with a starting point
 Tank::Tank(Vec loc) {
 	Vec black(0,0,0);
 	Vec gray(50,50,50);
@@ -342,16 +364,16 @@ Tank::Tank(Vec loc) {
 	attachChild(gun);
 	
 	angle = 90;
-	dir	  = 'u';
-	location  = loc;
+	dir = 'u';
+	location = loc;
 	moveSpeed = .25;
-	lastShot  = clock();
+	lastShot = clock();
 }
 
 Bullet Tank::shoot() {
 
-	time_t t     = clock() - lastShot;
-	double delay = ((float)t)/CLOCKS_PER_SEC*10;
+	time_t time = clock() - lastShot;
+	double delay = ((float)time)/CLOCKS_PER_SEC*10;
 
 	if (delay < .1) {
 		bulletCount--;
@@ -362,44 +384,44 @@ Bullet Tank::shoot() {
 
 	Bullet bullet;
 	Vec spot;
-	bullet.body.name  = "b";
+	bullet.body.name = "b";
 	bullet.body.angle = 0; 
-	bullet.body.width  = 5;
+	bullet.body.width = 5;
 	bullet.body.height = 5;
 	bullet.dir = dir;
 
 	switch(dir) {		
 		case 'u':
-			spot.x =  0;	
+			spot.x = 0;	
 			spot.y = 12*1.5;
 			break;
 		case 'd':
-			spot.x =   0;	
+			spot.x = 0;	
 			spot.y = -12*1.5;
 			break;
 		case 'l':
 			spot.x = -12*1.5;	
-			spot.y =   0;
+			spot.y = 0;
 			break;
 		case 'r':
-			spot.x =  25;	
-			spot.y =   0;
+			spot.x = 25;	
+			spot.y = 0;
 			break;
 		case 'q':
-			spot.x = -12/(sqrt(2)/2)*1.5;	
-			spot.y =  12/(sqrt(2)/2)*1.5;
+			spot.x = -12 / ((sqrt(2)/2)*1.5);	
+			spot.y = 12 / ((sqrt(2)/2)*1.5);
 			break;
 		case 'p':
-			spot.x =  12/(sqrt(2)/2)*1.5;	
-			spot.y =  12/(sqrt(2)/2)*1.5;
+			spot.x = 12 / ((sqrt(2)/2)*1.5);	
+			spot.y = 12 / ((sqrt(2)/2)*1.5);
 			break;
 		case 'z':
-			spot.x = -12/(sqrt(2)/2)*1.5;	
-			spot.y = -12/(sqrt(2)/2)*1.5;
+			spot.x = -12 / ((sqrt(2)/2)*1.5);	
+			spot.y = -12 / ((sqrt(2)/2)*1.5);
 			break;
 		case 'm':
-			spot.x =   12/ (sqrt(2)/2)*1.5;	
-			spot.y =  -12/(sqrt(2)/2)*1.5;
+			spot.x = 12 / ((sqrt(2)/2)*1.5);	
+			spot.y = -12 / ((sqrt(2)/2)*1.5);
 			break;
 	}
 	spot.x += location.x;
@@ -430,7 +452,7 @@ void Tank::moveUp()
 
 void Tank::moveDown() 
 {
-	//Subtract y if moving up
+	//Subtract from y if moving down
 	location.y -= moveSpeed;
 	dir = 'd';
 	angle = 270;
@@ -438,7 +460,7 @@ void Tank::moveDown()
 
 void Tank::moveLeft() 
 {
-	//Subtract x if moving left
+	//Subtract from x if moving left
 	location.x -= moveSpeed;
 	dir = 'l';
 	angle = 180;
@@ -446,7 +468,7 @@ void Tank::moveLeft()
 
 void Tank::moveRight() 
 {
-	//Add x if moving right
+	//Add to x if moving right
 	location.x += moveSpeed;
 	dir = 'r';
 	angle = 0;
@@ -454,10 +476,7 @@ void Tank::moveRight()
 
 void Tank::moveUpRight() 
 {
-	//Move up and right
-	//Divide by 2 because
-	//Both directions are
-	//Being added to
+	//Divide by 2 because 2 directions (up & right)
 	location.y += moveSpeed/2;
 	location.x += moveSpeed/2;
 	dir = 'p';
@@ -466,23 +485,16 @@ void Tank::moveUpRight()
 
 void Tank::moveUpLeft() 
 {
-	//Move up and left
-	//Divide by 2 because
-	//Both directions are
-	//Being added to
+	//Divide by 2 because 2 directions (up & left)
 	location.y += moveSpeed/2;
 	location.x -= moveSpeed/2;
-	//Set angle and direction
 	dir = 'q';
 	angle = 135;
 }
 
 void Tank::moveDownRight() 
 {
-	//Move down and right
-	//Divide by 2 because
-	//Both directions are
-	//Being added to
+	//Divide by 2 because 2 directions (down & right)
 	location.y -= moveSpeed/2;
 	location.x += moveSpeed/2;
 	dir = 'm';
@@ -491,10 +503,7 @@ void Tank::moveDownRight()
 
 void Tank::moveDownLeft() 
 {
-	//Move down and left
-	//Divide by 2 because
-	//Both directions are
-	//Being added to
+	//Divide by 2 because 2 directions (down & left)
 	location.y -= moveSpeed/2;
 	location.x -= moveSpeed/2;
 	dir = 'z';

@@ -1,22 +1,22 @@
-//Friendly Manager will handle enemies and enemy behavior
+//Friendly Manager will handle friendlies and friendly behavior
 class Tower: public Node {
-    private:
-    char dir;
-    public:
-    Shape c1,c2,c3,c4;
-    Shape body, roof, gun, gunbase;
-    Tower();
-    Tower(Vec loc);
+	private:
+		char dir;
+	public:
+		Shape c1,c2,c3,c4;
+		Shape body, roof, gun, gunbase;
+		Tower();
+		Tower(Vec loc);
 };
 
 struct TowerBehavior : public Behavior {
-    TowerBehavior(int min, int max);
+	TowerBehavior(int min, int max);
 	TowerBehavior();
-    int minimum, maximum, burstCount;
-    bool goingup, init, shooting;
+	int minimum, maximum, burstCount;
+	bool goingup, init, shooting;
 	time_t lastShot;
 	time_t burstDelay;
-    void behave(Node &model);
+	void behave(Node &model);
 	void shoot(Vec loc);
 };
 
