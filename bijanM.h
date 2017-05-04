@@ -37,7 +37,7 @@ class FriendlyManager {
 		TowerBehavior right;
 		Node streetNode;
 		FriendlyManager();
-		CarFriend* cars[15];
+		CarFriend* cars[20];
 };
 
 //Class Definition. Tank extends node

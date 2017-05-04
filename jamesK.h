@@ -31,6 +31,6 @@ class EnemyManager {
 		void clearEnemies();
 		Node enemyNode;
 		EnemyManager();
-		Enemy* enemies[12];	
+		Enemy* enemies[20];	
 		bool lanes[6];
 };
