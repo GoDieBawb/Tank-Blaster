@@ -376,10 +376,10 @@ Bullet Tank::shoot() {
 
 	time_t time = clock() - lastShot;
 	double delay = ((float)time)/CLOCKS_PER_SEC*10;
+	bool badBullet = false;
 
-	if (delay < .1 || bulletCount > 500) {
-		bulletCount--;
-		return bullets[bulletCount];
+	if (delay < .1 || bulletCount > 750) {
+		badBullet=true;		
 	}
 
 	lastShot = clock();
@@ -430,6 +430,12 @@ Bullet Tank::shoot() {
 	}
 	spot.x += location.x;
 	spot.y += location.y;
+
+	if (badBullet) {
+		spot.x = 999;
+		spot.y = 999;	
+	}
+
 	bullet.body.location = spot;
 	return bullet;
 }
