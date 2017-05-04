@@ -63,27 +63,16 @@ void StreetAttackBehavior::behave(Node &model) {
 		else
 			tank.moveUp();
 
-		if (tank.location.y > WINDOW_HEIGHT*.2) {
-			bullets[bulletCount]=tank.shoot();
-			bulletCount++;
-			inPos1=true;
-			inPos2=false;
-		}
-		return;
-	}
-
-	if (!inPos2) {
 		if (tank.location.y > WINDOW_HEIGHT*.4) {
 			bullets[bulletCount]=tank.shoot();
 			bulletCount++;
-			inPos2=true;
+			inPos1=true;
 		}
-		else
-			tank.moveUp();
 		return;
 	}
 	
-	if (time(0) - lastShot > randNum) {
+	if (time(0) - lastShot > 4) {
+	//if (time(0) - lastShot > randNum) {
 		//Set last act to now
 		if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
 			tank.moveDownLeft();
