@@ -62,7 +62,7 @@ void StreetAttackBehavior::behave(Node &model) {
 		else
 			tank.moveUp();
 
-		if (tank.location.y > WINDOW_HEIGHT*.65) {
+		if (tank.location.y > WINDOW_HEIGHT*.4) {
 			inPos=true;		
 		}
 		return;

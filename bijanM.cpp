@@ -44,8 +44,10 @@
 //FINISHED!!!!
 
 FriendlyManager::FriendlyManager() : 
-	leftTower(Vec(50,400,0)), rightTower(Vec(750,400,0)), 
-	left(-30,30), right(150,210) {
+	leftTower(Vec(50,WINDOW_HEIGHT*.4,0)), 
+	rightTower(Vec(750,WINDOW_HEIGHT*.4,0)), 
+	left(-30,30), 
+	right(150,210) {
 
 	carCount = 0;
 	carNode.name = "Car Node";
@@ -222,7 +224,7 @@ Tower::Tower(Vec loc) {
 	gunbase.name = "Gun Base";
 	name = "Tower";
 
-    	attachChild(body);
+	attachChild(body);
 	attachChild(c1);
 	attachChild(c2);
 	attachChild(c3);
