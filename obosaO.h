@@ -20,7 +20,7 @@ Player::Player() : tank(Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0)) {
 }
 
 void Player::die() {
-	doExplosion();
+	//doExplosion();
 	tank.location = Vec(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,0);
 }
 
