@@ -64,7 +64,7 @@ void StreetAttackBehavior::behave(Node &model) {
 			tank.moveUp();
 
 		if (tank.location.y > WINDOW_HEIGHT*.2) {
-			bullts[bulletCount]=tank.shoot();
+			bullets[bulletCount]=tank.shoot();
 			bulletCount++;
 			inPos1=true;
 			inPos2=false;
@@ -74,7 +74,7 @@ void StreetAttackBehavior::behave(Node &model) {
 
 	if (!inPos2) {
 		if (tank.location.y > WINDOW_HEIGHT*.4) {
-			bullts[bulletCount]=tank.shoot();
+			bullets[bulletCount]=tank.shoot();
 			bulletCount++;
 			inPos2=true;
 		}
