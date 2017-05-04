@@ -16,7 +16,8 @@ EnemyManager::EnemyManager() {
 struct StreetAttackBehavior : public Behavior {
 
 	time_t lastShot; //Time for last act
-	bool inPos; //bool to whether to stop
+	bool inPos1; //bool to whether to stop
+	bool inPos2;
 	void behave(Node &model);
 	int randNum; 
 	StreetAttackBehavior();
@@ -32,7 +33,7 @@ StreetAttackBehavior::StreetAttackBehavior() {
 void StreetAttackBehavior::behave(Node &model) {
 	Tank &tank = (Tank&) model;
 	Vec PlayerLoc = game.entm.pm.player.tank.location;
-	if (!inPos) {
+	if (!inPos1) {
 		if (PlayerLoc.x > tank.location.x && PlayerLoc.y == tank.location.y) {
 			tank.moveDownRight();
 			lastShot = time(0);
@@ -62,12 +63,26 @@ void StreetAttackBehavior::behave(Node &model) {
 		else
 			tank.moveUp();
 
-		if (tank.location.y > WINDOW_HEIGHT*.4) {
-			inPos=true;		
+		if (tank.location.y > WINDOW_HEIGHT*.2) {
+			bullts[bulletCount]=tank.shoot();
+			bulletCount++;
+			inPos1=true;
+			inPos2=false;
 		}
 		return;
 	}
 
+	if (!inPos2) {
+		if (tank.location.y > WINDOW_HEIGHT*.4) {
+			bullts[bulletCount]=tank.shoot();
+			bulletCount++;
+			inPos2=true;
+		}
+		else
+			tank.moveUp();
+		return;
+	}
+	
 	if (time(0) - lastShot > randNum) {
 		//Set last act to now
 		if (PlayerLoc.x < tank.location.x && PlayerLoc.y == tank.location.y) {
